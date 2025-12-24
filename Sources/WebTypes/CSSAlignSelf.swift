@@ -1,0 +1,15 @@
+public enum CSSAlignSelf: String, Sendable {
+	case auto = "auto"
+	case normal = "normal"
+	case stretch = "stretch"
+	case center = "center"
+	case start = "start"
+	case end = "end"
+	case flexStart = "flex-start"
+	case flexEnd = "flex-end"
+	case selfStart = "self-start"
+	case selfEnd = "self-end"
+	case baseline = "baseline"
+	case firstBaseline = "first baseline"
+	case lastBaseline = "last baseline"
+}
