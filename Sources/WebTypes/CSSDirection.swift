@@ -1,4 +1,4 @@
-import Utilities
+import EmbeddedSwiftUtilities
 
 /// CSS direction property values for text directionality
 public enum CSSDirection: String, Sendable {
