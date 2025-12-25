@@ -24,7 +24,7 @@ let package = Package(
         .target(
             name: "WebTypes",
             dependencies: [
-                .product(name: "Utilities", package: "embedded-swift-utilities")
+                .product(name: "EmbeddedSwiftUtilities", package: "embedded-swift-utilities")
             ],
             swiftSettings: [
                 .enableUpcomingFeature("BareSlashRegexLiterals"),
@@ -32,8 +32,7 @@ let package = Package(
                 .enableUpcomingFeature("ExistentialAny"),
                 .enableUpcomingFeature("ForwardTrailingClosures"),
                 .enableUpcomingFeature("ImplicitOpenExistentials"),
-                .enableUpcomingFeature("StrictConcurrency"),
-                .unsafeFlags(["-warn-concurrency"], .when(configuration: .debug)),
+                .enableUpcomingFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
