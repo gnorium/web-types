@@ -18,6 +18,11 @@ public struct CSSValue: Sendable, ExpressibleByStringLiteral, ExpressibleByInteg
 		self.value = string
 	}
 
+	@_disfavoredOverload
+	public init<T>(_ type: T) where T: CustomStringConvertible {
+		self.value = type.description
+	}
+
 	#if !os(WASI)
 	@_disfavoredOverload
 	public init(_ int: Int) {
