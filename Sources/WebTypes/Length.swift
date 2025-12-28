@@ -223,12 +223,29 @@ public func - (lhs: Length, rhs: Length) -> Length {
 	Length("\(lhs.value) - \(rhs.value)")
 }
 
+// Unary negation operator
+public prefix func - (value: Length) -> Length {
+	Length("-\(value.value)")
+}
+
+@_disfavoredOverload
 public func * (lhs: Length, rhs: Int) -> Length {
 	Length("\(lhs.value) * \(rhs)")
 }
 
+@_disfavoredOverload
+public func * (lhs: Int, rhs: Length) -> Length {
+	Length("\(lhs) * \(rhs.value)")
+}
+
+@_disfavoredOverload
 public func * (lhs: Length, rhs: Double) -> Length {
 	Length("\(lhs.value) * \(rhs)")
+}
+
+@_disfavoredOverload
+public func * (lhs: Double, rhs: Length) -> Length {
+	Length("\(lhs) * \(rhs.value)")
 }
 
 public func / (lhs: Length, rhs: Int) -> Length {

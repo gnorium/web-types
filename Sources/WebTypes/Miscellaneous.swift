@@ -12,6 +12,10 @@ public func calc(_ string: String) -> String {
 	concat("calc(", string, ")")
 }
 
+public func calc(_ length: Length) -> String {
+	concat("calc(", length.value, ")")
+}
+
 public func max(_ values: Length...) -> String {
 	var buffer: [UInt8] = []
 	buffer.append(contentsOf: "max(".utf8)
@@ -127,39 +131,7 @@ public func prefersContrast(_ scheme: CSSPrefersContrast) -> StaticString {
 	}
 }
 
-// Operators for calc() expressions
-// Operators for calc() expressions
-public func +(lhs: Length, rhs: Length) -> String {
-	concat(lhs.value, " + ", rhs.value)
-}
-
-public func -(lhs: Length, rhs: Length) -> String {
-	concat(lhs.value, " - ", rhs.value)
-}
-
-public func *(lhs: Length, rhs: Length) -> String {
-	concat(lhs.value, " * ", rhs.value)
-}
-
-#if !os(WASI)
-
-public func *(lhs: Int, rhs: Length) -> String {
-	concat("\(lhs)", " * ", rhs.value)
-}
-
-#endif
-
-#if os(WASI)
-
-public func *(lhs: Int, rhs: Length) -> String {
-	concat(intToString(lhs), " * ", rhs.value)
-}
-
-#endif
-
-public func /(lhs: Length, rhs: Length) -> String {
-	concat(lhs.value, " / ", rhs.value)
-}
+// Operators for calc() expressions are now in Length.swift
 
 public func data(_ name: String) -> String {
 	var buffer: [UInt8] = []
