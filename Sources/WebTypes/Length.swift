@@ -4,8 +4,34 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-public struct Length: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, Sendable, CustomStringConvertible {
+public struct Length: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, Sendable, CustomStringConvertible, RangeReplaceableCollection {
 	public let value: String
+
+	// RangeReplaceableCollection conformance
+	public typealias Element = Character
+	public typealias Index = String.Index
+
+	public var startIndex: String.Index { value.startIndex }
+	public var endIndex: String.Index { value.endIndex }
+
+	public func index(after i: String.Index) -> String.Index {
+		value.index(after: i)
+	}
+
+	public subscript(position: String.Index) -> Character {
+		value[position]
+	}
+
+	public init() {
+		self.value = ""
+	}
+
+	public mutating func replaceSubrange<C>(_ subrange: Range<String.Index>, with newElements: C) where C : Collection, C.Element == Character {
+		// Since value is let, we create a new instance
+		var mutableValue = value
+		mutableValue.replaceSubrange(subrange, with: newElements)
+		self = Length(mutableValue)
+	}
 
 	#if !os(WASI)
 
@@ -186,4 +212,33 @@ private func concat(_ parts: String...) -> String {
 		buffer.append(contentsOf: part.utf8)
 	}
 	return String(decoding: buffer, as: UTF8.self)
+}
+
+// Arithmetic operators for Length
+public func + (lhs: Length, rhs: Length) -> Length {
+	Length("\(lhs.value) + \(rhs.value)")
+}
+
+public func - (lhs: Length, rhs: Length) -> Length {
+	Length("\(lhs.value) - \(rhs.value)")
+}
+
+public func * (lhs: Length, rhs: Int) -> Length {
+	Length("\(lhs.value) * \(rhs)")
+}
+
+public func * (lhs: Length, rhs: Double) -> Length {
+	Length("\(lhs.value) * \(rhs)")
+}
+
+public func / (lhs: Length, rhs: Int) -> Length {
+	Length("\(lhs.value) / \(rhs)")
+}
+
+public func / (lhs: Length, rhs: Double) -> Length {
+	Length("\(lhs.value) / \(rhs)")
+}
+
+public func / (lhs: Length, rhs: Length) -> Length {
+	Length("(\(lhs.value)) / (\(rhs.value))")
 }
