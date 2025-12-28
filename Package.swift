@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "WebTypes",
+    name: "web-types",
     platforms: [
         .macOS(.v14),
         .iOS(.v17),
