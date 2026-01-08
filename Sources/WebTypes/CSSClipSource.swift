@@ -11,8 +11,8 @@ public enum CSSClipSource: Sendable {
 
 	public var value: String {
 		switch self {
-		case .url(let url):
-			return "url(\(url))"
+		case .url(let urlValue):
+			return WebTypes.url("\(urlValue)")
 		}
 	}
 }

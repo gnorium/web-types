@@ -34,8 +34,8 @@ public struct CSSMaskLayer: Sendable {
 			switch self {
 			case .none(let keyword):
 				return keyword.rawValue
-			case .url(let url):
-				return "url(\(url))"
+			case .url(let urlValue):
+				return WebTypes.url("\(urlValue)")
 			case .custom(let str):
 				return str
 			}

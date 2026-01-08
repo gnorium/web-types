@@ -5,6 +5,10 @@ public enum CSSOverflow: String, Sendable {
 	case auto = "auto"
 	case clip = "clip"
 
+	public init(_ keyword: CSSKeyword.Auto) {
+		self = .auto
+	}
+
 	public var staticRawValue: StaticString {
 		switch self {
 		case .visible: return "visible"

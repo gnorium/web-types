@@ -17,6 +17,10 @@ public enum SVGPaint: ExpressibleByStringLiteral, Sendable {
 		self = .color(.colorBase(.hex(value)))
 	}
 
+	public init(_ value: String) {
+		self.init(stringLiteral: value)
+	}
+
 	public init(_ color: CSSColor) {
 		self = .color(color)
 	}
@@ -27,11 +31,11 @@ public enum SVGPaint: ExpressibleByStringLiteral, Sendable {
 			return keyword.rawValue
 		case .color(let color):
 			return color.value
-		case .url(let url, let fallback):
+		case .url(let urlValue, let fallback):
 			if let fallback = fallback {
-				return "url(\(url)) \(fallback.value)"
+				return "\(WebTypes.url("\(urlValue)")) \(fallback.value)"
 			}
-			return "url(\(url))"
+			return WebTypes.url("\(urlValue)")
 		case .contextFill:
 			return "context-fill"
 		case .contextStroke:

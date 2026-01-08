@@ -80,6 +80,14 @@ public enum CSSFilterFunction: Sendable {
 			self.numPerc = value.value
 		}
 
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
+		}
+
 		public var value: String {
 			if let numPerc = numPerc {
 				return "brightness(\(numPerc))"
@@ -98,6 +106,14 @@ public enum CSSFilterFunction: Sendable {
 
 		public init(_ value: Percentage) {
 			self.numPerc = value.value
+		}
+
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
 		}
 
 		public var value: String {
@@ -120,6 +136,14 @@ public enum CSSFilterFunction: Sendable {
 			self.numPerc = value.value
 		}
 
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
+		}
+
 		public var value: String {
 			if let numPerc = numPerc {
 				return "grayscale(\(numPerc))"
@@ -138,6 +162,14 @@ public enum CSSFilterFunction: Sendable {
 
 		public init(_ value: Percentage) {
 			self.numPerc = value.value
+		}
+
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
 		}
 
 		public var value: String {
@@ -160,6 +192,14 @@ public enum CSSFilterFunction: Sendable {
 			self.numPerc = value.value
 		}
 
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
+		}
+
 		public var value: String {
 			if let numPerc = numPerc {
 				return "opacity(\(numPerc))"
@@ -180,6 +220,14 @@ public enum CSSFilterFunction: Sendable {
 			self.numPerc = value.value
 		}
 
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
+		}
+
 		public var value: String {
 			if let numPerc = numPerc {
 				return "sepia(\(numPerc))"
@@ -198,6 +246,14 @@ public enum CSSFilterFunction: Sendable {
 
 		public init(_ value: Percentage) {
 			self.numPerc = value.value
+		}
+
+		public init(_ value: Int) {
+			self.numPerc = "\(value)"
+		}
+
+		public init(_ value: Double) {
+			self.numPerc = "\(value)"
 		}
 
 		public var value: String {
@@ -306,6 +362,14 @@ public func brightness(_ value: Percentage) -> CSSFilterFunction {
 	.brightness(CSSFilterFunction.Brightness(value))
 }
 
+public func brightness(_ value: Int) -> CSSFilterFunction {
+	.brightness(CSSFilterFunction.Brightness(value))
+}
+
+public func brightness(_ value: Double) -> CSSFilterFunction {
+	.brightness(CSSFilterFunction.Brightness(value))
+}
+
 public func contrast(_ value: CSSNumber? = nil) -> CSSFilterFunction {
 	.contrast(CSSFilterFunction.Contrast(value))
 }
@@ -314,11 +378,27 @@ public func contrast(_ value: Percentage) -> CSSFilterFunction {
 	.contrast(CSSFilterFunction.Contrast(value))
 }
 
+public func contrast(_ value: Int) -> CSSFilterFunction {
+	.contrast(CSSFilterFunction.Contrast(value))
+}
+
+public func contrast(_ value: Double) -> CSSFilterFunction {
+	.contrast(CSSFilterFunction.Contrast(value))
+}
+
 public func grayscale(_ value: CSSNumber? = nil) -> CSSFilterFunction {
 	.grayscale(CSSFilterFunction.Grayscale(value))
 }
 
 public func grayscale(_ value: Percentage) -> CSSFilterFunction {
+	.grayscale(CSSFilterFunction.Grayscale(value))
+}
+
+public func grayscale(_ value: Int) -> CSSFilterFunction {
+	.grayscale(CSSFilterFunction.Grayscale(value))
+}
+
+public func grayscale(_ value: Double) -> CSSFilterFunction {
 	.grayscale(CSSFilterFunction.Grayscale(value))
 }
 
@@ -334,11 +414,27 @@ public func invert(_ value: Percentage) -> CSSFilterFunction {
 	.invert(CSSFilterFunction.Invert(value))
 }
 
+public func invert(_ value: Int) -> CSSFilterFunction {
+	.invert(CSSFilterFunction.Invert(value))
+}
+
+public func invert(_ value: Double) -> CSSFilterFunction {
+	.invert(CSSFilterFunction.Invert(value))
+}
+
 public func opacity(_ value: CSSNumber? = nil) -> CSSFilterFunction {
 	.opacity(CSSFilterFunction.Opacity(value))
 }
 
 public func opacity(_ value: Percentage) -> CSSFilterFunction {
+	.opacity(CSSFilterFunction.Opacity(value))
+}
+
+public func opacity(_ value: Int) -> CSSFilterFunction {
+	.opacity(CSSFilterFunction.Opacity(value))
+}
+
+public func opacity(_ value: Double) -> CSSFilterFunction {
 	.opacity(CSSFilterFunction.Opacity(value))
 }
 
@@ -350,11 +446,27 @@ public func sepia(_ value: Percentage) -> CSSFilterFunction {
 	.sepia(CSSFilterFunction.Sepia(value))
 }
 
+public func sepia(_ value: Int) -> CSSFilterFunction {
+	.sepia(CSSFilterFunction.Sepia(value))
+}
+
+public func sepia(_ value: Double) -> CSSFilterFunction {
+	.sepia(CSSFilterFunction.Sepia(value))
+}
+
 public func saturate(_ value: CSSNumber? = nil) -> CSSFilterFunction {
 	.saturate(CSSFilterFunction.Saturate(value))
 }
 
 public func saturate(_ value: Percentage) -> CSSFilterFunction {
+	.saturate(CSSFilterFunction.Saturate(value))
+}
+
+public func saturate(_ value: Int) -> CSSFilterFunction {
+	.saturate(CSSFilterFunction.Saturate(value))
+}
+
+public func saturate(_ value: Double) -> CSSFilterFunction {
 	.saturate(CSSFilterFunction.Saturate(value))
 }
 

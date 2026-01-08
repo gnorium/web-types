@@ -84,6 +84,22 @@ public func min(_ value1: Length, _ value2: String) -> String {
 	return concat("min(", value1.value, ", ", value2, ")")
 }
 
+public func clamp(_ min: Length, _ preferred: Length, _ max: Length) -> String {
+	return concat("clamp(", min.value, ", ", preferred.value, ", ", max.value, ")")
+}
+
+public func clamp(_ min: String, _ preferred: String, _ max: String) -> String {
+	return concat("clamp(", min, ", ", preferred, ", ", max, ")")
+}
+
+public func clamp(_ min: Length, _ preferred: String, _ max: Length) -> String {
+	return concat("clamp(", min.value, ", ", preferred, ", ", max.value, ")")
+}
+
+public func clamp(_ min: String, _ preferred: Length, _ max: String) -> String {
+	return concat("clamp(", min, ", ", preferred.value, ", ", max, ")")
+}
+
 #if !os(WASI)
 
 public func rect(_ top: Int, _ right: Int, _ bottom: Int, _ left: Int) -> String {

@@ -14,8 +14,8 @@ public struct CSSFilterValueList: Sendable {
 			switch self {
 			case .filterFunction(let function):
 				return function.value
-			case .url(let url):
-				return "url(\(url))"
+			case .url(let urlValue):
+				return WebTypes.url("\(urlValue)")
 			}
 		}
 	}

@@ -288,8 +288,17 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if !os(WASI)
 
-		// Legacy syntax with numbers
+		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double? = nil) {
+			if let alpha = alpha {
+				self.components = "rgb(\(r), \(g), \(b), \(alpha))"
+			} else {
+				self.components = "rgb(\(r), \(g), \(b))"
+			}
+		}
+
+		// Legacy syntax with floating-point values
+		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r), \(g), \(b), \(alpha))"
 			} else {
@@ -301,8 +310,17 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Legacy syntax with numbers
+		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double? = nil) {
+			if let alpha = alpha {
+				self.components = "rgb(\(r), \(g), \(b), \(doubleToString(alpha)))"
+			} else {
+				self.components = "rgb(\(r), \(g), \(b))"
+			}
+		}
+
+		// Legacy syntax with floating-point values
+		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r), \(g), \(b), \(doubleToString(alpha)))"
 			} else {
@@ -349,8 +367,13 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if !os(WASI)
 
-		// Legacy syntax with numbers
+		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double) {
+			self.components = "rgba(\(r), \(g), \(b), \(alpha))"
+		}
+
+		// Legacy syntax with floating-point values
+		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) {
 			self.components = "rgba(\(r), \(g), \(b), \(alpha))"
 		}
 
@@ -363,8 +386,13 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Legacy syntax with numbers
+		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double) {
+			self.components = "rgba(\(r), \(g), \(b), \(doubleToString(alpha)))"
+		}
+
+		// Legacy syntax with floating-point values
+		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) {
 			self.components = "rgba(\(r), \(g), \(b), \(doubleToString(alpha)))"
 		}
 
@@ -617,6 +645,10 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 	// <oklab()> = oklab( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct OKLAB: Sendable {
 		private let components: String
+
+		public init(from color: CSSColor, _ l: CSSOKLABComponent, _ a: CSSOKLABComponent, _ b: CSSOKLABComponent) {
+			self.components = concat("oklab(from ", color.value, " ", l.rawValue, " ", a.rawValue, " ", b.rawValue, ")")
+		}
 
 	#if !os(WASI)
 
@@ -1039,7 +1071,19 @@ public func rgb(_ r: Percentage, _ g: Percentage, _ b: Percentage, _ alpha: Doub
 	.colorBase(.colorFunction(.rgb(CSSColor.RGB(r, g, b, alpha))))
 }
 
+public func rgb(_ r: Double, _ g: Double, _ b: Double) -> CSSColor {
+	.colorBase(.colorFunction(.rgb(CSSColor.RGB(r, g, b))))
+}
+
+public func rgb(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) -> CSSColor {
+	.colorBase(.colorFunction(.rgb(CSSColor.RGB(r, g, b, alpha))))
+}
+
 public func rgba(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double) -> CSSColor {
+	.colorBase(.colorFunction(.rgba(CSSColor.RGBA(r, g, b, alpha))))
+}
+
+public func rgba(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) -> CSSColor {
 	.colorBase(.colorFunction(.rgba(CSSColor.RGBA(r, g, b, alpha))))
 }
 
@@ -1121,7 +1165,11 @@ public func oklab(_ l: Double, _ a: Double, _ b: Double) -> CSSColor {
 }
 
 public func oklab(_ l: Double, _ a: Double, _ b: Double, _ alpha: Double) -> CSSColor {
-	.colorBase(.colorFunction(.oklab(CSSColor.OKLAB(l, a, b, alpha))))
+	return .colorBase(.colorFunction(.oklab(CSSColor.OKLAB(l, a, b, alpha))))
+}
+
+public func oklab(from color: CSSColor, _ l: CSSOKLABComponent, _ a: CSSOKLABComponent, _ b: CSSOKLABComponent) -> CSSColor {
+	return .colorBase(.colorFunction(.oklab(CSSColor.OKLAB(from: color, l, a, b))))
 }
 
 // MARK: - Oklch

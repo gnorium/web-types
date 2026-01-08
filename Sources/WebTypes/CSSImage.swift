@@ -18,12 +18,12 @@ public enum CSSImage: Sendable {
 	case imageSet(ImageSet)
 	case crossFade(CrossFade)
 	case element(Element)
-	case gradient(CSSGradient)
+	case gradient(Gradient)
 
 	public var value: String {
 		switch self {
-		case .url(let url):
-			return "url(\(url))"
+		case .url(let urlValue):
+			return WebTypes.url("\(urlValue)")
 		case .imageFunc(let fn):
 			return fn.value
 		case .imageSet(let fn):
@@ -218,494 +218,525 @@ public enum CSSImage: Sendable {
 			"element(#\(id))"
 		}
 	}
-}
 
-// <gradient> =
-//   <linear-gradient()>        |
-//   <repeating-linear-gradient()>  |
-//   <radial-gradient()>        |
-//   <repeating-radial-gradient()>  |
-//   <conic-gradient()>         |
-//   <repeating-conic-gradient()>
+	// <gradient> =
+	//   <linear-gradient()>        |
+	//   <repeating-linear-gradient()>  |
+	//   <radial-gradient()>        |
+	//   <repeating-radial-gradient()>  |
+	//   <conic-gradient()>         |
+	//   <repeating-conic-gradient()>
 
-public enum CSSGradient: Sendable {
-	case linear(LinearGradient)
-	case repeatingLinear(RepeatingLinearGradient)
-	case radial(RadialGradient)
-	case repeatingRadial(RepeatingRadialGradient)
-	case conic(ConicGradient)
-	case repeatingConic(RepeatingConicGradient)
+	public enum Gradient: Sendable {
+        case linear(LinearGradient)
+        case repeatingLinear(RepeatingLinearGradient)
+        case radial(RadialGradient)
+        case repeatingRadial(RepeatingRadialGradient)
+        case conic(ConicGradient)
+        case repeatingConic(RepeatingConicGradient)
 
-	public var value: String {
-		switch self {
-		case .linear(let gradient):
-			return gradient.value
-		case .repeatingLinear(let gradient):
-			return gradient.value
-		case .radial(let gradient):
-			return gradient.value
-		case .repeatingRadial(let gradient):
-			return gradient.value
-		case .conic(let gradient):
-			return gradient.value
-		case .repeatingConic(let gradient):
-			return gradient.value
-		}
-	}
+        public var value: String {
+            switch self {
+                case .linear(let gradient):
+                    return gradient.value
+                case .repeatingLinear(let gradient):
+                    return gradient.value
+                case .radial(let gradient):
+                    return gradient.value
+                case .repeatingRadial(let gradient):
+                    return gradient.value
+                case .conic(let gradient):
+                    return gradient.value
+                case .repeatingConic(let gradient):
+                    return gradient.value
+            }
+        }
 
-	// linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )
-	public struct LinearGradient: Sendable {
-		public let direction: GradientDirection?
-		public let colorStops: [ColorStop]
+        // linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )
+        public struct LinearGradient: Sendable {
+            public let direction: GradientDirection?
+            public let colorStops: [ColorStop]
 
-		public init(direction: GradientDirection? = nil, colorStops: [ColorStop]) {
-			self.direction = direction
-			self.colorStops = colorStops
-		}
+            public init(direction: GradientDirection? = nil, colorStops: [ColorStop]) {
+                self.direction = direction
+                self.colorStops = colorStops
+            }
 
-		#if !os(WASI)
-		public var value: String {
-			var components: [String] = []
-			if let direction = direction {
-				components.append(direction.value)
-			}
-			components.append(contentsOf: colorStops.map { $0.value })
-			return "linear-gradient(\(components.joined(separator: ", ")))"
-		}
-		#endif
+            #if !os(WASI)
+            public var value: String {
+                var components: [String] = []
+                if let direction = direction {
+                    components.append(direction.value)
+                }
+                components.append(contentsOf: colorStops.map { $0.value })
+                return "linear-gradient(\(components.joined(separator: ", ")))"
+            }
+            #endif
 
-		#if os(WASI)
-		public var value: String {
-			var buffer: [UInt8] = []
-			buffer.append(contentsOf: "linear-gradient(".utf8)
-			var first = true
-			if let direction = direction {
-				buffer.append(contentsOf: direction.value.utf8)
-				first = false
-			}
-			for stop in colorStops {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: stop.value.utf8)
-				first = false
-			}
-			buffer.append(41) // ')'
-			return String(decoding: buffer, as: UTF8.self)
-		}
-		#endif
-	}
+            #if os(WASI)
+            public var value: String {
+                var buffer: [UInt8] = []
+                buffer.append(contentsOf: "linear-gradient(".utf8)
+                var first = true
+                if let direction = direction {
+                    buffer.append(contentsOf: direction.value.utf8)
+                    first = false
+                }
+                for stop in colorStops {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: stop.value.utf8)
+                    first = false
+                }
+                buffer.append(41) // ')'
+                return String(decoding: buffer, as: UTF8.self)
+            }
+            #endif
+        }
 
-	public struct RepeatingLinearGradient: Sendable {
-		public let direction: GradientDirection?
-		public let colorStops: [ColorStop]
+        public struct RepeatingLinearGradient: Sendable {
+            public let direction: GradientDirection?
+            public let colorStops: [ColorStop]
 
-		public init(direction: GradientDirection? = nil, colorStops: [ColorStop]) {
-			self.direction = direction
-			self.colorStops = colorStops
-		}
+            public init(direction: GradientDirection? = nil, colorStops: [ColorStop]) {
+                self.direction = direction
+                self.colorStops = colorStops
+            }
 
-		#if !os(WASI)
-		public var value: String {
-			var components: [String] = []
-			if let direction = direction {
-				components.append(direction.value)
-			}
-			components.append(contentsOf: colorStops.map { $0.value })
-			return "repeating-linear-gradient(\(components.joined(separator: ", ")))"
-		}
-		#endif
+            #if !os(WASI)
+            public var value: String {
+                var components: [String] = []
+                if let direction = direction {
+                    components.append(direction.value)
+                }
+                components.append(contentsOf: colorStops.map { $0.value })
+                return "repeating-linear-gradient(\(components.joined(separator: ", ")))"
+            }
+            #endif
 
-		#if os(WASI)
-		public var value: String {
-			var buffer: [UInt8] = []
-			buffer.append(contentsOf: "repeating-linear-gradient(".utf8)
-			var first = true
-			if let direction = direction {
-				buffer.append(contentsOf: direction.value.utf8)
-				first = false
-			}
-			for stop in colorStops {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: stop.value.utf8)
-				first = false
-			}
-			buffer.append(41) // ')'
-			return String(decoding: buffer, as: UTF8.self)
-		}
-		#endif
-	}
+            #if os(WASI)
+            public var value: String {
+                var buffer: [UInt8] = []
+                buffer.append(contentsOf: "repeating-linear-gradient(".utf8)
+                var first = true
+                if let direction = direction {
+                    buffer.append(contentsOf: direction.value.utf8)
+                    first = false
+                }
+                for stop in colorStops {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: stop.value.utf8)
+                    first = false
+                }
+                buffer.append(41) // ')'
+                return String(decoding: buffer, as: UTF8.self)
+            }
+            #endif
+        }
 
-	// radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )
-	public struct RadialGradient: Sendable {
-		public let shape: RadialShape?
-		public let size: RadialSize?
-		public let position: CSSMaskLayer.Position?
-		public let colorStops: [ColorStop]
+        // radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )
+        public struct RadialGradient: Sendable {
+            public let shape: RadialShape?
+            public let size: RadialSize?
+            public let position: CSSMaskLayer.Position?
+            public let colorStops: [ColorStop]
 
-		public init(shape: RadialShape? = nil, size: RadialSize? = nil, position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
-			self.shape = shape
-			self.size = size
-			self.position = position
-			self.colorStops = colorStops
-		}
+            public init(shape: RadialShape? = nil, size: RadialSize? = nil, position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
+                self.shape = shape
+                self.size = size
+                self.position = position
+                self.colorStops = colorStops
+            }
 
-		#if !os(WASI)
-		public var value: String {
-			var components: [String] = []
-			var shapeAndSize: [String] = []
-			if let shape = shape {
-				shapeAndSize.append(shape.rawValue)
-			}
-			if let size = size {
-				shapeAndSize.append(size.value)
-			}
-			if !shapeAndSize.isEmpty {
-				components.append(shapeAndSize.joined(separator: " "))
-			}
-			if let position = position {
-				components.append("at \(position.value)")
-			}
-			components.append(contentsOf: colorStops.map { $0.value })
-			return "radial-gradient(\(components.joined(separator: ", ")))"
-		}
-		#endif
+            #if !os(WASI)
+            public var value: String {
+                var components: [String] = []
+                var shapeAndSize: [String] = []
+                if let shape = shape {
+                    shapeAndSize.append(shape.rawValue)
+                }
+                if let size = size {
+                    shapeAndSize.append(size.value)
+                }
+                if !shapeAndSize.isEmpty {
+                    components.append(shapeAndSize.joined(separator: " "))
+                }
+                if let position = position {
+                    components.append("at \(position.value)")
+                }
+                components.append(contentsOf: colorStops.map { $0.value })
+                return "radial-gradient(\(components.joined(separator: ", ")))"
+            }
+            #endif
 
-		#if os(WASI)
-		public var value: String {
-			var buffer: [UInt8] = []
-			buffer.append(contentsOf: "radial-gradient(".utf8)
-			var first = true
+            #if os(WASI)
+            public var value: String {
+                var buffer: [UInt8] = []
+                buffer.append(contentsOf: "radial-gradient(".utf8)
+                var first = true
 
-			// Handle shape and size
-			if let shape = shape {
-				buffer.append(contentsOf: shape.rawValue.utf8)
-				first = false
-			}
-			if let size = size {
-				if !first {
-					buffer.append(32) // space
-				}
-				buffer.append(contentsOf: size.value.utf8)
-				first = false
-			}
+                // Handle shape and size
+                if let shape = shape {
+                    buffer.append(contentsOf: shape.rawValue.utf8)
+                    first = false
+                }
+                if let size = size {
+                    if !first {
+                        buffer.append(32) // space
+                    }
+                    buffer.append(contentsOf: size.value.utf8)
+                    first = false
+                }
 
-			// Handle position
-			if let position = position {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: "at ".utf8)
-				buffer.append(contentsOf: position.value.utf8)
-				first = false
-			}
+                // Handle position
+                if let position = position {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: "at ".utf8)
+                    buffer.append(contentsOf: position.value.utf8)
+                    first = false
+                }
 
-			// Handle color stops
-			for stop in colorStops {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: stop.value.utf8)
-				first = false
-			}
+                // Handle color stops
+                for stop in colorStops {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: stop.value.utf8)
+                    first = false
+                }
 
-			buffer.append(41) // ')'
-			return String(decoding: buffer, as: UTF8.self)
-		}
-		#endif
-	}
+                buffer.append(41) // ')'
+                return String(decoding: buffer, as: UTF8.self)
+            }
+            #endif
+        }
 
-	public struct RepeatingRadialGradient: Sendable {
-		public let shape: RadialShape?
-		public let size: RadialSize?
-		public let position: CSSMaskLayer.Position?
-		public let colorStops: [ColorStop]
+        public struct RepeatingRadialGradient: Sendable {
+            public let shape: RadialShape?
+            public let size: RadialSize?
+            public let position: CSSMaskLayer.Position?
+            public let colorStops: [ColorStop]
 
-		public init(shape: RadialShape? = nil, size: RadialSize? = nil, position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
-			self.shape = shape
-			self.size = size
-			self.position = position
-			self.colorStops = colorStops
-		}
+            public init(shape: RadialShape? = nil, size: RadialSize? = nil, position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
+                self.shape = shape
+                self.size = size
+                self.position = position
+                self.colorStops = colorStops
+            }
 
-		#if !os(WASI)
-		public var value: String {
-			var components: [String] = []
-			var shapeAndSize: [String] = []
-			if let shape = shape {
-				shapeAndSize.append(shape.rawValue)
-			}
-			if let size = size {
-				shapeAndSize.append(size.value)
-			}
-			if !shapeAndSize.isEmpty {
-				components.append(shapeAndSize.joined(separator: " "))
-			}
-			if let position = position {
-				components.append("at \(position.value)")
-			}
-			components.append(contentsOf: colorStops.map { $0.value })
-			return "repeating-radial-gradient(\(components.joined(separator: ", ")))"
-		}
-		#endif
+            #if !os(WASI)
+            public var value: String {
+                var components: [String] = []
+                var shapeAndSize: [String] = []
+                if let shape = shape {
+                    shapeAndSize.append(shape.rawValue)
+                }
+                if let size = size {
+                    shapeAndSize.append(size.value)
+                }
+                if !shapeAndSize.isEmpty {
+                    components.append(shapeAndSize.joined(separator: " "))
+                }
+                if let position = position {
+                    components.append("at \(position.value)")
+                }
+                components.append(contentsOf: colorStops.map { $0.value })
+                return "repeating-radial-gradient(\(components.joined(separator: ", ")))"
+            }
+            #endif
 
-		#if os(WASI)
-		public var value: String {
-			var buffer: [UInt8] = []
-			buffer.append(contentsOf: "repeating-radial-gradient(".utf8)
-			var first = true
+            #if os(WASI)
+            public var value: String {
+                var buffer: [UInt8] = []
+                buffer.append(contentsOf: "repeating-radial-gradient(".utf8)
+                var first = true
 
-			// Handle shape and size
-			if let shape = shape {
-				buffer.append(contentsOf: shape.rawValue.utf8)
-				first = false
-			}
-			if let size = size {
-				if !first {
-					buffer.append(32) // space
-				}
-				buffer.append(contentsOf: size.value.utf8)
-				first = false
-			}
+                // Handle shape and size
+                if let shape = shape {
+                    buffer.append(contentsOf: shape.rawValue.utf8)
+                    first = false
+                }
+                if let size = size {
+                    if !first {
+                        buffer.append(32) // space
+                    }
+                    buffer.append(contentsOf: size.value.utf8)
+                    first = false
+                }
 
-			// Handle position
-			if let position = position {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: "at ".utf8)
-				buffer.append(contentsOf: position.value.utf8)
-				first = false
-			}
+                // Handle position
+                if let position = position {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: "at ".utf8)
+                    buffer.append(contentsOf: position.value.utf8)
+                    first = false
+                }
 
-			// Handle color stops
-			for stop in colorStops {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: stop.value.utf8)
-				first = false
-			}
+                // Handle color stops
+                for stop in colorStops {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: stop.value.utf8)
+                    first = false
+                }
 
-			buffer.append(41) // ')'
-			return String(decoding: buffer, as: UTF8.self)
-		}
-		#endif
-	}
+                buffer.append(41) // ')'
+                return String(decoding: buffer, as: UTF8.self)
+            }
+            #endif
+        }
 
-	// conic-gradient( [ from <angle> ]? [ at <position> ]? , <angular-color-stop-list> )
-	public struct ConicGradient: Sendable {
-		public let angle: CSSAngle?
-		public let position: CSSMaskLayer.Position?
-		public let colorStops: [ColorStop]
+        // conic-gradient( [ from <angle> ]? [ at <position> ]? , <angular-color-stop-list> )
+        public struct ConicGradient: Sendable {
+            public let angle: CSSAngle?
+            public let position: CSSMaskLayer.Position?
+            public let colorStops: [ColorStop]
 
-		public init(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
-			self.angle = angle
-			self.position = position
-			self.colorStops = colorStops
-		}
+            public init(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
+                self.angle = angle
+                self.position = position
+                self.colorStops = colorStops
+            }
 
-		#if !os(WASI)
-		public var value: String {
-			var components: [String] = []
-			if let angle = angle {
-				components.append("from \(angle.value)")
-			}
-			if let position = position {
-				components.append("at \(position.value)")
-			}
-			components.append(contentsOf: colorStops.map { $0.value })
-			return "conic-gradient(\(components.joined(separator: ", ")))"
-		}
-		#endif
+            #if !os(WASI)
+            public var value: String {
+                var components: [String] = []
+                if let angle = angle {
+                    components.append("from \(angle.value)")
+                }
+                if let position = position {
+                    components.append("at \(position.value)")
+                }
+                components.append(contentsOf: colorStops.map { $0.value })
+                return "conic-gradient(\(components.joined(separator: ", ")))"
+            }
+            #endif
 
-		#if os(WASI)
-		public var value: String {
-			var buffer: [UInt8] = []
-			buffer.append(contentsOf: "conic-gradient(".utf8)
-			var first = true
+            #if os(WASI)
+            public var value: String {
+                var buffer: [UInt8] = []
+                buffer.append(contentsOf: "conic-gradient(".utf8)
+                var first = true
 
-			if let angle = angle {
-				buffer.append(contentsOf: "from ".utf8)
-				buffer.append(contentsOf: angle.value.utf8)
-				first = false
-			}
+                if let angle = angle {
+                    buffer.append(contentsOf: "from ".utf8)
+                    buffer.append(contentsOf: angle.value.utf8)
+                    first = false
+                }
 
-			if let position = position {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: "at ".utf8)
-				buffer.append(contentsOf: position.value.utf8)
-				first = false
-			}
+                if let position = position {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: "at ".utf8)
+                    buffer.append(contentsOf: position.value.utf8)
+                    first = false
+                }
 
-			for stop in colorStops {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: stop.value.utf8)
-				first = false
-			}
+                for stop in colorStops {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: stop.value.utf8)
+                    first = false
+                }
 
-			buffer.append(41) // ')'
-			return String(decoding: buffer, as: UTF8.self)
-		}
-		#endif
-	}
+                buffer.append(41) // ')'
+                return String(decoding: buffer, as: UTF8.self)
+            }
+            #endif
+        }
 
-	public struct RepeatingConicGradient: Sendable {
-		public let angle: CSSAngle?
-		public let position: CSSMaskLayer.Position?
-		public let colorStops: [ColorStop]
+        public struct RepeatingConicGradient: Sendable {
+            public let angle: CSSAngle?
+            public let position: CSSMaskLayer.Position?
+            public let colorStops: [ColorStop]
 
-		public init(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
-			self.angle = angle
-			self.position = position
-			self.colorStops = colorStops
-		}
+            public init(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, colorStops: [ColorStop]) {
+                self.angle = angle
+                self.position = position
+                self.colorStops = colorStops
+            }
 
-		#if !os(WASI)
-		public var value: String {
-			var components: [String] = []
-			if let angle = angle {
-				components.append("from \(angle.value)")
-			}
-			if let position = position {
-				components.append("at \(position.value)")
-			}
-			components.append(contentsOf: colorStops.map { $0.value })
-			return "repeating-conic-gradient(\(components.joined(separator: ", ")))"
-		}
-		#endif
+            #if !os(WASI)
+            public var value: String {
+                var components: [String] = []
+                if let angle = angle {
+                    components.append("from \(angle.value)")
+                }
+                if let position = position {
+                    components.append("at \(position.value)")
+                }
+                components.append(contentsOf: colorStops.map { $0.value })
+                return "repeating-conic-gradient(\(components.joined(separator: ", ")))"
+            }
+            #endif
 
-		#if os(WASI)
-		public var value: String {
-			var buffer: [UInt8] = []
-			buffer.append(contentsOf: "repeating-conic-gradient(".utf8)
-			var first = true
+            #if os(WASI)
+            public var value: String {
+                var buffer: [UInt8] = []
+                buffer.append(contentsOf: "repeating-conic-gradient(".utf8)
+                var first = true
 
-			if let angle = angle {
-				buffer.append(contentsOf: "from ".utf8)
-				buffer.append(contentsOf: angle.value.utf8)
-				first = false
-			}
+                if let angle = angle {
+                    buffer.append(contentsOf: "from ".utf8)
+                    buffer.append(contentsOf: angle.value.utf8)
+                    first = false
+                }
 
-			if let position = position {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: "at ".utf8)
-				buffer.append(contentsOf: position.value.utf8)
-				first = false
-			}
+                if let position = position {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: "at ".utf8)
+                    buffer.append(contentsOf: position.value.utf8)
+                    first = false
+                }
 
-			for stop in colorStops {
-				if !first {
-					buffer.append(contentsOf: ", ".utf8)
-				}
-				buffer.append(contentsOf: stop.value.utf8)
-				first = false
-			}
+                for stop in colorStops {
+                    if !first {
+                        buffer.append(contentsOf: ", ".utf8)
+                    }
+                    buffer.append(contentsOf: stop.value.utf8)
+                    first = false
+                }
 
-			buffer.append(41) // ')'
-			return String(decoding: buffer, as: UTF8.self)
-		}
-		#endif
-	}
+                buffer.append(41) // ')'
+                return String(decoding: buffer, as: UTF8.self)
+            }
+            #endif
+        }
 
-	// Gradient direction for linear gradients
-	public enum GradientDirection: Sendable {
-		case angle(CSSAngle)
-		case toSide(CSSGradientDirection)
+        // Gradient direction for linear gradients
+        public enum GradientDirection: Sendable {
+            case angle(CSSAngle)
+            case toSide(CSSGradientDirection)
 
-		public var value: String {
-			switch self {
-			case .angle(let angle):
-				return angle.value
-			case .toSide(let side):
-				return side.rawValue
-			}
-		}
-	}
+            public var value: String {
+                switch self {
+                case .angle(let angle):
+                    return angle.value
+                case .toSide(let side):
+                    return side.rawValue
+                }
+            }
+        }
 
-	// Radial gradient shape
-	public enum RadialShape: String, Sendable {
-		case circle = "circle"
-		case ellipse = "ellipse"
-	}
+        // Radial gradient shape
+        public enum RadialShape: String, Sendable {
+            case circle = "circle"
+            case ellipse = "ellipse"
+        }
 
-	// Radial gradient size
-	public enum RadialSize: Sendable {
-		case closestSide
-		case closestCorner
-		case farthestSide
-		case farthestCorner
-		case length(Length)
-		case twoLengths(Length, Length)
+        // Radial gradient size
+        public enum RadialSize: Sendable {
+            case closestSide
+            case closestCorner
+            case farthestSide
+            case farthestCorner
+            case length(Length)
+            case twoLengths(Length, Length)
 
-		public var value: String {
-			switch self {
-			case .closestSide:
-				return "closest-side"
-			case .closestCorner:
-				return "closest-corner"
-			case .farthestSide:
-				return "farthest-side"
-			case .farthestCorner:
-				return "farthest-corner"
-			case .length(let length):
-				return length.value
-			case .twoLengths(let l1, let l2):
-				return "\(l1.value) \(l2.value)"
-			}
-		}		
-	}
+            public var value: String {
+                switch self {
+                case .closestSide:
+                    return "closest-side"
+                case .closestCorner:
+                    return "closest-corner"
+                case .farthestSide:
+                    return "farthest-side"
+                case .farthestCorner:
+                    return "farthest-corner"
+                case .length(let length):
+                    return length.value
+                case .twoLengths(let l1, let l2):
+                    return "\(l1.value) \(l2.value)"
+                }
+            }		
+        }
 
-	// Color stop for gradients
-	public struct ColorStop: Sendable {
-		public let color: CSSColor
-		public let position: Length?
+        // Color stop for gradients
+        public struct ColorStop: Sendable, ExpressibleByStringLiteral {
+            public let color: CSSColor
+            public let position: Length?
 
-		public init(_ color: CSSColor, _ position: Length? = nil) {
-			self.color = color
-			self.position = position
-		}
+            public init(_ color: CSSColor, _ position: Length? = nil) {
+                self.color = color
+                self.position = position
+            }
 
-		public init(_ color: CSSColor, _ position: Percentage?) {
-			self.color = color
-			self.position = position.map { Length($0.value) }
-		}
+            public init(_ color: CSSColor, _ position: Percentage?) {
+                self.color = color
+                self.position = position.map { Length($0.value) }
+            }
 
-		public var value: String {
-			if let position = position {
-				return "\(color.value) \(position.value)"
-			}
-			return color.value
-		}
+            // Allow CSSColor to be used directly as ColorStop
+            public init(stringLiteral value: String) {
+                self.color = CSSColor(stringLiteral: value)
+                self.position = nil
+            }
+
+            public var value: String {
+                if let position = position {
+                    return "\(color.value) \(position.value)"
+                }
+                return color.value
+            }
+        }
 	}
 }
 
 // MARK: - Convenience helper functions
 
 // Linear gradient
-
-
-
+public func linearGradient(direction: CSSImage.Gradient.GradientDirection? = nil, _ colorStops: CSSImage.Gradient.ColorStop...) -> CSSImage.Gradient {
+	.linear(CSSImage.Gradient.LinearGradient(direction: direction, colorStops: colorStops))
+}
 
 // Radial gradient
+public func radialGradient(shape: CSSImage.Gradient.RadialShape? = nil, size: CSSImage.Gradient.RadialSize? = nil, at position: CSSMaskLayer.Position? = nil, _ colorStops: CSSImage.Gradient.ColorStop...) -> CSSImage.Gradient {
+	.radial(CSSImage.Gradient.RadialGradient(shape: shape, size: size, position: position, colorStops: colorStops))
+}
 
+// Conic gradient - 2 stops
+public func conicGradient(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, _ stops: (CSSColor, CSSColor)) -> CSSImage.Gradient {
+	.conic(CSSImage.Gradient.ConicGradient(from: angle, at: position, colorStops: [
+		CSSImage.Gradient.ColorStop(stops.0),
+		CSSImage.Gradient.ColorStop(stops.1)
+	]))
+}
 
+// Conic gradient - 3 stops
+public func conicGradient(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, _ stops: (CSSColor, CSSColor, CSSColor)) -> CSSImage.Gradient {
+	.conic(CSSImage.Gradient.ConicGradient(from: angle, at: position, colorStops: [
+		CSSImage.Gradient.ColorStop(stops.0),
+		CSSImage.Gradient.ColorStop(stops.1),
+		CSSImage.Gradient.ColorStop(stops.2)
+	]))
+}
 
-// Conic gradient
+// Conic gradient - 4 stops
+public func conicGradient(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, _ stops: (CSSColor, CSSColor, CSSColor, CSSColor)) -> CSSImage.Gradient {
+	.conic(CSSImage.Gradient.ConicGradient(from: angle, at: position, colorStops: [
+		CSSImage.Gradient.ColorStop(stops.0),
+		CSSImage.Gradient.ColorStop(stops.1),
+		CSSImage.Gradient.ColorStop(stops.2),
+		CSSImage.Gradient.ColorStop(stops.3)
+	]))
+}
 
-
-
-// Color stop helper
-
-
-
-// Gradient direction helpers
+// Conic gradient - with positioned stops (color, angle pairs)
+public func conicGradient(from angle: CSSAngle? = nil, at position: CSSMaskLayer.Position? = nil, _ stops: (CSSColor, CSSAngle)...) -> CSSImage.Gradient {
+	.conic(CSSImage.Gradient.ConicGradient(from: angle, at: position, colorStops: stops.map {
+		CSSImage.Gradient.ColorStop($0.0, Length($0.1.value))
+	}))
+}
 

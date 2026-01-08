@@ -25,6 +25,10 @@ public struct CSSBorder: ExpressibleByStringLiteral, Sendable {
 		self.value = String(decoding: buffer, as: UTF8.self)
 	}
 
+	public static var none: CSSBorder {
+		CSSBorder(style: LineStyle.none)
+	}
+
 	public enum LineWidth: ExpressibleByStringLiteral, Sendable {
 		case length(Length)
 		case thin

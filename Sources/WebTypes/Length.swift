@@ -92,6 +92,14 @@ public func rem(_ int: Int) -> Length {
 	Length("\(int)rem")
 }
 
+public func pt(_ int: Int) -> Length {
+	Length("\(int)pt")
+}
+
+public func pt(_ double: Double) -> Length {
+	Length("\(double)pt")
+}
+
 public func rem(_ double: Double) -> Length {
 	Length("\(double)rem")
 }

@@ -4,6 +4,14 @@ public enum CSSUserSelect: String, Sendable {
 	case text = "text"
 	case contain = "contain"
 
+	public init(_ keyword: CSSKeyword.None) {
+		self = .none
+	}
+
+	public init(_ keyword: CSSKeyword.Auto) {
+		self = .auto
+	}
+
 	public var staticRawValue: StaticString {
 		switch self {
 		case .none: return "none"
