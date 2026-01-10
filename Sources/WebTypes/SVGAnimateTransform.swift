@@ -1,5 +1,5 @@
 public enum SVGAnimateTransform {
-	public enum `Type`: String {
+	public enum `Type`: String, Sendable {
 		case translate
 		case scale
 		case rotate

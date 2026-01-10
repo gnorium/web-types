@@ -697,13 +697,17 @@ public enum CSSImage: Sendable {
 // MARK: - Convenience helper functions
 
 // Linear gradient
-public func linearGradient(direction: CSSImage.Gradient.GradientDirection? = nil, _ colorStops: CSSImage.Gradient.ColorStop...) -> CSSImage.Gradient {
-	.linear(CSSImage.Gradient.LinearGradient(direction: direction, colorStops: colorStops))
+public func linearGradient(direction: CSSImage.Gradient.GradientDirection? = nil, _ first: CSSImage.Gradient.ColorStop, _ rest: CSSImage.Gradient.ColorStop...) -> CSSImage.Gradient {
+	var stops = [first]
+	stops.append(contentsOf: rest)
+	return .linear(CSSImage.Gradient.LinearGradient(direction: direction, colorStops: stops))
 }
 
 // Radial gradient
-public func radialGradient(shape: CSSImage.Gradient.RadialShape? = nil, size: CSSImage.Gradient.RadialSize? = nil, at position: CSSMaskLayer.Position? = nil, _ colorStops: CSSImage.Gradient.ColorStop...) -> CSSImage.Gradient {
-	.radial(CSSImage.Gradient.RadialGradient(shape: shape, size: size, position: position, colorStops: colorStops))
+public func radialGradient(shape: CSSImage.Gradient.RadialShape? = nil, size: CSSImage.Gradient.RadialSize? = nil, at position: CSSMaskLayer.Position? = nil, _ first: CSSImage.Gradient.ColorStop, _ rest: CSSImage.Gradient.ColorStop...) -> CSSImage.Gradient {
+	var stops = [first]
+	stops.append(contentsOf: rest)
+	return .radial(CSSImage.Gradient.RadialGradient(shape: shape, size: size, position: position, colorStops: stops))
 }
 
 // Conic gradient - 2 stops
