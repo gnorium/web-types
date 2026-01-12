@@ -23,6 +23,9 @@ public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
 	case boxShadow
 	case fontSize
 	case lineHeight
+	case fill
+	case stroke
+	case strokeWidth
 
 	public init(_ string: String) {
 		self = .customIdent(string)
@@ -76,6 +79,12 @@ public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
 			return "font-size"
 		case .lineHeight:
 			return "line-height"
+		case .fill:
+			return "fill"
+		case .stroke:
+			return "stroke"
+		case .strokeWidth:
+			return "stroke-width"
 		}
 	}
 
@@ -102,6 +111,9 @@ public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
         case .boxShadow: return "box-shadow"
         case .fontSize: return "font-size"
         case .lineHeight: return "line-height"
+        case .fill: return "fill"
+        case .stroke: return "stroke"
+        case .strokeWidth: return "stroke-width"
         }
     }
 }
