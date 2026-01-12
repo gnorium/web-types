@@ -7,6 +7,10 @@ public enum SVGAttributeName: String, Sendable {
 	case strokeWidth = "stroke-width"
 	case x = "x"
 	case y = "y"
+	case x1 = "x1"
+	case y1 = "y1"
+	case x2 = "x2"
+	case y2 = "y2"
 	case width = "width"
 	case height = "height"
 	case opacity = "opacity"
@@ -17,4 +21,5 @@ public enum SVGAttributeName: String, Sendable {
 	case r = "r"
 	case points = "points"
 	case visibility = "visibility"
+	case offset = "offset"
 }

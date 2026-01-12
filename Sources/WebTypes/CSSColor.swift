@@ -1238,34 +1238,112 @@ public func lightDark(_ light: CSSColor, _ dark: CSSColor) -> CSSColor {
 	.lightDark(CSSColor.LightDark(light, dark))
 }
 
-// colorMix syntax: colorMix(.inSrgb, .red, (.blue, perc(50)))
-public func colorMix(_ interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: (CSSColor, Percentage)) -> CSSColor {
+// colorMix syntax: colorMix(in: .oklab, .red, (.blue, perc(50)))
+public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: (CSSColor, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1, nil, color2.0, color2.1)))
 }
 
-// colorMix with transparent keyword in tuple: colorMix(.inSrgb, .red, (.transparent, perc(50)))
-public func colorMix(_ interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+// colorMix with transparent keyword in tuple
+public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1, nil, CSSColor(color2.0), color2.1)))
 }
 
-// colorMix with both percentages: colorMix(.inSrgb, (.red, perc(50)), (.blue, perc(50)))
-public func colorMix(_ interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+// colorMix with both percentages
+public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1.0, color1.1, color2.0, color2.1)))
 }
 
 // colorMix with transparent in second tuple
-public func colorMix(_ interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1.0, color1.1, CSSColor(color2.0), color2.1)))
 }
 
 // colorMix with transparent in first tuple
-public func colorMix(_ interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSKeyword.Transparent, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSKeyword.Transparent, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, CSSColor(color1.0), color1.1, color2.0, color2.1)))
 }
 
-// colorMix without percentages: colorMix(.inSrgb, .red, .blue)
-public func colorMix(_ interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: CSSColor) -> CSSColor {
+// colorMix without percentages
+public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: CSSColor) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1, nil, color2, nil)))
+}
+
+// MARK: - Rectangular colorMix overloads
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.RectangularColorSpace, _ color1: CSSColor, _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .rectangular(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.RectangularColorSpace, _ color1: CSSColor, _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+	colorMix(in: .rectangular(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.RectangularColorSpace, _ color1: (CSSColor, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .rectangular(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.RectangularColorSpace, _ color1: (CSSColor, Percentage), _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+	colorMix(in: .rectangular(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.RectangularColorSpace, _ color1: (CSSKeyword.Transparent, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .rectangular(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.RectangularColorSpace, _ color1: CSSColor, _ color2: CSSColor) -> CSSColor {
+	colorMix(in: .rectangular(colorSpace), color1, color2)
+}
+
+// MARK: - Polar colorMix overloads
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, _ color1: CSSColor, _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, _ color1: CSSColor, _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, _ color1: (CSSColor, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, _ color1: (CSSColor, Percentage), _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, _ color1: (CSSKeyword.Transparent, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, _ color1: CSSColor, _ color2: CSSColor) -> CSSColor {
+	colorMix(in: .polar(colorSpace), color1, color2)
+}
+
+// MARK: - Polar colorMix with hue interpolation
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, hue: CSSColorInterpolationMethod.HueInterpolationMethod, _ color1: CSSColor, _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace, hue), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, hue: CSSColorInterpolationMethod.HueInterpolationMethod, _ color1: CSSColor, _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace, hue), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, hue: CSSColorInterpolationMethod.HueInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace, hue), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, hue: CSSColorInterpolationMethod.HueInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace, hue), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, hue: CSSColorInterpolationMethod.HueInterpolationMethod, _ color1: (CSSKeyword.Transparent, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
+	colorMix(in: .polar(colorSpace, hue), color1, color2)
+}
+
+public func colorMix(in colorSpace: CSSColorInterpolationMethod.PolarColorSpace, hue: CSSColorInterpolationMethod.HueInterpolationMethod, _ color1: CSSColor, _ color2: CSSColor) -> CSSColor {
+	colorMix(in: .polar(colorSpace, hue), color1, color2)
 }
 
 public func deviceCmyk(_ c: Double, _ m: Double, _ y: Double, _ k: Double) -> CSSColor {

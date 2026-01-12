@@ -59,6 +59,13 @@ public struct CSSMaskLayer: Sendable {
 			}
 		}
 
+		// Convenience shortcuts
+		public static var center: Position { .one(.keyword(.center)) }
+		public static var top: Position { .one(.keyword(.top)) }
+		public static var bottom: Position { .one(.keyword(.bottom)) }
+		public static var left: Position { .one(.keyword(.left)) }
+		public static var right: Position { .one(.keyword(.right)) }
+
 		// <position-one> = left | center | right | top | bottom | x-start | x-end | y-start | y-end | block-start | block-end | inline-start | inline-end | <length-percentage>
 		public enum PositionOne: Sendable {
 			case keyword(PositionKeyword)
