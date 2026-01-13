@@ -6,4 +6,3 @@ public enum CSSTextAlign: String, Sendable {
 	case start = "start"
 	case end = "end"
 }
-

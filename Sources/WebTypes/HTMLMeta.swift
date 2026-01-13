@@ -9,6 +9,7 @@ import EmbeddedSwiftUtilities
 public enum HTMLMeta {
 
 	public enum CharSet: String {
+        case utf8 = "utf-8"
 		case UTF8 = "UTF-8"
 		case ISO88591 = "ISO-8859-1"
 		case Windows1252 = "Windows-1252"

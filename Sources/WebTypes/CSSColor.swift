@@ -962,7 +962,7 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			var components: [String] = []
 
 			if let method = interpolationMethod {
-				components.append(concat("in ", method))
+				components.append(method)
 			}
 
 			var color1Str = color1.value
