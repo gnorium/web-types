@@ -128,6 +128,14 @@ public func fr(_ double: Double) -> Length {
 	Length("\(double)fr")
 }
 
+public func ch(_ int: Int) -> Length {
+	Length("\(int)ch")
+}
+
+public func ch(_ double: Double) -> Length {
+	Length("\(double)ch")
+}
+
 #endif
 
 #if os(WASI)
@@ -178,6 +186,14 @@ public func fr(_ int: Int) -> Length {
 
 public func fr(_ double: Double) -> Length {
 	Length(concat(doubleToString(double), "fr"))
+}
+
+public func ch(_ int: Int) -> Length {
+	Length(concat(intToString(int), "ch"))
+}
+
+public func ch(_ double: Double) -> Length {
+	Length(concat(doubleToString(double), "ch"))
 }
 
 #endif
