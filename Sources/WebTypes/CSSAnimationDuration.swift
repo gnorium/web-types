@@ -11,4 +11,7 @@ public enum CSSAnimationDuration: Sendable {
 			return time.value
 		}
 	}
+	public init(_ time: CSSTime) {
+		self = .time(time)
+	}
 }

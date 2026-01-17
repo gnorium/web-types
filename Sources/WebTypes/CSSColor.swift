@@ -1083,6 +1083,10 @@ public func rgba(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double) -> CSSColor {
 	.colorBase(.colorFunction(.rgba(CSSColor.RGBA(r, g, b, alpha))))
 }
 
+public func rgba(_ components: (Int, Int, Int), _ alpha: Double) -> CSSColor {
+	.colorBase(.colorFunction(.rgba(CSSColor.RGBA(components.0, components.1, components.2, alpha))))
+}
+
 public func rgba(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) -> CSSColor {
 	.colorBase(.colorFunction(.rgba(CSSColor.RGBA(r, g, b, alpha))))
 }
@@ -1516,12 +1520,4 @@ public extension CSSColor {
 	static var wheat: CSSColor { .colorBase(.namedColor(.wheat)) }
 	static var whiteSmoke: CSSColor { .colorBase(.namedColor(.whiteSmoke)) }
 	static var yellowGreen: CSSColor { .colorBase(.namedColor(.yellowGreen)) }
-}
-
-private func concat(_ parts: String...) -> String {
-	var buffer: [UInt8] = []
-	for part in parts {
-		buffer.append(contentsOf: part.utf8)
-	}
-	return String(decoding: buffer, as: UTF8.self)
 }

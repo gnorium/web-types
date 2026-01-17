@@ -48,10 +48,3 @@ public func perc(_ value: Int) -> Percentage {
 	Percentage(value)
 }
 
-private func concat(_ parts: String...) -> String {
-	var buffer: [UInt8] = []
-	for part in parts {
-		buffer.append(contentsOf: part.utf8)
-	}
-	return String(decoding: buffer, as: UTF8.self)
-}

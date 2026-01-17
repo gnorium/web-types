@@ -26,6 +26,7 @@ public enum CSSFilterFunction: Sendable {
 	case opacity(Opacity)
 	case sepia(Sepia)
 	case saturate(Saturate)
+	case url(String)
 
 	public var value: String {
 		switch self {
@@ -49,6 +50,8 @@ public enum CSSFilterFunction: Sendable {
 			return filter.value
 		case .saturate(let filter):
 			return filter.value
+		case .url(let value):
+			return "url(\(value))"
 		}
 	}
 
@@ -468,6 +471,10 @@ public func saturate(_ value: Int) -> CSSFilterFunction {
 
 public func saturate(_ value: Double) -> CSSFilterFunction {
 	.saturate(CSSFilterFunction.Saturate(value))
+}
+
+public func url(_ value: String) -> CSSFilterFunction {
+	.url(value)
 }
 
 public func dropShadow(_ color: CSSColor, _ offsetX: Length, _ offsetY: Length, _ blurRadius: Length? = nil) -> CSSFilterFunction {

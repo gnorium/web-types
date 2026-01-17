@@ -710,6 +710,20 @@ public func linearGradient(to direction: CSSGradientDirection, _ first: CSSColor
 	return .linear(CSSImage.Gradient.LinearGradient(direction: .toSide(direction), colorStops: stops))
 }
 
+// Linear gradient with angle
+public func linearGradient(_ angle: CSSAngle, _ first: (CSSColor, Percentage), _ rest: (CSSColor, Percentage)...) -> CSSImage.Gradient {
+	var stops = [CSSImage.Gradient.ColorStop(first.0, first.1)]
+	stops.append(contentsOf: rest.map { CSSImage.Gradient.ColorStop($0.0, $0.1) })
+	return .linear(CSSImage.Gradient.LinearGradient(direction: .angle(angle), colorStops: stops))
+}
+
+// Linear gradient with angle
+public func linearGradient(_ angle: CSSAngle, _ first: CSSColor, _ rest: CSSColor...) -> CSSImage.Gradient {
+	var stops = [CSSImage.Gradient.ColorStop(first)]
+	stops.append(contentsOf: rest.map { CSSImage.Gradient.ColorStop($0) })
+	return .linear(CSSImage.Gradient.LinearGradient(direction: .angle(angle), colorStops: stops))
+}
+
 // Radial gradient
 public func radialGradient(_ shape: CSSImage.Gradient.RadialShape, at position: CSSMaskLayer.Position? = nil, _ first: (CSSColor, Percentage), _ rest: (CSSColor, Percentage)...) -> CSSImage.Gradient {
 	var stops = [CSSImage.Gradient.ColorStop(first.0, first.1)]

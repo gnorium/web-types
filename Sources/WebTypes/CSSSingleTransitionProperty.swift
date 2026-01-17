@@ -26,6 +26,7 @@ public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
 	case fill
 	case stroke
 	case strokeWidth
+	case filter
 
 	public init(_ string: String) {
 		self = .customIdent(string)
@@ -85,6 +86,8 @@ public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
 			return "stroke"
 		case .strokeWidth:
 			return "stroke-width"
+		case .filter:
+			return "filter"
 		}
 	}
 
@@ -114,6 +117,7 @@ public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
         case .fill: return "fill"
         case .stroke: return "stroke"
         case .strokeWidth: return "stroke-width"
+        case .filter: return "filter"
         }
     }
 }

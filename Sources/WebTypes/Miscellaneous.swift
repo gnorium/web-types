@@ -16,6 +16,14 @@ public func calc(_ length: Length) -> String {
 	concat("calc(", length.value, ")")
 }
 
+public func calc(_ percentage: Percentage) -> String {
+	concat("calc(", percentage.value, ")")
+}
+
+public func calc(_ value: LengthPercentage) -> String {
+	concat("calc(", value.value, ")")
+}
+
 public func max(_ values: Length...) -> String {
 	var buffer: [UInt8] = []
 	buffer.append(contentsOf: "max(".utf8)
@@ -156,55 +164,55 @@ public func data(_ name: String) -> String {
 	return String(decoding: buffer, as: UTF8.self)
 }
 
-public func +(lhs: Percentage, rhs: Percentage) -> String {
-	concat(lhs.value, " + ", rhs.value)
+public func +(lhs: Percentage, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " + ", rhs.value))
 }
 
-public func -(lhs: Percentage, rhs: Percentage) -> String {
-	concat(lhs.value, " - ", rhs.value)
+public func -(lhs: Percentage, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " - ", rhs.value))
 }
 
-public func *(lhs: Percentage, rhs: Percentage) -> String {
-	concat(lhs.value, " * ", rhs.value)
+public func *(lhs: Percentage, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " * ", rhs.value))
 }
 
-public func /(lhs: Percentage, rhs: Percentage) -> String {
-	concat(lhs.value, " / ", rhs.value)
+public func /(lhs: Percentage, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " / ", rhs.value))
 }
 
-public func +(lhs: Length, rhs: Percentage) -> String {
-	concat(lhs.value, " + ", rhs.value)
+public func +(lhs: Length, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " + ", rhs.value))
 }
 
-public func -(lhs: Length, rhs: Percentage) -> String {
-	concat(lhs.value, " - ", rhs.value)
+public func -(lhs: Length, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " - ", rhs.value))
 }
 
-public func *(lhs: Length, rhs: Percentage) -> String {
-	concat(lhs.value, " * ", rhs.value)
+public func *(lhs: Length, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " * ", rhs.value))
 }
 
-public func /(lhs: Length, rhs: Percentage) -> String {
-	concat(lhs.value, " / ", rhs.value)
+public func /(lhs: Length, rhs: Percentage) -> Length {
+	Length(concat(lhs.value, " / ", rhs.value))
 }
 
-public func +(lhs: Percentage, rhs: Length) -> String {
-	concat(lhs.value, " + ", rhs.value)
+public func +(lhs: Percentage, rhs: Length) -> Length {
+	Length(concat(lhs.value, " + ", rhs.value))
 }
 
-public func -(lhs: Percentage, rhs: Length) -> String {
-	concat(lhs.value, " - ", rhs.value)
+public func -(lhs: Percentage, rhs: Length) -> Length {
+	Length(concat(lhs.value, " - ", rhs.value))
 }
 
-public func *(lhs: Percentage, rhs: Length) -> String {
-	concat(lhs.value, " * ", rhs.value)
+public func *(lhs: Percentage, rhs: Length) -> Length {
+	Length(concat(lhs.value, " * ", rhs.value))
 }
 
-public func /(lhs: Percentage, rhs: Length) -> String {
-	concat(lhs.value, " / ", rhs.value)
+public func /(lhs: Percentage, rhs: Length) -> Length {
+	Length(concat(lhs.value, " / ", rhs.value))
 }
 
-private func concat(_ parts: String...) -> String {
+public func concat(_ parts: String...) -> String {
 	var buffer: [UInt8] = []
 	for part in parts {
 		buffer.append(contentsOf: part.utf8)

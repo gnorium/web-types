@@ -92,14 +92,6 @@ public struct CSSAngle: Sendable {
 		CSSAngle(concat(intToString(value), "turn"))
 	}
 
-	private static func concat(_ parts: String...) -> String {
-		var buffer: [UInt8] = []
-		for part in parts {
-			buffer.append(contentsOf: part.utf8)
-		}
-		return String(decoding: buffer, as: UTF8.self)
-	}
-
 	#endif
 }
 

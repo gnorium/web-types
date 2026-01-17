@@ -152,12 +152,24 @@ public func rotateX(_ value: String) -> CSSTransformFunction {
 	CSSTransformFunction("rotateX(\(value))")
 }
 
+public func rotateX(_ value: CSSAngle) -> CSSTransformFunction {
+	CSSTransformFunction("rotateX(\(value.value))")
+}
+
 public func rotateY(_ value: String) -> CSSTransformFunction {
 	CSSTransformFunction("rotateY(\(value))")
 }
 
+public func rotateY(_ value: CSSAngle) -> CSSTransformFunction {
+	CSSTransformFunction("rotateY(\(value.value))")
+}
+
 public func rotateZ(_ value: String) -> CSSTransformFunction {
 	CSSTransformFunction("rotateZ(\(value))")
+}
+
+public func rotateZ(_ value: CSSAngle) -> CSSTransformFunction {
+	CSSTransformFunction("rotateZ(\(value.value))")
 }
 
 public func rotate3d(_ x: String, _ y: String, _ z: String, _ angle: String) -> CSSTransformFunction {
@@ -186,13 +198,6 @@ public func perspective(_ value: Length) -> CSSTransformFunction {
 
 #if os(WASI)
 
-private func concat(_ parts: String...) -> String {
-	var buffer: [UInt8] = []
-	for part in parts {
-		buffer.append(contentsOf: part.utf8)
-	}
-	return String(decoding: buffer, as: UTF8.self)
-}
 
 public func rotate(_ angle: CSSAngle) -> CSSTransformFunction {
 	CSSTransformFunction(concat("rotate(", angle.value, ")"))
@@ -326,12 +331,24 @@ public func rotateX(_ value: String) -> CSSTransformFunction {
 	CSSTransformFunction(concat("rotateX(", value, ")"))
 }
 
+public func rotateX(_ value: CSSAngle) -> CSSTransformFunction {
+	CSSTransformFunction(concat("rotateX(", value.value, ")"))
+}
+
 public func rotateY(_ value: String) -> CSSTransformFunction {
 	CSSTransformFunction(concat("rotateY(", value, ")"))
 }
 
+public func rotateY(_ value: CSSAngle) -> CSSTransformFunction {
+	CSSTransformFunction(concat("rotateY(", value.value, ")"))
+}
+
 public func rotateZ(_ value: String) -> CSSTransformFunction {
 	CSSTransformFunction(concat("rotateZ(", value, ")"))
+}
+
+public func rotateZ(_ value: CSSAngle) -> CSSTransformFunction {
+	CSSTransformFunction(concat("rotateZ(", value.value, ")"))
 }
 
 public func rotate3d(_ x: String, _ y: String, _ z: String, _ angle: String) -> CSSTransformFunction {
