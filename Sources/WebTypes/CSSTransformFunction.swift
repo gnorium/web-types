@@ -76,6 +76,30 @@ public func translate(_ x: Percentage, _ y: Percentage) -> CSSTransformFunction 
 	CSSTransformFunction("translate(\(x.value), \(y.value))")
 }
 
+public func translate(_ x: Percentage, _ y: String) -> CSSTransformFunction {
+	CSSTransformFunction("translate(\(x.value), \(y))")
+}
+
+public func translate(_ x: String, _ y: Percentage) -> CSSTransformFunction {
+	CSSTransformFunction("translate(\(x), \(y.value))")
+}
+
+public func translate(_ x: Length, _ y: String) -> CSSTransformFunction {
+	CSSTransformFunction("translate(\(x.value), \(y))")
+}
+
+public func translate(_ x: String, _ y: Length) -> CSSTransformFunction {
+	CSSTransformFunction("translate(\(x), \(y.value))")
+}
+
+public func translate(_ x: Percentage, _ y: Length) -> CSSTransformFunction {
+	CSSTransformFunction("translate(\(x.value), \(y.value))")
+}
+
+public func translate(_ x: Length, _ y: Percentage) -> CSSTransformFunction {
+	CSSTransformFunction("translate(\(x.value), \(y.value))")
+}
+
 public func translate3d(_ x: String, _ y: String, _ z: String) -> CSSTransformFunction {
 	CSSTransformFunction("translate3d(\(x), \(y), \(z))")
 }
@@ -252,6 +276,30 @@ public func translate(_ x: Length, _ y: Length) -> CSSTransformFunction {
 }
 
 public func translate(_ x: Percentage, _ y: Percentage) -> CSSTransformFunction {
+	CSSTransformFunction(concat("translate(", x.value, ", ", y.value, ")"))
+}
+
+public func translate(_ x: Percentage, _ y: String) -> CSSTransformFunction {
+	CSSTransformFunction(concat("translate(", x.value, ", ", y, ")"))
+}
+
+public func translate(_ x: String, _ y: Percentage) -> CSSTransformFunction {
+	CSSTransformFunction(concat("translate(", x, ", ", y.value, ")"))
+}
+
+public func translate(_ x: Length, _ y: String) -> CSSTransformFunction {
+	CSSTransformFunction(concat("translate(", x.value, ", ", y, ")"))
+}
+
+public func translate(_ x: String, _ y: Length) -> CSSTransformFunction {
+	CSSTransformFunction(concat("translate(", x, ", ", y.value, ")"))
+}
+
+public func translate(_ x: Percentage, _ y: Length) -> CSSTransformFunction {
+	CSSTransformFunction(concat("translate(", x.value, ", ", y.value, ")"))
+}
+
+public func translate(_ x: Length, _ y: Percentage) -> CSSTransformFunction {
 	CSSTransformFunction(concat("translate(", x.value, ", ", y.value, ")"))
 }
 
