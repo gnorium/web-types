@@ -18,7 +18,7 @@ public enum CSSFontWeight: ExpressibleByIntegerLiteral, ExpressibleByStringLiter
 	}
 
 	public init(stringLiteral value: String) {
-		// Support CSS variables and custom values
+		// Support CSSProtocol variables and custom values
 		self = .variable(value)
 	}
 

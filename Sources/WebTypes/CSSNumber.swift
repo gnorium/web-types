@@ -4,7 +4,7 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// <number> - CSS number data type
+// <number> - CSSProtocol number data type
 // Represents a number, being either an integer, a number with a fractional component,
 // or a base-ten exponent in scientific notation.
 public struct CSSNumber: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, Sendable {

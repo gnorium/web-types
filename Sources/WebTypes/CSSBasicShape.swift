@@ -180,7 +180,7 @@ public enum CSSBasicShape: Sendable {
 
 	// MARK: - Namespace for dot-prefix syntax
 
-	/// Namespace struct to enable `.path()` syntax without shadowing SVG path()
+	/// Namespace struct to enable `.path()` syntax without shadowing SVGProtocol path()
 	public struct Shapes: Sendable {}
 
 	/// Static property to enable `.path()` syntax: e.g., `clipPath(.path(M(0, 0)))`

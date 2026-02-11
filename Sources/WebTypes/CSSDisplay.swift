@@ -5,7 +5,9 @@ public enum CSSDisplay: Sendable {
 	case `internal`(Internal)
 	case box(Box)
 	case legacy(Legacy)
-	case none
+
+	/// The "none" keyword per CSSProtocol Display spec
+	public static let none: CSSKeyword.None = .none
 
 	public var rawValue: String {
 		switch self {
@@ -15,7 +17,6 @@ public enum CSSDisplay: Sendable {
 			case .internal(let value): return value.rawValue
 			case .box(let value): return value.rawValue
 			case .legacy(let value): return value.rawValue
-			case .none: return "none"
 		}
 	}
 
@@ -27,18 +28,9 @@ public enum CSSDisplay: Sendable {
 			case .internal(let value): return value.staticRawValue
 			case .box(let value): return value.staticRawValue
 			case .legacy(let value): return value.staticRawValue
-			case .none: return "none"
 		}
 	}
 
-	// Static members for common values
-	public static let block: CSSDisplay = .outside(.block)
-	public static let inline: CSSDisplay = .outside(.inline)
-	public static let flex: CSSDisplay = .inside(.flex)
-	public static let grid: CSSDisplay = .inside(.grid)
-	public static let inlineBlock: CSSDisplay = .legacy(.inlineBlock)
-	public static let inlineFlex: CSSDisplay = .legacy(.inlineFlex)
-	
 	public enum Outside: Sendable {
 		case block
 		case inline

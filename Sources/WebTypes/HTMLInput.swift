@@ -1,8 +1,7 @@
-#if !os(WASI)
-
-public struct HTMLInput {
-	public enum `Type`: String {
+public enum HTMLInput {
+	public enum `Type`: String, Sendable {
 		case text = "text"
+		case hidden = "hidden"
 		case password = "password"
 		case email = "email"
 		case number = "number"
@@ -16,17 +15,16 @@ public struct HTMLInput {
 		case week = "week"
 		case color = "color"
 		case file = "file"
-		case hidden = "hidden"
-		case image = "image"
+        case image = "image"
 		case checkbox = "checkbox"
 		case radio = "radio"
 		case range = "range"
 		case submit = "submit"
 		case reset = "reset"
-		// case button = "button" (!: use HTMLButton.Button instead of this)
+		case button = "button"
 	}
 
-	public enum Autocomplete: String {
+	public enum Autocomplete: String, Sendable {
 		case off = "off"
 		case on = "on"
 		case name = "name"
@@ -38,6 +36,7 @@ public struct HTMLInput {
 		case nickname = "nickname"
 		case email = "email"
 		case username = "username"
+		case impp = "impp"
 		case newPassword = "new-password"
 		case currentPassword = "current-password"
 		case oneTimeCode = "one-time-code"
@@ -47,10 +46,10 @@ public struct HTMLInput {
 		case addressLine1 = "address-line1"
 		case addressLine2 = "address-line2"
 		case addressLine3 = "address-line3"
-		case addressLevel4 = "address-level4"
-		case addressLevel3 = "address-level3"
-		case addressLevel2 = "address-level2"
 		case addressLevel1 = "address-level1"
+		case addressLevel2 = "address-level2"
+		case addressLevel3 = "address-level3"
+		case addressLevel4 = "address-level4"
 		case country = "country"
 		case countryName = "country-name"
 		case postalCode = "postal-code"
@@ -78,10 +77,7 @@ public struct HTMLInput {
 		case telAreaCode = "tel-area-code"
 		case telLocal = "tel-local"
 		case telExtension = "tel-extension"
-		case impp = "impp"
 		case url = "url"
 		case photo = "photo"
 	}
 }
-
-#endif

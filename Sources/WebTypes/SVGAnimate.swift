@@ -1,4 +1,4 @@
-/// Namespace for SVG animation-related types.
+/// Namespace for SVGProtocol animation-related types.
 /// Consolidates all SMIL animation enums under a single namespace.
 public enum SVGAnimate {
 	/// Repeat count for animations

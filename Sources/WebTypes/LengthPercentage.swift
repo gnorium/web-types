@@ -1,4 +1,4 @@
-/// Union type for CSS properties that accept either Length or Percentage
+/// Union type for CSSProtocol properties that accept either Length or Percentage
 public struct LengthPercentage: Sendable, ExpressibleByStringLiteral, CustomStringConvertible {
 	public let value: String
 

@@ -9,7 +9,7 @@ public struct SVGFilterInput: ExpressibleByStringLiteral, Sendable {
 		self.value = value
 	}
 
-    // Standard Inputs (Defined in SVG Spec)
+    // Standard Inputs (Defined in SVGProtocol Spec)
 	public static let sourceGraphic: SVGFilterInput = "SourceGraphic"
 	public static let sourceAlpha: SVGFilterInput = "SourceAlpha"
 	public static let backgroundImage: SVGFilterInput = "BackgroundImage"

@@ -1,4 +1,4 @@
-public enum CSSJustifyContent: String {
+public enum CSSJustifyContent: String, Sendable {
 	case flexStart = "flex-start"
 	case flexEnd = "flex-end"
 	case center = "center"

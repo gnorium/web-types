@@ -4,7 +4,7 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// Concrete type for CSS values in embedded Swift (can't use protocol existentials)
+// Concrete type for CSSProtocol values in embedded Swift (can't use protocol existentials)
 public struct CSSValue: Sendable, ExpressibleByStringLiteral, ExpressibleByIntegerLiteral {
 	public let value: String
 

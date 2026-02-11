@@ -4,7 +4,7 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// CSSTime - CSS time values
+// CSSTime - CSSProtocol time values
 public struct CSSTime: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, Sendable {
 	private enum Storage: Sendable {
 		case dynamic(String)

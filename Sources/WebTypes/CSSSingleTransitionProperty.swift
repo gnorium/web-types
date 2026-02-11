@@ -2,8 +2,8 @@
 // Note: 'none' is part of the [ none | <single-transition-property> ] group
 public enum CSSSingleTransitionProperty: ExpressibleByStringLiteral, Sendable {
 	case all(CSSKeyword.All)
-	case customIdent(String) // For any CSS property name
-	// Common CSS properties
+	case customIdent(String) // For any CSSProtocol property name
+	// Common CSSProtocol properties
 	case color
 	case backgroundColor
 	case opacity

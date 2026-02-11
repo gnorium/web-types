@@ -69,7 +69,7 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <named-color> - CSS named colors
+	// <named-color> - CSSProtocol named colors
 	public enum NamedColor: String, Sendable {
 		case red = "red"
 		case blue = "blue"
