@@ -703,6 +703,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
+		// CSS variable references for composable tokens
+		public init(l: String, c: String, h: String) {
+			self.components = concat("oklch(", l, " ", c, " ", h, ")")
+		}
+
 	#endif
 
 	#if os(WASI)
@@ -723,6 +728,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			} else {
 				self.components = concat("oklch(", doubleToString(l), " ", doubleToString(c), " ", h.value, ")")
 			}
+		}
+
+		// CSS variable references for composable tokens
+		public init(l: String, c: String, h: String) {
+			self.components = concat("oklch(", l, " ", c, " ", h, ")")
 		}
 
 	#endif
@@ -1179,6 +1189,10 @@ public func oklab(from color: CSSColor, _ l: CSSOKLABComponent, _ a: CSSOKLABCom
 // MARK: - Oklch
 public func oklch(_ l: Double, _ c: Double, _ h: Double) -> CSSColor {
 	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h))))
+}
+
+public func oklch(l: String, c: String, h: String) -> CSSColor {
+	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l: l, c: c, h: h))))
 }
 
 public func oklch(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double) -> CSSColor {
