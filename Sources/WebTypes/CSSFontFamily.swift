@@ -126,7 +126,9 @@ public struct CSSFontFamily: ExpressibleByStringLiteral, CustomStringConvertible
 		}
 
 		// <generic-complete>
-		public enum GenericComplete: String, Sendable {
+		public enum GenericComplete: String, CustomStringConvertible, Sendable {
+			public var description: String { rawValue }
+
 			case serif = "serif"
 			case sansSerif = "sans-serif"
 			case cursive = "cursive"
@@ -139,7 +141,9 @@ public struct CSSFontFamily: ExpressibleByStringLiteral, CustomStringConvertible
 		}
 
 		// <generic-incomplete>
-		public enum GenericIncomplete: String, Sendable {
+		public enum GenericIncomplete: String, CustomStringConvertible, Sendable {
+			public var description: String { rawValue }
+
 			case uiSerif = "ui-serif"
 			case uiSansSerif = "ui-sans-serif"
 			case uiMonospace = "ui-monospace"
