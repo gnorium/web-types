@@ -1195,6 +1195,14 @@ public func oklch(l: String, c: String, h: String) -> CSSColor {
 	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l: l, c: c, h: h))))
 }
 
+public func oklch(l: Double, c: Double, h: Double) -> CSSColor {
+	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h))))
+}
+
+public func oklch(l: Double, c: Double, h: String) -> CSSColor {
+	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l: "\(l)", c: "\(c)", h: h))))
+}
+
 public func oklch(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double) -> CSSColor {
 	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h, alpha))))
 }

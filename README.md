@@ -1,6 +1,6 @@
 # WebTypes, as used in [gnorium.com](https://gnorium.com)
 
-Shared web types and design tokens for Swift web development.
+Shared web types for Swift web development.
 
 ## Overview
 
