@@ -2,24 +2,16 @@
 //   <'box-shadow-color'>? &&
 //   [ [ none | <length>{2} ] [ <'box-shadow-blur'> <'box-shadow-spread'>? ]? ] &&
 //   <'box-shadow-position'>?
-public struct CSSSpreadShadow: ExpressibleByStringLiteral, Sendable {
+public struct CSSSpreadShadow: Sendable, CSSVariableConvertible {
 	private let colorValue: String?
 	public let offsetX: Length?
 	public let offsetY: Length?
 	public let isNone: Bool
 	public let blur: BoxShadowBlur?
 	public let spread: BoxShadowSpread?
-	public let position: BoxShadowPosition?
+	private let position: BoxShadowPosition?
+	private let rawValue: String?
 
-	public init(stringLiteral value: String) {
-		self.colorValue = nil
-		self.offsetX = nil
-		self.offsetY = nil
-		self.isNone = false
-		self.blur = nil
-		self.spread = nil
-		self.position = nil
-	}
 
 	public init(
 		color: BoxShadowColor,
@@ -37,10 +29,28 @@ public struct CSSSpreadShadow: ExpressibleByStringLiteral, Sendable {
 		self.blur = blur
 		self.spread = spread
 		self.position = position
+		self.rawValue = nil
+	}
+
+	internal init(_ value: String) {
+		self.colorValue = nil
+		self.offsetX = nil
+		self.offsetY = nil
+		self.isNone = false
+		self.blur = nil
+		self.spread = nil
+		self.position = nil
+		self.rawValue = value
+	}
+
+	public static func variable(_ name: String) -> CSSSpreadShadow {
+		CSSSpreadShadow(concat("var(", name, ")"))
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
+		if let rawValue = rawValue { return rawValue }
 		var components: [String] = []
 
 		if isNone {
@@ -70,6 +80,7 @@ public struct CSSSpreadShadow: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 	public var value: String {
+		if let rawValue = rawValue { return rawValue }
 		var buffer: [UInt8] = []
 		var hasContent = false
 

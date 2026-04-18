@@ -33,6 +33,7 @@ public struct CSSSingleAnimation: Sendable {
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
 		var components: [String] = []
 		if let duration = duration {

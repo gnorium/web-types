@@ -4,9 +4,9 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-/// SVGProtocol Path container
+/// SVGContent Path container
 public enum SVGPath {
-	/// SVGProtocol Path Definition (d attribute)
+	/// SVGContent Path Definition (d attribute)
 	public enum Definition {
 		/// Command enum
 		public enum Command: Sendable {

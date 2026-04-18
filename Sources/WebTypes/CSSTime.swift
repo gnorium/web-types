@@ -4,8 +4,8 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// CSSTime - CSSProtocol time values
-public struct CSSTime: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, Sendable {
+// CSSTime - CSSContent time values
+public struct CSSTime: Sendable, CSSVariableConvertible {
 	private enum Storage: Sendable {
 		case dynamic(String)
 		case `static`(StaticString)
@@ -20,40 +20,20 @@ public struct CSSTime: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, E
 		}
 	}
     
-    public var staticValue: StaticString? {
+    public var staticRawValue: StaticString? {
         switch storage {
         case .static(let str): return str
         default: return nil
         }
     }
 
-	#if !os(WASI)
-	public init(integerLiteral value: Int) {
-		self.storage = .dynamic("\(value)")
-	}
 
-	public init(floatLiteral value: Double) {
-		self.storage = .dynamic("\(value)")
-	}
-	#endif
-
-	#if os(WASI)
-	public init(integerLiteral value: Int) {
-		self.storage = .dynamic(intToString(value))
-	}
-
-	public init(floatLiteral value: Double) {
-		self.storage = .dynamic(doubleToString(value))
-	}
-	#endif
-
-    public typealias StringLiteralType = StaticString
-	public init(stringLiteral value: StaticString) {
-		self.storage = .static(value)
-	}
-
-	public init(_ value: String) {
+	internal init(_ value: String) {
 		self.storage = .dynamic(value)
+	}
+
+	public static func variable(_ name: String) -> CSSTime {
+		CSSTime(concat("var(", name, ")"))
 	}
 }
 
@@ -135,4 +115,3 @@ public func ms(_ double: Double) -> CSSTime {
 }
 
 #endif
-

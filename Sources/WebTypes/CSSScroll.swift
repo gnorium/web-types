@@ -15,6 +15,7 @@ public struct CSSScroll: Sendable {
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
 		var components: [String] = []
 		if let scroller = scroller {

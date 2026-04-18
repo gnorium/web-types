@@ -1,8 +1,4 @@
-#if !os(WASI)
-
-import Foundation
-
-/// SVGProtocol shape-rendering attribute values
+/// SVGContent shape-rendering attribute values
 /// Controls how shapes are rendered by the browser
 /// https://www.w3.org/TR/SVG2/painting.html#ShapeRenderingProperty
 public enum SVGShapeRendering: String, Sendable {
@@ -16,4 +12,4 @@ public enum SVGShapeRendering: String, Sendable {
 	case geometricPrecision = "geometricPrecision"
 }
 
-#endif
+

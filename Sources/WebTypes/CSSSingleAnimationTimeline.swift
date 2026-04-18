@@ -5,6 +5,11 @@ public enum CSSSingleAnimationTimeline: Sendable {
 	case dashedIdent(CSSDashedIdent)
 	case scroll(CSSScroll)
 	case view(CSSView)
+    
+	@_disfavoredOverload
+	public static var auto: Self { .auto(.auto) }
+	@_disfavoredOverload
+	public static var none: Self { .none(.none) }
 
 	public var value: String {
 		switch self {
@@ -21,4 +26,3 @@ public enum CSSSingleAnimationTimeline: Sendable {
 		}
 	}
 }
-

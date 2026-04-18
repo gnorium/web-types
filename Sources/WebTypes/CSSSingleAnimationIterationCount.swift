@@ -10,6 +10,7 @@ public enum CSSSingleAnimationIterationCount: Sendable, ExpressibleByIntegerLite
 	case number(String) // For any positive number
 
 	#if !os(WASI)
+
 	public init(integerLiteral value: Int) {
 		self = .number("\(value)")
 	}
@@ -45,6 +46,7 @@ public enum CSSSingleAnimationIterationCount: Sendable, ExpressibleByIntegerLite
 
 	// Convenience initializers for numbers
 	#if !os(WASI)
+
 	public static func number(_ value: Int) -> CSSSingleAnimationIterationCount {
 		.number("\(value)")
 	}

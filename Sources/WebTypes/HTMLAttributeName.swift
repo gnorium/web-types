@@ -1,5 +1,6 @@
 public enum HTMLAttributeName: String, Sendable {
 	case ariaDisabled = "aria-disabled"
+	case ariaPressed = "aria-pressed"
 	case ariaSelected = "aria-selected"
 	case ariaExpanded = "aria-expanded"
 	case ariaHidden = "aria-hidden"
@@ -24,6 +25,21 @@ public enum HTMLAttributeName: String, Sendable {
 	case hidden = "hidden"
 	case open = "open"
 	case tabindex = "tabindex"
+	case name = "name"
+	case `for` = "for"
+	case type = "type"
+	case role = "role"
+	case rows = "rows"
+	case cols = "cols"
+	case step = "step"
+	case min = "min"
+	case max = "max"
+	case readonly = "readonly"
+	case required = "required"
+	case autocomplete = "autocomplete"
+	case autocapitalize = "autocapitalize"
+	case autocorrect = "autocorrect"
+	case spellcheck = "spellcheck"
 
 	// Nested marker enums for type-safe value resolution
 

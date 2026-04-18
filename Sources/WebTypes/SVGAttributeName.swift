@@ -22,4 +22,5 @@ public enum SVGAttributeName: String, Sendable {
 	case points = "points"
 	case visibility = "visibility"
 	case offset = "offset"
+	case xlinkHref = "xlink:href"
 }

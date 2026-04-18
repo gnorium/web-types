@@ -1,4 +1,4 @@
-#if !os(WASI)
+
 
 public enum HTTPMethod: String {
 	case get = "get"
@@ -8,4 +8,4 @@ public enum HTTPMethod: String {
 	case patch = "patch"
 }
 
-#endif
+

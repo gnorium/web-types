@@ -25,6 +25,7 @@ public struct SVGColorMatrix: Sendable {
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
 		let rRow = "\(r.0) \(r.1) \(r.2) \(r.3) \(r.4)"
 		let gRow = "\(g.0) \(g.1) \(g.2) \(g.3) \(g.4)"

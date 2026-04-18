@@ -9,6 +9,9 @@ import EmbeddedSwiftUtilities
 // <clip-path> enum
 public enum CSSClipPath: Sendable {
 	case none(CSSKeyword.None)
+    
+	@_disfavoredOverload
+	public static var none: Self { .none(.none) }
 	case clipSource(CSSClipSource)
 	case basicShape(CSSBasicShape)
 	case basicShapeWithBox(CSSBasicShape, CSSGeometryBox)

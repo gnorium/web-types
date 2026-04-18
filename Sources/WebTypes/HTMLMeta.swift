@@ -1,10 +1,4 @@
-#if os(WASI)
-
 import EmbeddedSwiftUtilities
-
-#endif
-
-#if !os(WASI)
 
 public enum HTMLMeta {
 
@@ -91,7 +85,11 @@ public enum HTMLMeta {
 			case nocache = "nocache"
 
 			public static func content(_ directives: Robots...) -> String {
-				directives.map { $0.rawValue }.joined(separator: ", ")
+				self.content(directives)
+			}
+
+			public static func content(_ directives: [Robots]) -> String {
+				stringJoin(directives.map { $0.rawValue }, separator: ", ")
 			}
 		}
 
@@ -102,7 +100,7 @@ public enum HTMLMeta {
 				public init() {}
 
 				public func render() -> String {
-					properties.map { "\($0.0)=\($0.1)" }.joined(separator: ", ")
+					stringJoin(properties.map { stringConcat($0.0, "=", $0.1) }, separator: ", ")
 				}
 
 				public enum Width {
@@ -114,7 +112,7 @@ public enum HTMLMeta {
 						case .deviceWidth:
 							return "device-width"
 						case .pixels(let px):
-							return "\(px)"
+							return intToString(px)
 						}
 					}
 				}
@@ -128,7 +126,7 @@ public enum HTMLMeta {
 						case .deviceHeight:
 							return "device-height"
 						case .pixels(let px):
-							return "\(px)"
+							return intToString(px)
 						}
 					}
 				}
@@ -199,19 +197,19 @@ public func height(_ value: HTMLMeta.Name.Viewport.Content.Height) -> HTMLMeta.N
 
 public func initialScale(_ value: Double) -> HTMLMeta.Name.Viewport.Content {
 	var vc = HTMLMeta.Name.Viewport.Content()
-	vc.properties.append(("initial-scale", "\(value)"))
+	vc.properties.append(("initial-scale", doubleToString(value)))
 	return vc
 }
 
 public func minimumScale(_ value: Double) -> HTMLMeta.Name.Viewport.Content {
 	var vc = HTMLMeta.Name.Viewport.Content()
-	vc.properties.append(("minimum-scale", "\(value)"))
+	vc.properties.append(("minimum-scale", doubleToString(value)))
 	return vc
 }
 
 public func maximumScale(_ value: Double) -> HTMLMeta.Name.Viewport.Content {
 	var vc = HTMLMeta.Name.Viewport.Content()
-	vc.properties.append(("maximum-scale", "\(value)"))
+	vc.properties.append(("maximum-scale", doubleToString(value)))
 	return vc
 }
 
@@ -249,19 +247,19 @@ extension HTMLMeta.Name.Viewport.Content {
 
 	public func initialScale(_ value: Double) -> HTMLMeta.Name.Viewport.Content {
 		var vc = self
-		vc.properties.append(("initial-scale", "\(value)"))
+		vc.properties.append(("initial-scale", doubleToString(value)))
 		return vc
 	}
 
 	public func minimumScale(_ value: Double) -> HTMLMeta.Name.Viewport.Content {
 		var vc = self
-		vc.properties.append(("minimum-scale", "\(value)"))
+		vc.properties.append(("minimum-scale", doubleToString(value)))
 		return vc
 	}
 
 	public func maximumScale(_ value: Double) -> HTMLMeta.Name.Viewport.Content {
 		var vc = self
-		vc.properties.append(("maximum-scale", "\(value)"))
+		vc.properties.append(("maximum-scale", doubleToString(value)))
 		return vc
 	}
 
@@ -284,4 +282,4 @@ extension HTMLMeta.Name.Viewport.Content {
 	}
 }
 
-#endif
+

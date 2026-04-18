@@ -1,8 +1,23 @@
-public enum CSSTextTransform: String, Sendable {
-	case none = "none"
-	case capitalize = "capitalize"
-	case uppercase = "uppercase"
-	case lowercase = "lowercase"
-	case fullWidth = "full-width"
-	case fullSizeKana = "full-size-kana"
+public enum CSSTextTransform: Sendable {
+	case none(CSSKeyword.None)
+
+	@_disfavoredOverload
+	public static var none: Self { .none(.none) }
+
+	case capitalize
+	case uppercase
+	case lowercase
+	case fullWidth
+	case fullSizeKana
+
+    public var rawValue: String {
+        switch self {
+        case .none(let keyword): return keyword.rawValue
+        case .capitalize: return "capitalize"
+        case .uppercase: return "uppercase"
+        case .lowercase: return "lowercase"
+        case .fullWidth: return "full-width"
+        case .fullSizeKana: return "full-size-kana"
+        }
+    }
 }

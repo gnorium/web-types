@@ -5,17 +5,17 @@ import EmbeddedSwiftUtilities
 #endif
 
 // <font-family> = [ <family-name> | <generic-family> ]#
-public struct CSSFontFamily: ExpressibleByStringLiteral, CustomStringConvertible, Sendable {
+public struct CSSFontFamily: CustomStringConvertible, Sendable, CSSVariableConvertible {
 	public let value: String
 
 	public var description: String { value }
 
-	public init(stringLiteral value: String) {
+	internal init(_ value: String) {
 		self.value = value
 	}
 
-	public init(_ value: String) {
-		self.value = value
+	public static func variable(_ name: String) -> CSSFontFamily {
+		CSSFontFamily(concat("var(", name, ")"))
 	}
 
 	// <family-name>
@@ -42,66 +42,61 @@ public struct CSSFontFamily: ExpressibleByStringLiteral, CustomStringConvertible
 	}
 
 	// Font stack with 2 fonts
-	public init(_ font1: String, _ font2: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2.rawValue)
+	public init(_ font1: FamilyName, _ font2: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.rawValue)
 	}
 
-	public init(_ font1: String, _ font2: GenericFamily.GenericIncomplete) {
-		self.value = concat(font1, ", ", font2.rawValue)
+	public init(_ font1: FamilyName, _ font2: GenericFamily.GenericIncomplete) {
+		self.value = concat(font1.value, ", ", font2.rawValue)
 	}
 
-	public init(_ font1: String, _ font2: GenericFamily.GenericScriptSpecific) {
-		self.value = concat(font1, ", ", font2.value)
+	public init(_ font1: FamilyName, _ font2: GenericFamily.GenericScriptSpecific) {
+		self.value = concat(font1.value, ", ", font2.value)
 	}
 
 	// Font stack with 3 fonts
-	public init(_ font1: String, _ font2: String, _ font3: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.rawValue)
 	}
 
-	public init(_ font1: String, _ font2: String, _ font3: GenericFamily.GenericIncomplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: GenericFamily.GenericIncomplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.rawValue)
 	}
 
-	public init(_ font1: String, _ font2: GenericFamily.GenericIncomplete, _ font3: CSSFontFamily) {
-		self.value = concat(font1, ", ", font2.rawValue, ", ", font3.value)
+	public init(_ font1: FamilyName, _ font2: GenericFamily.GenericIncomplete, _ font3: CSSFontFamily) {
+		self.value = concat(font1.value, ", ", font2.rawValue, ", ", font3.value)
 	}
 
 	// Font stack with 4 fonts
-	public init(_ font1: String, _ font2: String, _ font3: String, _ font4: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3, ", ", font4.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: FamilyName, _ font4: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.value, ", ", font4.rawValue)
 	}
 
 	// Font stack with 5 fonts
-	public init(_ font1: String, _ font2: String, _ font3: String, _ font4: String, _ font5: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3, ", ", font4, ", ", font5.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: FamilyName, _ font4: FamilyName, _ font5: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.value, ", ", font4.value, ", ", font5.rawValue)
 	}
 
 	// Font stack with 6 fonts
-	public init(_ font1: String, _ font2: String, _ font3: String, _ font4: String, _ font5: String, _ font6: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3, ", ", font4, ", ", font5, ", ", font6.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: FamilyName, _ font4: FamilyName, _ font5: FamilyName, _ font6: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.value, ", ", font4.value, ", ", font5.value, ", ", font6.rawValue)
 	}
 
 	// Font stack with 7 fonts
-	public init(_ font1: String, _ font2: String, _ font3: String, _ font4: String, _ font5: String, _ font6: String, _ font7: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3, ", ", font4, ", ", font5, ", ", font6, ", ", font7.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: FamilyName, _ font4: FamilyName, _ font5: FamilyName, _ font6: FamilyName, _ font7: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.value, ", ", font4.value, ", ", font5.value, ", ", font6.value, ", ", font7.rawValue)
 	}
 
 	// Font stack with 8 fonts (for the system sans case)
-	public init(_ font1: String, _ font2: String, _ font3: String, _ font4: String, _ font5: String, _ font6: String, _ font7: String, _ font8: GenericFamily.GenericComplete) {
-		self.value = concat(font1, ", ", font2, ", ", font3, ", ", font4, ", ", font5, ", ", font6, ", ", font7, ", ", font8.rawValue)
+	public init(_ font1: FamilyName, _ font2: FamilyName, _ font3: FamilyName, _ font4: FamilyName, _ font5: FamilyName, _ font6: FamilyName, _ font7: FamilyName, _ font8: GenericFamily.GenericComplete) {
+		self.value = concat(font1.value, ", ", font2.value, ", ", font3.value, ", ", font4.value, ", ", font5.value, ", ", font6.value, ", ", font7.value, ", ", font8.rawValue)
 	}
 
 	// <family-name> = <string> | <custom-ident>+
-	public struct FamilyName: ExpressibleByStringLiteral, Sendable {
+	public struct FamilyName: Sendable {
 		public let value: String
 
-		// <string> (quoted font name like "Arial")
-		public init(stringLiteral value: String) {
-			self.value = value
-		}
-
-		public init(_ value: String) {
+		internal init(_ value: String) {
 			self.value = value
 		}
 

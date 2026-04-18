@@ -7,8 +7,12 @@ import EmbeddedSwiftUtilities
 // <angle> = <number><angle-unit>
 // <angle-unit> = deg | grad | rad | turn
 
-public struct CSSAngle: Sendable {
+public struct CSSAngle: Sendable, CSSVariableConvertible {
 	public let value: String
+
+	public static func variable(_ name: String) -> CSSAngle {
+		CSSAngle(concat("var(", name, ")"))
+	}
 
 	private init(_ value: String) {
 		self.value = value

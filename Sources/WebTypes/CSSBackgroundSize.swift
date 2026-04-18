@@ -1,8 +1,17 @@
-public enum CSSBackgroundSize: String, ExpressibleByStringLiteral, Sendable {
-	case cover = "cover"
-	case contain = "contain"
+public enum CSSBackgroundSize: Sendable, CSSVariableConvertible {
+	case cover
+	case contain
+	case custom(String)
 
-	public init(stringLiteral value: String) {
-		self = CSSBackgroundSize(rawValue: value) ?? .cover
+	public var value: String {
+		switch self {
+		case .cover: return "cover"
+		case .contain: return "contain"
+		case .custom(let str): return str
+		}
+	}
+
+	public static func variable(_ name: String) -> CSSBackgroundSize {
+		.custom(concat("var(", name, ")"))
 	}
 }

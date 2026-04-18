@@ -21,6 +21,7 @@ public struct CSSSingleTransition: Sendable {
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
 		var components = [property.value, duration.value, easingFunction.value]
 		if let delay = delay {

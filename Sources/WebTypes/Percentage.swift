@@ -4,10 +4,14 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-public struct Percentage: ExpressibleByStringLiteral, CustomStringConvertible, Sendable {
+public struct Percentage: CustomStringConvertible, Sendable, CSSVariableConvertible {
 	public let value: String
 
-	public init(stringLiteral value: String) {
+	public static func variable(_ name: String) -> Percentage {
+		Percentage(concat("var(", name, ")"))
+	}
+
+	internal init(_ value: String) {
 		self.value = value
 	}
 
@@ -47,4 +51,3 @@ public func perc(_ value: Double) -> Percentage {
 public func perc(_ value: Int) -> Percentage {
 	Percentage(value)
 }
-

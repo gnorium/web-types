@@ -6,7 +6,7 @@ public enum CSSDisplay: Sendable {
 	case box(Box)
 	case legacy(Legacy)
 
-	/// The "none" keyword per CSSProtocol Display spec
+	/// The "none" keyword per CSSContent Display spec
 	public static let none: CSSKeyword.None = .none
 
 	public var rawValue: String {

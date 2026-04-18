@@ -74,6 +74,7 @@ public enum CSSBasicShape: Sendable {
 		public let points: [(Length, Length)]
 
 		#if !os(WASI)
+
 		public var value: String {
 			let pointsStr = points.map { "\($0.0.value) \($0.1.value)" }.joined(separator: ", ")
 			return "polygon(\(pointsStr))"
@@ -128,6 +129,7 @@ public enum CSSBasicShape: Sendable {
 		public let commands: [SVGPath.Definition.Command]
 
 		#if !os(WASI)
+
 		public var value: String {
 			let pathStr = commands.map { $0.pathString }.joined(separator: " ")
 			return "path('\(pathStr)')"
@@ -180,7 +182,7 @@ public enum CSSBasicShape: Sendable {
 
 	// MARK: - Namespace for dot-prefix syntax
 
-	/// Namespace struct to enable `.path()` syntax without shadowing SVGProtocol path()
+	/// Namespace struct to enable `.path()` syntax without shadowing SVGContent path()
 	public struct Shapes: Sendable {}
 
 	/// Static property to enable `.path()` syntax: e.g., `clipPath(.path(M(0, 0)))`

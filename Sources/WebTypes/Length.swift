@@ -4,8 +4,31 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-public struct Length: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, Sendable, CustomStringConvertible, RangeReplaceableCollection {
+public struct Length: Sendable, CustomStringConvertible, RangeReplaceableCollection, CSSVariableConvertible, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
 	public let value: String
+
+	public init(integerLiteral value: Int) {
+		#if !os(WASI)
+
+		self.value = "\(value)px"
+		
+        #endif
+
+        #if os(WASI)
+
+		self.value = concat(intToString(value), "px")
+		
+        #endif
+	}
+
+	public init(floatLiteral value: Double) {
+		#if !os(WASI)
+
+		self.value = "\(value)px"
+		#else
+		self.value = concat(doubleToString(value), "px")
+		#endif
+	}
 
 	// RangeReplaceableCollection conformance
 	public typealias Element = Character
@@ -33,36 +56,12 @@ public struct Length: ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, Ex
 		self = Length(mutableValue)
 	}
 
-	#if !os(WASI)
-
-	public init(integerLiteral value: Int) {
-		self.value = "\(value)"
-	}
-
-	public init(floatLiteral value: Double) {
-		self.value = "\(value)"
-	}
-
-	#endif
-
-	#if os(WASI)
-
-	public init(integerLiteral value: Int) {
-		self.value = intToString(value)
-	}
-
-	public init(floatLiteral value: Double) {
-		self.value = doubleToString(value)
-	}
-
-	#endif
-
-	public init(stringLiteral value: String) {
+	internal init(_ value: String) {
 		self.value = value
 	}
 
-	public init(_ value: String) {
-		self.value = value
+	public static func variable(_ name: String) -> Length {
+		Length(concat("var(", name, ")"))
 	}
 
 	public var description: String {

@@ -1,5 +1,4 @@
-/// Union type for CSSProtocol properties that accept either Length or Percentage
-public struct LengthPercentage: Sendable, ExpressibleByStringLiteral, CustomStringConvertible {
+public struct LengthPercentage: Sendable, CustomStringConvertible, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
 	public let value: String
 
 	public init(_ length: Length) {
@@ -10,28 +9,24 @@ public struct LengthPercentage: Sendable, ExpressibleByStringLiteral, CustomStri
 		self.value = percentage.value
 	}
 
-	public init(_ string: String) {
-		self.value = string
+	internal init(_ value: String) {
+		self.value = value
 	}
 
-	public init(stringLiteral value: String) {
-		self.value = value
+	public init(integerLiteral value: Int) {
+		self.value = "\(value)px"
+	}
+
+	public init(floatLiteral value: Double) {
+		self.value = "\(value)px"
+	}
+
+
+	public var lengthPercentage: LengthPercentage {
+		self
 	}
 
 	public var description: String {
 		value
-	}
-}
-
-// Allow direct assignment from Length and Percentage
-extension Length {
-	public var lengthPercentage: LengthPercentage {
-		LengthPercentage(self)
-	}
-}
-
-extension Percentage {
-	public var lengthPercentage: LengthPercentage {
-		LengthPercentage(self)
 	}
 }

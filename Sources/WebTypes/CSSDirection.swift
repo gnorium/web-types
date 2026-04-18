@@ -1,6 +1,6 @@
 import EmbeddedSwiftUtilities
 
-/// CSSProtocol direction property values for text directionality
+/// CSSContent direction property values for text directionality
 public enum CSSDirection: String, Sendable {
 	/// Left-to-right text direction
 	case ltr

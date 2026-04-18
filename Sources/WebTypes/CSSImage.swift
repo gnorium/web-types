@@ -50,6 +50,7 @@ public enum CSSImage: Sendable {
 		}
 
 		#if !os(WASI)
+
 		public var value: String {
 			var components: [String] = []
 			if let tags = tags {
@@ -106,6 +107,7 @@ public enum CSSImage: Sendable {
 		}
 
 		#if !os(WASI)
+
 		public var value: String {
 			let opts = options.map { $0.value }.joined(separator: ", ")
 			return "image-set(\(opts))"
@@ -166,6 +168,7 @@ public enum CSSImage: Sendable {
 		}
 
 		#if !os(WASI)
+
 		public var value: String {
 			let imgs = images.map { $0.value }.joined(separator: ", ")
 			return "cross-fade(\(imgs))"
@@ -263,6 +266,7 @@ public enum CSSImage: Sendable {
             }
 
             #if !os(WASI)
+
             public var value: String {
                 var components: [String] = []
                 if let direction = direction {
@@ -305,6 +309,7 @@ public enum CSSImage: Sendable {
             }
 
             #if !os(WASI)
+
             public var value: String {
                 var components: [String] = []
                 if let direction = direction {
@@ -352,6 +357,7 @@ public enum CSSImage: Sendable {
             }
 
             #if !os(WASI)
+
             public var value: String {
                 var components: [String] = []
                 var shapeAndSize: [String] = []
@@ -430,6 +436,7 @@ public enum CSSImage: Sendable {
             }
 
             #if !os(WASI)
+
             public var value: String {
                 var components: [String] = []
                 var shapeAndSize: [String] = []
@@ -507,6 +514,7 @@ public enum CSSImage: Sendable {
             }
 
             #if !os(WASI)
+
             public var value: String {
                 var components: [String] = []
                 if let angle = angle {
@@ -567,6 +575,7 @@ public enum CSSImage: Sendable {
             }
 
             #if !os(WASI)
+
             public var value: String {
                 var components: [String] = []
                 if let angle = angle {
@@ -664,7 +673,7 @@ public enum CSSImage: Sendable {
         }
 
         // Color stop for gradients
-        public struct ColorStop: Sendable, ExpressibleByStringLiteral {
+        public struct ColorStop: Sendable {
             public let color: CSSColor
             public let position: Length?
 
@@ -676,12 +685,6 @@ public enum CSSImage: Sendable {
             public init(_ color: CSSColor, _ position: Percentage?) {
                 self.color = color
                 self.position = position.map { Length($0.value) }
-            }
-
-            // Allow CSSColor to be used directly as ColorStop
-            public init(stringLiteral value: String) {
-                self.color = CSSColor(stringLiteral: value)
-                self.position = nil
             }
 
             public var value: String {
@@ -771,4 +774,3 @@ public func conicGradient(from angle: CSSAngle? = nil, at position: CSSMaskLayer
 		CSSImage.Gradient.ColorStop($0.0, Length($0.1.value))
 	}))
 }
-

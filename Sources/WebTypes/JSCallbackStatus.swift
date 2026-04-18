@@ -1,4 +1,4 @@
-#if !os(WASI)
+
 
 /// Predefined callback status string constants
 public enum JSCallbackStatus {
@@ -8,4 +8,4 @@ public enum JSCallbackStatus {
     public static let progress: String = "progress"
 }
 
-#endif
+

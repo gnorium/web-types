@@ -4,68 +4,55 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// <font-weight> = normal | bold | bolder | lighter | <number [1,1000]>
-public enum CSSFontWeight: ExpressibleByIntegerLiteral, ExpressibleByStringLiteral, CustomStringConvertible, Sendable {
-	case normal
-	case bold
-	case bolder
-	case lighter
-	case number(Int)
-	case variable(String)
-
+public enum CSSFontWeight: Sendable, CSSVariableConvertible, ExpressibleByIntegerLiteral {
 	public init(integerLiteral value: Int) {
 		self = .number(value)
 	}
-
-	public init(stringLiteral value: String) {
-		// Support CSSProtocol variables and custom values
-		self = .variable(value)
-	}
-
-	#if !os(WASI)
-
-	public var value: String {
-		switch self {
-		case .normal:
-			return "normal"
-		case .bold:
-			return "bold"
-		case .bolder:
-			return "bolder"
-		case .lighter:
-			return "lighter"
-		case .number(let weight):
-			return "\(weight)"
-		case .variable(let value):
-			return value
-		}
-	}
-
-	#endif
-
-	#if os(WASI)
+	case normal
+	case bold
+	case semiBold
+	case lighter
+	case bolder
+	case number(Int)
+	case variable(String)
 
 	public var value: String {
+		#if !os(WASI)
+
 		switch self {
-		case .normal:
-			return "normal"
-		case .bold:
-			return "bold"
-		case .bolder:
-			return "bolder"
-		case .lighter:
-			return "lighter"
-		case .number(let weight):
-			return intToString(weight)
-		case .variable(let value):
-			return value
+		case .normal: return "normal"
+		case .bold: return "bold"
+		case .semiBold: return "600"
+		case .lighter: return "lighter"
+		case .bolder: return "bolder"
+		case .number(let int): return "\(int)"
+		case .variable(let name): return "var(\(name))"
 		}
+		#endif
+
+		#if os(WASI)
+
+		switch self {
+		case .normal: return "normal"
+		case .bold: return "bold"
+		case .semiBold: return "600"
+		case .lighter: return "lighter"
+		case .bolder: return "bolder"
+		case .number(let int): return intToString(int)
+		case .variable(let name): return concat("var(", name, ")")
+		}
+
+		#endif
 	}
 
-	#endif
-
-	// Convenience static properties for common weights
-	public static let semiBold: CSSFontWeight = .number(600)
-
-	public var description: String { value }
+	public var staticRawValue: StaticString? {
+		switch self {
+		case .normal: return "normal"
+		case .bold: return "bold"
+		case .semiBold: return "600"
+		case .lighter: return "lighter"
+		case .bolder: return "bolder"
+		case .number, .variable: return nil
+		}
+	}
 }

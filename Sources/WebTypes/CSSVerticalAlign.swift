@@ -8,4 +8,3 @@ public enum CSSVerticalAlign: String {
 	case sub = "sub"
 	case `super` = "super"
 }
-

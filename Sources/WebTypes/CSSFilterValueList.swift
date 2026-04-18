@@ -27,6 +27,7 @@ public struct CSSFilterValueList: Sendable {
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
 		values.map { $0.value }.joined(separator: " ")
 	}

@@ -1,4 +1,4 @@
-/// CSSProtocol writing-mode property values
+/// CSSContent writing-mode property values
 /// Controls block flow direction and inline base direction
 public enum CSSWritingMode: String, Sendable {
 	/// Horizontal lines, top to bottom (default for LTR/RTL scripts)

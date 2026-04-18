@@ -314,6 +314,7 @@ public enum CSSFilterFunction: Sendable {
 		}
 
 		#if !os(WASI)
+
 		public var value: String {
 			var components: [String] = []
 			if let colorValue = colorValue {

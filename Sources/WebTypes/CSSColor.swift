@@ -4,24 +4,14 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// <color> =
-//   <color-base>        |
-//   currentColor        |
-//   <system-color>      |
-//   <contrast-color()>  |
-//   <device-cmyk()>     |
-//   <light-dark()>
-public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
+public indirect enum CSSColor: Sendable, CSSVariableConvertible {
 	case colorBase(ColorBase)
 	case currentColor(CSSKeyword.CurrentColor)
-	case systemColor(String) // System colors are implementation-specific
+	case systemColor(String)
 	case contrastColor(ContrastColor)
 	case deviceCmyk(DeviceCmyk)
 	case lightDark(LightDark)
 
-	public init(stringLiteral value: String) {
-		self = .colorBase(.hex(value))
-	}
 
 	public var value: String {
 		switch self {
@@ -40,12 +30,10 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <color-base> =
-	//   <hex-color>       |
-	//   <color-function>  |
-	//   <named-color>     |
-	//   <color-mix()>     |
-	//   transparent
+	public static func variable(_ name: String) -> CSSColor {
+		.systemColor(concat("var(", name, ")"))
+	}
+
 	public indirect enum ColorBase: Sendable {
 		case hex(String)
 		case colorFunction(ColorFunction)
@@ -69,7 +57,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <named-color> - CSSProtocol named colors
 	public enum NamedColor: String, Sendable {
 		case red = "red"
 		case blue = "blue"
@@ -213,21 +200,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		case yellowGreen = "yellowgreen"
 	}
 
-	// <color-function> =
-	//   <rgb()>     |
-	//   <rgba()>    |
-	//   <hsl()>     |
-	//   <hsla()>    |
-	//   <hwb()>     |
-	//   <lab()>     |
-	//   <lch()>     |
-	//   <oklab()>   |
-	//   <oklch()>   |
-	//   <ictcp()>   |
-	//   <jzazbz()>  |
-	//   <jzczhz()>  |
-	//   <alpha()>   |
-	//   <color()>
 	public enum ColorFunction: Sendable {
 		case rgb(RGB)
 		case rgba(RGBA)
@@ -280,15 +252,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	// MARK: - RGB Functions
 
-	// <rgb()> = <legacy-rgb-syntax> | <modern-rgb-syntax>
-	// Legacy: rgb( <percentage>#{3} , <alpha-value>? ) | rgb( <number>#{3} , <alpha-value>? )
-	// Modern: rgb( [ from <color> ]? [ <number> | <percentage> | none ]{3} [ / [ <alpha-value> | none ] ]? )
 	public struct RGB: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r), \(g), \(b), \(alpha))"
@@ -297,7 +265,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Legacy syntax with floating-point values
 		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r), \(g), \(b), \(alpha))"
@@ -310,7 +277,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r), \(g), \(b), \(doubleToString(alpha)))"
@@ -319,7 +285,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Legacy syntax with floating-point values
 		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r), \(g), \(b), \(doubleToString(alpha)))"
@@ -332,7 +297,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if !os(WASI)
 
-		// Legacy syntax with percentages
 		public init(_ r: Percentage, _ g: Percentage, _ b: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r.value), \(g.value), \(b.value), \(alpha))"
@@ -345,7 +309,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Legacy syntax with percentages
 		public init(_ r: Percentage, _ g: Percentage, _ b: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "rgb(\(r.value), \(g.value), \(b.value), \(doubleToString(alpha)))"
@@ -361,23 +324,19 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <rgba()> = <legacy-rgba-syntax> | <modern-rgba-syntax>
 	public struct RGBA: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double) {
 			self.components = "rgba(\(r), \(g), \(b), \(alpha))"
 		}
 
-		// Legacy syntax with floating-point values
 		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) {
 			self.components = "rgba(\(r), \(g), \(b), \(alpha))"
 		}
 
-		// Legacy syntax with percentages
 		public init(_ r: Percentage, _ g: Percentage, _ b: Percentage, _ alpha: Double) {
 			self.components = "rgba(\(r.value), \(g.value), \(b.value), \(alpha))"
 		}
@@ -386,17 +345,14 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Legacy syntax with integer values
 		public init(_ r: Int, _ g: Int, _ b: Int, _ alpha: Double) {
 			self.components = "rgba(\(r), \(g), \(b), \(doubleToString(alpha)))"
 		}
 
-		// Legacy syntax with floating-point values
 		public init(_ r: Double, _ g: Double, _ b: Double, _ alpha: Double) {
 			self.components = "rgba(\(r), \(g), \(b), \(doubleToString(alpha)))"
 		}
 
-		// Legacy syntax with percentages
 		public init(_ r: Percentage, _ g: Percentage, _ b: Percentage, _ alpha: Double) {
 			self.components = "rgba(\(r.value), \(g.value), \(b.value), \(doubleToString(alpha)))"
 		}
@@ -410,14 +366,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	// MARK: - HSL Functions
 
-	// <hsl()> = <legacy-hsl-syntax> | <modern-hsl-syntax>
-	// Legacy: hsl( <hue> , <percentage> , <percentage> , <alpha-value>? )
 	public struct HSL: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Hue as number (degrees)
 		public init(_ h: Double, _ s: Percentage, _ l: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "hsl(\(h), \(s.value), \(l.value), \(alpha))"
@@ -426,7 +379,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ h: CSSAngle, _ s: Percentage, _ l: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "hsl(\(h.value), \(s.value), \(l.value), \(alpha))"
@@ -439,7 +391,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Hue as number (degrees)
 		public init(_ h: Double, _ s: Percentage, _ l: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "hsl(\(doubleToString(h)), \(s.value), \(l.value), \(doubleToString(alpha)))"
@@ -448,7 +399,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ h: CSSAngle, _ s: Percentage, _ l: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = "hsl(\(h.value), \(s.value), \(l.value), \(doubleToString(alpha)))"
@@ -464,18 +414,15 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <hsla()> = <legacy-hsla-syntax> | <modern-hsla-syntax>
 	public struct HSLA: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Hue as number (degrees)
 		public init(_ h: Double, _ s: Percentage, _ l: Percentage, _ alpha: Double) {
 			self.components = "hsla(\(h), \(s.value), \(l.value), \(alpha))"
 		}
 
-		// Hue as angle
 		public init(_ h: CSSAngle, _ s: Percentage, _ l: Percentage, _ alpha: Double) {
 			self.components = "hsla(\(h.value), \(s.value), \(l.value), \(alpha))"
 		}
@@ -484,12 +431,10 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Hue as number (degrees)
 		public init(_ h: Double, _ s: Percentage, _ l: Percentage, _ alpha: Double) {
 			self.components = "hsla(\(doubleToString(h)), \(s.value), \(l.value), \(doubleToString(alpha)))"
 		}
 
-		// Hue as angle
 		public init(_ h: CSSAngle, _ s: Percentage, _ l: Percentage, _ alpha: Double) {
 			self.components = "hsla(\(h.value), \(s.value), \(l.value), \(doubleToString(alpha)))"
 		}
@@ -503,13 +448,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	// MARK: - Modern Color Spaces
 
-	// <hwb()> = hwb( [ from <color> ]? [ <hue> | none ] [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct HWB: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Basic syntax with hue as number
 		public init(_ h: Double, _ w: Percentage, _ b: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("hwb(", "\(h)", " ", w.value, " ", b.value, " / ", "\(alpha)", ")")
@@ -518,7 +461,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// With hue as angle
 		public init(_ h: CSSAngle, _ w: Percentage, _ b: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("hwb(", h.value, " ", w.value, " ", b.value, " / ", "\(alpha)", ")")
@@ -531,7 +473,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Basic syntax with hue as number
 		public init(_ h: Double, _ w: Percentage, _ b: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("hwb(", doubleToString(h), " ", w.value, " ", b.value, " / ", doubleToString(alpha), ")")
@@ -540,7 +481,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// With hue as angle
 		public init(_ h: CSSAngle, _ w: Percentage, _ b: Percentage, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("hwb(", h.value, " ", w.value, " ", b.value, " / ", doubleToString(alpha), ")")
@@ -556,7 +496,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <lab()> = lab( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct LAB: Sendable {
 		private let components: String
 
@@ -589,13 +528,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <lch()> = lch( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <hue> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct LCH: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Hue as number
 		public init(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("lch(", "\(l)", " ", "\(c)", " ", "\(h)", " / ", "\(alpha)", ")")
@@ -604,7 +541,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("lch(", "\(l)", " ", "\(c)", " ", h.value, " / ", "\(alpha)", ")")
@@ -617,7 +553,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Hue as number
 		public init(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("lch(", doubleToString(l), " ", doubleToString(c), " ", doubleToString(h), " / ", doubleToString(alpha), ")")
@@ -626,7 +561,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("lch(", doubleToString(l), " ", doubleToString(c), " ", h.value, " / ", doubleToString(alpha), ")")
@@ -642,7 +576,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <oklab()> = oklab( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct OKLAB: Sendable {
 		private let components: String
 
@@ -679,13 +612,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <oklch()> = oklch( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <hue> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct OKLCH: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Hue as number
 		public init(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("oklch(", "\(l)", " ", "\(c)", " ", "\(h)", " / ", "\(alpha)", ")")
@@ -694,7 +625,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("oklch(", "\(l)", " ", "\(c)", " ", h.value, " / ", "\(alpha)", ")")
@@ -703,7 +633,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// CSS variable references for composable tokens
 		public init(l: String, c: String, h: String) {
 			self.components = concat("oklch(", l, " ", c, " ", h, ")")
 		}
@@ -712,7 +641,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Hue as number
 		public init(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("oklch(", doubleToString(l), " ", doubleToString(c), " ", doubleToString(h), " / ", doubleToString(alpha), ")")
@@ -721,7 +649,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("oklch(", doubleToString(l), " ", doubleToString(c), " ", h.value, " / ", doubleToString(alpha), ")")
@@ -730,7 +657,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// CSS variable references for composable tokens
 		public init(l: String, c: String, h: String) {
 			self.components = concat("oklch(", l, " ", c, " ", h, ")")
 		}
@@ -742,7 +668,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <ictcp()> = ictcp( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct ICTCP: Sendable {
 		private let components: String
 
@@ -775,7 +700,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <jzazbz()> = jzazbz( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct JZAZBZ: Sendable {
 		private let components: String
 
@@ -808,13 +732,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <jzczhz()> = jzczhz( [ from <color> ]? [ <percentage> | <number> | none ] [ <percentage> | <number> | none ] [ <hue> | none ] [ / [ <alpha-value> | none ] ]? )
 	public struct JZCZHZ: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Hue as number
 		public init(_ jz: Double, _ cz: Double, _ hz: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("jzczhz(", "\(jz)", " ", "\(cz)", " ", "\(hz)", " / ", "\(alpha)", ")")
@@ -823,7 +745,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ jz: Double, _ cz: Double, _ hz: CSSAngle, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("jzczhz(", "\(jz)", " ", "\(cz)", " ", hz.value, " / ", "\(alpha)", ")")
@@ -836,7 +757,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Hue as number
 		public init(_ jz: Double, _ cz: Double, _ hz: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("jzczhz(", doubleToString(jz), " ", doubleToString(cz), " ", doubleToString(hz), " / ", doubleToString(alpha), ")")
@@ -845,7 +765,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 		}
 
-		// Hue as angle
 		public init(_ jz: Double, _ cz: Double, _ hz: CSSAngle, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("jzczhz(", doubleToString(jz), " ", doubleToString(cz), " ", hz.value, " / ", doubleToString(alpha), ")")
@@ -861,7 +780,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <alpha()> = alpha( [ from <color> ] [ / [ <alpha-value> | none ] ]? )
 	public struct Alpha: Sendable {
 		private let components: String
 
@@ -894,13 +812,11 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <color()> = color( [ from <color> ]? <colorspace-params> [ / [ <alpha-value> | none ] ]? )
 	public struct Color: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Predefined RGB color spaces
 		public init(_ colorSpace: String, _ c1: Double, _ c2: Double, _ c3: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("color(", colorSpace, " ", "\(c1)", " ", "\(c2)", " ", "\(c3)", " / ", "\(alpha)", ")")
@@ -913,7 +829,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Predefined RGB color spaces
 		public init(_ colorSpace: String, _ c1: Double, _ c2: Double, _ c3: Double, _ alpha: Double? = nil) {
 			if let alpha = alpha {
 				self.components = concat("color(", colorSpace, " ", doubleToString(c1), " ", doubleToString(c2), " ", doubleToString(c3), " / ", doubleToString(alpha), ")")
@@ -931,7 +846,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	// MARK: - Utility Functions
 
-	// <light-dark()> = light-dark( <color> , <color> )
 	public struct LightDark: Sendable {
 		public let light: CSSColor
 		public let dark: CSSColor
@@ -946,7 +860,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <color-mix()> = color-mix( <color-interpolation-method>? , [ <color> && <percentage [0,100]>? ]# )
 	public struct ColorMix: Sendable {
 		public let interpolationMethod: String?
 		public let color1: CSSColor
@@ -987,7 +900,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 			}
 			components.append(color2Str)
 
-			// Manual join of components with ", "
 			var result = "color-mix("
 			for (index, component) in components.enumerated() {
 				if index > 0 {
@@ -1000,18 +912,15 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <device-cmyk()> = <legacy-device-cmyk-syntax> | <modern-device-cmyk-syntax>
 	public struct DeviceCmyk: Sendable {
 		private let components: String
 
 	#if !os(WASI)
 
-		// Legacy syntax: device-cmyk( <number>#{4} )
 		public init(_ c: Double, _ m: Double, _ y: Double, _ k: Double) {
 			self.components = concat("device-cmyk(", "\(c)", ", ", "\(m)", ", ", "\(y)", ", ", "\(k)", ")")
 		}
 
-		// Modern syntax with alpha: device-cmyk( <cmyk-component>{4} [ / [ <alpha-value> | none ] ]? )
 		public init(_ c: Double, _ m: Double, _ y: Double, _ k: Double, _ alpha: Double) {
 			self.components = concat("device-cmyk(", "\(c)", " ", "\(m)", " ", "\(y)", " ", "\(k)", " / ", "\(alpha)", ")")
 		}
@@ -1020,12 +929,10 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 
 	#if os(WASI)
 
-		// Legacy syntax: device-cmyk( <number>#{4} )
 		public init(_ c: Double, _ m: Double, _ y: Double, _ k: Double) {
 			self.components = concat("device-cmyk(", doubleToString(c), ", ", doubleToString(m), ", ", doubleToString(y), ", ", doubleToString(k), ")")
 		}
 
-		// Modern syntax with alpha: device-cmyk( <cmyk-component>{4} [ / [ <alpha-value> | none ] ]? )
 		public init(_ c: Double, _ m: Double, _ y: Double, _ k: Double, _ alpha: Double) {
 			self.components = concat("device-cmyk(", doubleToString(c), " ", doubleToString(m), " ", doubleToString(y), " ", doubleToString(k), " / ", doubleToString(alpha), ")")
 		}
@@ -1037,16 +944,30 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 		}
 	}
 
-	// <contrast-color()> - Simplified implementation
 	public struct ContrastColor: Sendable {
-		public let color: CSSColor
+		public let color: CSSColor?
+		private let rawValue: String?
+
+		internal init(_ value: String) {
+			self.color = nil
+			self.rawValue = value
+		}
+
+		public static func variable(_ name: String) -> CSSColor {
+			CSSColor.contrastColor(ContrastColor(concat("var(", name, ")")))
+		}
 
 		public init(_ color: CSSColor) {
 			self.color = color
+			self.rawValue = nil
 		}
 
 		public var value: String {
-			concat("contrast-color(", color.value, ")")
+			if let rawValue = rawValue { return rawValue }
+			if let color = color {
+				return concat("contrast-color(", color.value, ")")
+			}
+			return ""
 		}
 	}
 }
@@ -1054,9 +975,6 @@ public indirect enum CSSColor: ExpressibleByStringLiteral, Sendable {
 // MARK: - Convenience Helper Functions
 
 // MARK: - Hex Colors
-public func hex(_ value: String) -> CSSColor {
-	.colorBase(.hex(value))
-}
 
 public func hex(_ value: Int) -> CSSColor {
 	let hexString = String(value, radix: 16, uppercase: true)
@@ -1065,6 +983,7 @@ public func hex(_ value: Int) -> CSSColor {
 }
 
 // MARK: - RGB/RGBA
+
 public func rgb(_ r: Int, _ g: Int, _ b: Int) -> CSSColor {
 	.colorBase(.colorFunction(.rgb(CSSColor.RGB(r, g, b))))
 }
@@ -1106,6 +1025,7 @@ public func rgba(_ r: Percentage, _ g: Percentage, _ b: Percentage, _ alpha: Dou
 }
 
 // MARK: - HSL/HSLA
+
 public func hsl(_ h: Double, _ s: Percentage, _ l: Percentage) -> CSSColor {
 	.colorBase(.colorFunction(.hsl(CSSColor.HSL(h, s, l))))
 }
@@ -1131,6 +1051,7 @@ public func hsla(_ h: CSSAngle, _ s: Percentage, _ l: Percentage, _ alpha: Doubl
 }
 
 // MARK: - HWB
+
 public func hwb(_ h: Double, _ w: Percentage, _ b: Percentage) -> CSSColor {
 	.colorBase(.colorFunction(.hwb(CSSColor.HWB(h, w, b))))
 }
@@ -1148,6 +1069,7 @@ public func hwb(_ h: CSSAngle, _ w: Percentage, _ b: Percentage, _ alpha: Double
 }
 
 // MARK: - LAB
+
 public func lab(_ l: Double, _ a: Double, _ b: Double) -> CSSColor {
 	.colorBase(.colorFunction(.lab(CSSColor.LAB(l, a, b))))
 }
@@ -1157,6 +1079,7 @@ public func lab(_ l: Double, _ a: Double, _ b: Double, _ alpha: Double) -> CSSCo
 }
 
 // MARK: - LCH
+
 public func lch(_ l: Double, _ c: Double, _ h: Double) -> CSSColor {
 	.colorBase(.colorFunction(.lch(CSSColor.LCH(l, c, h))))
 }
@@ -1174,6 +1097,7 @@ public func lch(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double) -> CSS
 }
 
 // MARK: - Oklab
+
 public func oklab(_ l: Double, _ a: Double, _ b: Double) -> CSSColor {
 	.colorBase(.colorFunction(.oklab(CSSColor.OKLAB(l, a, b))))
 }
@@ -1187,6 +1111,7 @@ public func oklab(from color: CSSColor, _ l: CSSOKLABComponent, _ a: CSSOKLABCom
 }
 
 // MARK: - Oklch
+
 public func oklch(_ l: Double, _ c: Double, _ h: Double) -> CSSColor {
 	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h))))
 }
@@ -1207,6 +1132,14 @@ public func oklch(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double) -> CSS
 	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h, alpha))))
 }
 
+public func oklch(l: Double, c: Double, h: CSSAngle) -> CSSColor {
+	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h))))
+}
+
+public func oklch(l: Double, c: Double, h: CSSAngle, alpha: Double) -> CSSColor {
+	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h, alpha))))
+}
+
 public func oklch(_ l: Double, _ c: Double, _ h: CSSAngle) -> CSSColor {
 	.colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h))))
 }
@@ -1216,6 +1149,7 @@ public func oklch(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double) -> C
 }
 
 // MARK: - ICTCP
+
 public func ictcp(_ i: Double, _ ct: Double, _ cp: Double) -> CSSColor {
 	.colorBase(.colorFunction(.ictcp(CSSColor.ICTCP(i, ct, cp))))
 }
@@ -1225,6 +1159,7 @@ public func ictcp(_ i: Double, _ ct: Double, _ cp: Double, _ alpha: Double) -> C
 }
 
 // MARK: - Jzazbz
+
 public func jzazbz(_ jz: Double, _ az: Double, _ bz: Double) -> CSSColor {
 	.colorBase(.colorFunction(.jzazbz(CSSColor.JZAZBZ(jz, az, bz))))
 }
@@ -1234,6 +1169,7 @@ public func jzazbz(_ jz: Double, _ az: Double, _ bz: Double, _ alpha: Double) ->
 }
 
 // MARK: - Jzczhz
+
 public func jzczhz(_ jz: Double, _ cz: Double, _ hz: Double) -> CSSColor {
 	.colorBase(.colorFunction(.jzczhz(CSSColor.JZCZHZ(jz, cz, hz))))
 }
@@ -1251,6 +1187,7 @@ public func jzczhz(_ jz: Double, _ cz: Double, _ hz: CSSAngle, _ alpha: Double) 
 }
 
 // MARK: - Color function
+
 public func color(_ colorSpace: String, _ c1: Double, _ c2: Double, _ c3: Double) -> CSSColor {
 	.colorBase(.colorFunction(.color(CSSColor.Color(colorSpace, c1, c2, c3))))
 }
@@ -1260,36 +1197,31 @@ public func color(_ colorSpace: String, _ c1: Double, _ c2: Double, _ c3: Double
 }
 
 // MARK: - Utility functions
+
 public func lightDark(_ light: CSSColor, _ dark: CSSColor) -> CSSColor {
 	.lightDark(CSSColor.LightDark(light, dark))
 }
 
-// colorMix syntax: colorMix(in: .oklab, .red, (.blue, perc(50)))
 public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: (CSSColor, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1, nil, color2.0, color2.1)))
 }
 
-// colorMix with transparent keyword in tuple
 public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1, nil, CSSColor(color2.0), color2.1)))
 }
 
-// colorMix with both percentages
 public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1.0, color1.1, color2.0, color2.1)))
 }
 
-// colorMix with transparent in second tuple
 public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSColor, Percentage), _ color2: (CSSKeyword.Transparent, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1.0, color1.1, CSSColor(color2.0), color2.1)))
 }
 
-// colorMix with transparent in first tuple
 public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: (CSSKeyword.Transparent, Percentage), _ color2: (CSSColor, Percentage)) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, CSSColor(color1.0), color1.1, color2.0, color2.1)))
 }
 
-// colorMix without percentages
 public func colorMix(in interpolationMethod: CSSColorInterpolationMethod, _ color1: CSSColor, _ color2: CSSColor) -> CSSColor {
 	.colorBase(.colorMix(CSSColor.ColorMix(in: interpolationMethod.value, color1, nil, color2, nil)))
 }
@@ -1385,6 +1317,7 @@ public func contrastColor(_ color: CSSColor) -> CSSColor {
 }
 
 // MARK: - Implicit conversions for NamedColor and Keywords
+
 extension CSSColor {
 	public init(_ color: NamedColor) {
 		self = .colorBase(.namedColor(color))
@@ -1400,6 +1333,7 @@ extension CSSColor {
 }
 
 // MARK: - Static Properties
+
 public extension CSSColor {
 	static var currentColor: CSSColor { .currentColor(.currentColor) }
 	static var red: CSSColor { .colorBase(.namedColor(.red)) }

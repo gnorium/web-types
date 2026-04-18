@@ -30,6 +30,9 @@ public struct CSSMaskLayer: Sendable {
 		case url(String)
 		case custom(String)
 
+		@_disfavoredOverload
+		public static var none: MaskReference { .none(.none) }
+
 		public var value: String {
 			switch self {
 			case .none(let keyword):
@@ -123,6 +126,9 @@ public struct CSSMaskLayer: Sendable {
 		case auto(CSSKeyword.Auto)
 		case twoLengths(Length, Length)
 		case custom(String)
+
+		@_disfavoredOverload
+		public static var auto: BgSize { .auto(.auto) }
 
 		public var value: String {
 			switch self {
@@ -228,6 +234,7 @@ public struct CSSMaskLayer: Sendable {
 	}
 
 	#if !os(WASI)
+
 	public var value: String {
 		var components: [String] = []
 

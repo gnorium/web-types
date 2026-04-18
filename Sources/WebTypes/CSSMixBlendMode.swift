@@ -4,7 +4,6 @@ public enum CSSMixBlendMode: String {
 
 	/// Initialize from CSSBlendMode
 	public init(_ blendMode: CSSBlendMode) {
-		self.init(rawValue: blendMode.rawValue)!
+		self.init(rawValue: blendMode.value)!
 	}
 }
-

@@ -4,7 +4,7 @@ import EmbeddedSwiftUtilities
 
 #endif
 
-// <dashed-ident> = CSSProtocol custom property identifier starting with --
+// <dashed-ident> = CSSContent custom property identifier starting with --
 public struct CSSDashedIdent: Sendable {
 	public let value: String
 

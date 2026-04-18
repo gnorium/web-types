@@ -1,13 +1,5 @@
-public struct CSSBorder: ExpressibleByStringLiteral, Sendable {
+public struct CSSBorder: Sendable, CSSVariableConvertible {
 	public let value: String
-
-	public init(stringLiteral value: String) {
-		self.value = value
-	}
-
-	public init(_ value: String) {
-		self.value = value
-	}
 
 	public init(width: LineWidth? = nil, style: LineStyle? = nil, color: CSSColor? = nil) {
 		var buffer: [UInt8] = []
@@ -25,35 +17,24 @@ public struct CSSBorder: ExpressibleByStringLiteral, Sendable {
 		self.value = String(decoding: buffer, as: UTF8.self)
 	}
 
-	public static var none: CSSBorder {
-		CSSBorder(style: LineStyle.none)
+	internal init(_ value: String) {
+		self.value = value
 	}
 
-	public enum LineWidth: ExpressibleByStringLiteral, Sendable {
+	public static func variable(_ name: String) -> CSSBorder {
+		CSSBorder(concat("var(", name, ")"))
+	}
+
+	public static var none: CSSBorder {
+		CSSBorder(CSSKeyword.None.none.rawValue)
+	}
+
+
+	public enum LineWidth: Sendable {
 		case length(Length)
 		case thin
 		case medium
 		case thick
-        case custom(String)
-
-		public init(stringLiteral value: String) {
-            #if os(WASI)
-            
-            self = .custom(value)
-            
-            #endif
-
-            #if !os(WASI)
-			
-            switch value {
-			case "thin": self = .thin
-			case "medium": self = .medium
-			case "thick": self = .thick
-			default: self = .length(Length(stringLiteral: value))
-			}
-            
-            #endif
-		}
 
 		public var value: String {
 			switch self {
@@ -61,12 +42,11 @@ public struct CSSBorder: ExpressibleByStringLiteral, Sendable {
                 case .thin: return "thin"
                 case .medium: return "medium"
                 case .thick: return "thick"
-                case .custom(let str): return str
 			}
 		}
 	}
 
-	public enum LineStyle: ExpressibleByStringLiteral, Sendable {
+	public enum LineStyle: Sendable, CSSVariableConvertible {
 		case none(CSSKeyword.None)
 		case hidden
 		case dotted
@@ -77,33 +57,10 @@ public struct CSSBorder: ExpressibleByStringLiteral, Sendable {
 		case ridge
 		case inset
 		case outset
-        case custom(String)
+		case variable(String)
 
-		public init(stringLiteral value: String) {
-            #if os(WASI)
-            
-            self = .custom(value)
-            
-            #endif
-
-            #if !os(WASI)
-			
-            switch value {
-                case "none": self = .none(.none)
-                case "hidden": self = .hidden
-                case "dotted": self = .dotted
-                case "dashed": self = .dashed
-                case "solid": self = .solid
-                case "double": self = .double
-                case "groove": self = .groove
-                case "ridge": self = .ridge
-                case "inset": self = .inset
-                case "outset": self = .outset
-                default: self = .solid
-			}
-
-            #endif
-		}
+		@_disfavoredOverload
+		public static var none: LineStyle { .none(.none) }
 
 		public var value: String {
 			switch self {
@@ -117,12 +74,9 @@ public struct CSSBorder: ExpressibleByStringLiteral, Sendable {
 			case .ridge: return "ridge"
 			case .inset: return "inset"
 			case .outset: return "outset"
-            case .custom(let str): return str
+			case .variable(let name): return concat("var(", name, ")")
 			}
 		}
 
-		public static var none: LineStyle {
-			.none(.none)
-		}
 	}
 }

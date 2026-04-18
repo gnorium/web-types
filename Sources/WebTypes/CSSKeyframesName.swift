@@ -1,12 +1,12 @@
 // <keyframes-name> = <custom-ident> | <string>
 // Used in: [ none | <keyframes-name> ]
-public enum CSSKeyframesName: Sendable, ExpressibleByStringLiteral {
+public enum CSSKeyframesName: Sendable {
 	case none(CSSKeyword.None)
 	case name(String)
+    
+	@_disfavoredOverload
+	public static var none: Self { .none(.none) }
 
-	public init(stringLiteral value: String) {
-		self = .name(value)
-	}
 
 	public var value: String {
 		switch self {

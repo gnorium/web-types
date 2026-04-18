@@ -1,7 +1,7 @@
-public struct HTMLLocale: ExpressibleByStringLiteral, CustomStringConvertible, Sendable {
+public struct HTMLLocale: CustomStringConvertible, Sendable {
 	public let value: String
 
-	public init(stringLiteral value: String) {
+	internal init(_ value: String) {
 		self.value = value
 	}
 
@@ -10,6 +10,6 @@ public struct HTMLLocale: ExpressibleByStringLiteral, CustomStringConvertible, S
 	}
 
 	// Common locales
-	public static let enUS = HTMLLocale(stringLiteral: "en_US")
-	public static let enGB = HTMLLocale(stringLiteral: "en_GB")
+	public static let enUS = HTMLLocale("en_US")
+	public static let enGB = HTMLLocale("en_GB")
 }
