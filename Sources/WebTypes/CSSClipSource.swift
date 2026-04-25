@@ -1,18 +1,14 @@
-#if os(WASI)
-
-import EmbeddedSwiftUtilities
-
+#if CLIENT
+  import EmbeddedSwiftUtilities
 #endif
 
-// <clip-source> = <url>
-
 public enum CSSClipSource: Sendable {
-	case url(String)
+  case url(String)
 
-	public var value: String {
-		switch self {
-		case .url(let urlValue):
-			return WebTypes.url("\(urlValue)")
-		}
-	}
+  public var value: String {
+    switch self {
+    case .url(let urlValue):
+      return WebTypes.url("\(urlValue)")
+    }
+  }
 }

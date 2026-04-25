@@ -1,4 +1,4 @@
 public enum CSSBorderCollapse: String {
-	case collapse = "collapse"
-	case separate = "separate"
+  case collapse = "collapse"
+  case separate = "separate"
 }

@@ -1,11 +1,7 @@
-
-
 /// Predefined callback status string constants
 public enum JSCallbackStatus {
-    public static let ready: String = "ready"
-    public static let error: String = "error"
-    public static let success: String = "success"
-    public static let progress: String = "progress"
+  public static let ready: String = "ready"
+  public static let error: String = "error"
+  public static let success: String = "success"
+  public static let progress: String = "progress"
 }
-
-

@@ -1,45 +1,23 @@
-#if os(WASI)
-
 import EmbeddedSwiftUtilities
 
-#endif
+public struct CSSNumber: Sendable, CSSVariableConvertible, ExpressibleByIntegerLiteral,
+  ExpressibleByFloatLiteral
+{
+  public let value: String
 
-// <number> - CSSContent number data type
-// Represents a number, being either an integer, a number with a fractional component,
-// or a base-ten exponent in scientific notation.
-public struct CSSNumber: Sendable, CSSVariableConvertible {
-	public let value: String
+  public init(integerLiteral value: Int) {
+    self.value = intToString(value)
+  }
 
+  public init(floatLiteral value: Double) {
+    self.value = doubleToString(value)
+  }
 
-	internal init(_ value: String) {
-		self.value = value
-	}
+  internal init(_ value: String) {
+    self.value = value
+  }
 
-	public static func variable(_ name: String) -> CSSNumber {
-		CSSNumber(concat("var(", name, ")"))
-	}
-
-	#if !os(WASI)
-
-	public init(_ value: Int) {
-		self.value = "\(value)"
-	}
-
-	public init(_ value: Double) {
-		self.value = "\(value)"
-	}
-
-	#endif
-
-	#if os(WASI)
-
-	public init(_ value: Int) {
-		self.value = intToString(value)
-	}
-
-	public init(_ value: Double) {
-		self.value = doubleToString(value)
-	}
-
-	#endif
+  public static func variable(_ name: String) -> CSSNumber {
+    CSSNumber("var(\(name))")
+  }
 }

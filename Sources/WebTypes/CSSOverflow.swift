@@ -1,21 +1,26 @@
-public enum CSSOverflow: String, Sendable {
-	case visible = "visible"
-	case hidden = "hidden"
-	case scroll = "scroll"
-	case auto = "auto"
-	case clip = "clip"
+public enum CSSOverflow: Sendable {
+  case visible
+  case hidden
+  case scroll
+  case clip
 
-	public init(_ keyword: CSSKeyword.Auto) {
-		self = .auto
-	}
+  public static var auto: CSSKeyword.Auto { .auto }
 
-	public var staticRawValue: StaticString {
-		switch self {
-		case .visible: return "visible"
-		case .hidden: return "hidden"
-		case .scroll: return "scroll"
-		case .auto: return "auto"
-		case .clip: return "clip"
-		}
-	}
+  public var rawValue: String {
+    switch self {
+    case .visible: return "visible"
+    case .hidden: return "hidden"
+    case .scroll: return "scroll"
+    case .clip: return "clip"
+    }
+  }
+
+  public var staticRawValue: StaticString {
+    switch self {
+    case .visible: return "visible"
+    case .hidden: return "hidden"
+    case .scroll: return "scroll"
+    case .clip: return "clip"
+    }
+  }
 }

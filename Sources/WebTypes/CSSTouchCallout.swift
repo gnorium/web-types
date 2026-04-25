@@ -1,14 +1,11 @@
 public enum CSSTouchCallout: Sendable {
-	case `default`
-	case none(CSSKeyword.None)
+  case `default`
 
-	@_disfavoredOverload
-	public static var none: Self { .none(.none) }
+  public static var none: CSSKeyword.None { .none }
 
-    public var rawValue: String {
-        switch self {
-        case .default: return "default"
-        case .none(let keyword): return keyword.rawValue
-        }
+  public var rawValue: String {
+    switch self {
+    case .default: return "default"
     }
+  }
 }

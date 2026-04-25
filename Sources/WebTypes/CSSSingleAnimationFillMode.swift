@@ -1,19 +1,15 @@
 public enum CSSSingleAnimationFillMode: Sendable {
-	case none(CSSKeyword.None)
+  case forwards
+  case backwards
+  case both
 
-	@_disfavoredOverload
-	public static var none: Self { .none(.none) }
+  public static var none: CSSKeyword.None { .none }
 
-	case forwards
-	case backwards
-	case both
-
-    public var rawValue: String {
-        switch self {
-        case .none(let keyword): return keyword.rawValue
-        case .forwards: return "forwards"
-        case .backwards: return "backwards"
-        case .both: return "both"
-        }
+  public var rawValue: String {
+    switch self {
+    case .forwards: return "forwards"
+    case .backwards: return "backwards"
+    case .both: return "both"
     }
+  }
 }

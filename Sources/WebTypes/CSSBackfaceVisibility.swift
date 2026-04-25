@@ -1,4 +1,4 @@
 public enum CSSBackfaceVisibility: String {
-	case visible = "visible"
-	case hidden = "hidden"
+  case visible = "visible"
+  case hidden = "hidden"
 }

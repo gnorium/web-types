@@ -1,53 +1,43 @@
-#if os(WASI)
-
 import EmbeddedSwiftUtilities
 
-#endif
-
 public struct Percentage: CustomStringConvertible, Sendable, CSSVariableConvertible {
-	public let value: String
+  public let value: String
 
-	public static func variable(_ name: String) -> Percentage {
-		Percentage(concat("var(", name, ")"))
-	}
+  public static func variable(_ name: String) -> Percentage {
+    Percentage("var(\(name))")
+  }
 
-	internal init(_ value: String) {
-		self.value = value
-	}
+  internal init(_ value: String) {
+    self.value = value
+  }
 
-	#if !os(WASI)
+  public init(_ value: Double) {
+    #if SERVER
+      self.value = "\(doubleToString(value))%"
+    #endif
+    #if CLIENT
+      self.value = "\(doubleToString(value))%"
+    #endif
+  }
 
-	public init(_ value: Double) {
-		self.value = "\(value)%"
-	}
+  public init(_ value: Int) {
+    #if SERVER
+      self.value = "\(value)%"
+    #endif
+    #if CLIENT
+      self.value = "\(intToString(value))%"
+    #endif
+  }
 
-	public init(_ value: Int) {
-		self.value = "\(value)%"
-	}
-
-	#endif
-
-	#if os(WASI)
-
-	public init(_ value: Double) {
-		self.value = concat(doubleToString(value), "%")
-	}
-
-	public init(_ value: Int) {
-		self.value = concat(intToString(value), "%")
-	}
-
-	#endif
-
-	public var description: String {
-		value
-	}
+  public var description: String {
+    value
+  }
 }
 
 public func perc(_ value: Double) -> Percentage {
-	Percentage(value)
+  Percentage(value)
 }
 
 public func perc(_ value: Int) -> Percentage {
-	Percentage(value)
+  Percentage(value)
 }

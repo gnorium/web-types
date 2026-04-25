@@ -1,32 +1,36 @@
-public struct LengthPercentage: Sendable, CustomStringConvertible, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
-	public let value: String
+import EmbeddedSwiftUtilities
 
-	public init(_ length: Length) {
-		self.value = length.value
-	}
+public struct LengthPercentage: Sendable, CSSVariableConvertible, ExpressibleByIntegerLiteral,
+  ExpressibleByFloatLiteral
+{
+  public let value: String
 
-	public init(_ percentage: Percentage) {
-		self.value = percentage.value
-	}
+  public init(integerLiteral value: Int) {
+    #if SERVER
+      self.value = "\(value)px"
+    #endif
+    #if CLIENT
+      self.value = "\(intToString(value))px"
+    #endif
+  }
 
-	internal init(_ value: String) {
-		self.value = value
-	}
+  public init(floatLiteral value: Double) {
+    self.value = "\(doubleToString(value))px"
+  }
 
-	public init(integerLiteral value: Int) {
-		self.value = "\(value)px"
-	}
+  internal init(_ value: String) {
+    self.value = value
+  }
 
-	public init(floatLiteral value: Double) {
-		self.value = "\(value)px"
-	}
+  public init(_ length: Length) {
+    self.value = length.value
+  }
 
+  public init(_ percentage: Percentage) {
+    self.value = percentage.value
+  }
 
-	public var lengthPercentage: LengthPercentage {
-		self
-	}
-
-	public var description: String {
-		value
-	}
+  public static func variable(_ name: String) -> LengthPercentage {
+    LengthPercentage("var(\(name))")
+  }
 }

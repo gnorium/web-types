@@ -1,4 +1,4 @@
 public enum CSSTableLayout: String {
-	case auto = "auto"
-	case fixed = "fixed"
+  case auto = "auto"
+  case fixed = "fixed"
 }

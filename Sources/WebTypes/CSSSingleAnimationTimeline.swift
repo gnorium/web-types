@@ -1,28 +1,20 @@
 // <single-animation-timeline> = auto | none | <dashed-ident> | <scroll()> | <view()>
 public enum CSSSingleAnimationTimeline: Sendable {
-	case auto(CSSKeyword.Auto)
-	case none(CSSKeyword.None)
-	case dashedIdent(CSSDashedIdent)
-	case scroll(CSSScroll)
-	case view(CSSView)
-    
-	@_disfavoredOverload
-	public static var auto: Self { .auto(.auto) }
-	@_disfavoredOverload
-	public static var none: Self { .none(.none) }
+  case dashedIdent(CSSDashedIdent)
+  case scroll(CSSScroll)
+  case view(CSSView)
 
-	public var value: String {
-		switch self {
-		case .auto(let keyword):
-			return keyword.rawValue
-		case .none(let keyword):
-			return keyword.rawValue
-		case .dashedIdent(let ident):
-			return ident.value
-		case .scroll(let scroll):
-			return scroll.value
-		case .view(let view):
-			return view.value
-		}
-	}
+  public static var none: CSSKeyword.None { .none }
+  public static var auto: CSSKeyword.Auto { .auto }
+
+  public var value: String {
+    switch self {
+    case .dashedIdent(let ident):
+      return ident.value
+    case .scroll(let scroll):
+      return scroll.value
+    case .view(let view):
+      return view.value
+    }
+  }
 }

@@ -1,161 +1,93 @@
-// <spread-shadow> =
-//   <'box-shadow-color'>? &&
-//   [ [ none | <length>{2} ] [ <'box-shadow-blur'> <'box-shadow-spread'>? ]? ] &&
-//   <'box-shadow-position'>?
+import EmbeddedSwiftUtilities
+
 public struct CSSSpreadShadow: Sendable, CSSVariableConvertible {
-	private let colorValue: String?
-	public let offsetX: Length?
-	public let offsetY: Length?
-	public let isNone: Bool
-	public let blur: BoxShadowBlur?
-	public let spread: BoxShadowSpread?
-	private let position: BoxShadowPosition?
-	private let rawValue: String?
+  public let value: String
 
+  public static var none: CSSKeyword.None { .none }
 
-	public init(
-		color: BoxShadowColor,
-		offsetX: Length? = nil,
-		offsetY: Length? = nil,
-		isNone: Bool = false,
-		blur: BoxShadowBlur? = nil,
-		spread: BoxShadowSpread? = nil,
-		position: BoxShadowPosition? = nil
-	) {
-		self.colorValue = color.value
-		self.offsetX = offsetX
-		self.offsetY = offsetY
-		self.isNone = isNone
-		self.blur = blur
-		self.spread = spread
-		self.position = position
-		self.rawValue = nil
-	}
+  public init(_ value: String) {
+    self.value = value
+  }
 
-	internal init(_ value: String) {
-		self.colorValue = nil
-		self.offsetX = nil
-		self.offsetY = nil
-		self.isNone = false
-		self.blur = nil
-		self.spread = nil
-		self.position = nil
-		self.rawValue = value
-	}
+  public init(
+    inset: Bool = false,
+    offsetX: Length,
+    offsetY: Length,
+    blurRadius: Length? = nil,
+    spreadRadius: Length? = nil,
+    color: CSSColor? = nil
+  ) {
+    var res = inset ? "inset " : ""
+    res = "\(res)\(offsetX.value) \(offsetY.value)"
+    if let blur = blurRadius {
+      res = "\(res) \(blur.value)"
+    }
+    if let spread = spreadRadius {
+      res = "\(res) \(spread.value)"
+    }
+    if let c = color {
+      res = "\(res) \(c.value)"
+    }
+    self.value = res
+  }
 
-	public static func variable(_ name: String) -> CSSSpreadShadow {
-		CSSSpreadShadow(concat("var(", name, ")"))
-	}
+  public init(
+    color: BoxShadowColor? = nil,
+    offsetX: Length,
+    offsetY: Length,
+    blur: BoxShadowBlur? = nil,
+    spread: BoxShadowSpread? = nil,
+    position: BoxShadowPosition? = nil
+  ) {
+    var res = ""
+    if let pos = position, pos == .inset {
+      res += "inset "
+    }
+    res += "\(offsetX.value) \(offsetY.value)"
+    if let b = blur {
+      res += " \(b.value)"
+    }
+    if let s = spread {
+      res += " \(s.value)"
+    }
+    if let c = color {
+      res += " \(c.value)"
+    }
+    self.value = res
+  }
 
-	#if !os(WASI)
+  public static func variable(_ name: String) -> CSSSpreadShadow {
+    CSSSpreadShadow("var(\(name))")
+  }
 
-	public var value: String {
-		if let rawValue = rawValue { return rawValue }
-		var components: [String] = []
+  public struct BoxShadowColor: Sendable, CSSVariableConvertible {
+    public let value: String
+    public init(_ color: CSSColor) { self.value = color.value }
+    public init(_ value: String) { self.value = value }
+    public static func variable(_ name: String) -> BoxShadowColor {
+      BoxShadowColor("var(\(name))")
+    }
+  }
 
-		if isNone {
-			components.append("none")
-		} else {
-			if let colorValue = colorValue {
-				components.append(colorValue)
-			}
-			if let offsetX = offsetX, let offsetY = offsetY {
-				components.append(offsetX.value)
-				components.append(offsetY.value)
-			}
-			if let blur = blur {
-				components.append(blur.value)
-			}
-			if let spread = spread {
-				components.append(spread.value)
-			}
-			if let position = position {
-				components.append(position.rawValue)
-			}
-		}
+  public enum BoxShadowPosition: String, Sendable {
+    case inset = "inset"
+  }
 
-		return components.joined(separator: " ")
-	}
-	#endif
+  public struct BoxShadowBlur: Sendable, CSSVariableConvertible {
+    public let value: String
+    public init(_ length: Length) { self.value = length.value }
+    public static func variable(_ name: String) -> BoxShadowBlur {
+      BoxShadowBlur(value: "var(\(name))")
+    }
+    internal init(value: String) { self.value = value }
+  }
 
-	#if os(WASI)
-	public var value: String {
-		if let rawValue = rawValue { return rawValue }
-		var buffer: [UInt8] = []
-		var hasContent = false
-
-		if isNone {
-			buffer.append(contentsOf: "none".utf8)
-		} else {
-			if let colorValue = colorValue {
-				buffer.append(contentsOf: colorValue.utf8)
-				hasContent = true
-			}
-			if let offsetX = offsetX, let offsetY = offsetY {
-				if hasContent { buffer.append(32) }
-				buffer.append(contentsOf: offsetX.value.utf8)
-				buffer.append(32)
-				buffer.append(contentsOf: offsetY.value.utf8)
-				hasContent = true
-			}
-			if let blur = blur {
-				if hasContent { buffer.append(32) }
-				buffer.append(contentsOf: blur.value.utf8)
-				hasContent = true
-			}
-			if let spread = spread {
-				if hasContent { buffer.append(32) }
-				buffer.append(contentsOf: spread.value.utf8)
-				hasContent = true
-			}
-			if let position = position {
-				if hasContent { buffer.append(32) }
-				buffer.append(contentsOf: position.rawValue.utf8)
-			}
-		}
-
-		return String(decoding: buffer, as: UTF8.self)
-	}
-	#endif
-
-	// <box-shadow-color> = <color>#
-	public struct BoxShadowColor: Sendable {
-		public let value: String
-
-		public init(_ color: CSSColor) {
-			self.value = color.value
-		}
-	}
-
-	// <box-shadow-blur> = <length [0,∞]>#
-	public struct BoxShadowBlur: Sendable {
-		public let length: Length
-
-		public init(_ length: Length) {
-			self.length = length
-		}
-
-		public var value: String {
-			length.value
-		}
-	}
-
-	// <box-shadow-spread> = <length>#
-	public struct BoxShadowSpread: Sendable {
-		public let length: Length
-
-		public init(_ length: Length) {
-			self.length = length
-		}
-
-		public var value: String {
-			length.value
-		}
-	}
-
-	// <box-shadow-position> = [ outset | inset ]#
-	public enum BoxShadowPosition: String, Sendable {
-		case outset = "outset"
-		case inset = "inset"
-	}
+  public struct BoxShadowSpread: Sendable, CSSVariableConvertible {
+    public let value: String
+    public init(_ length: Length) { self.value = length.value }
+    public static func variable(_ name: String) -> BoxShadowSpread {
+      BoxShadowSpread(value: "var(\(name))")
+    }
+    internal init(value: String) { self.value = value }
+  }
 }

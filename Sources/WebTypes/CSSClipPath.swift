@@ -1,34 +1,20 @@
-#if os(WASI)
-
 import EmbeddedSwiftUtilities
 
-#endif
-
-// <clip-path> = <clip-source> | [ <basic-shape> || <geometry-box> ] | none
-
-// <clip-path> enum
 public enum CSSClipPath: Sendable {
-	case none(CSSKeyword.None)
-    
-	@_disfavoredOverload
-	public static var none: Self { .none(.none) }
-	case clipSource(CSSClipSource)
-	case basicShape(CSSBasicShape)
-	case basicShapeWithBox(CSSBasicShape, CSSGeometryBox)
-	case geometryBox(CSSGeometryBox)
+  case shape(CSSBasicShape)
+  case geometryBox(CSSGeometryBox)
+  case shapeBox(CSSBasicShape, CSSGeometryBox)
 
-	public var value: String {
-		switch self {
-		case .none(let keyword):
-			return keyword.rawValue
-		case .clipSource(let source):
-			return source.value
-		case .basicShape(let shape):
-			return shape.value
-		case .basicShapeWithBox(let shape, let box):
-			return "\(shape.value) \(box.rawValue)"
-		case .geometryBox(let box):
-			return box.rawValue
-		}
-	}
+  public static var none: CSSKeyword.None { .none }
+
+  public var value: String {
+    switch self {
+    case .shape(let shape):
+      return shape.value
+    case .geometryBox(let box):
+      return box.rawValue
+    case .shapeBox(let shape, let box):
+      return "\(shape.value) \(box.rawValue)"
+    }
+  }
 }
