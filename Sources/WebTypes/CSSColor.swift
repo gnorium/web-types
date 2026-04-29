@@ -642,6 +642,10 @@ extension CSSColor {
       self.components = "oklch(\(l) \(c) \(h))"
     }
 
+    public init(from origin: CSSColor, l: CSSValue, c: CSSValue, h: CSSValue) {
+      self.components = "oklch(from \(origin.value) \(l.value) \(c.value) \(h.value))"
+    }
+
     public var value: String {
       components
     }
@@ -1082,6 +1086,22 @@ public func oklch(l: Double, c: Double, h: String) -> CSSColor {
   .colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l: "\(l)", c: "\(c)", h: h))))
 }
 
+public func oklch(l: CSSValue, c: CSSValue, h: CSSValue) -> CSSColor {
+  oklch(l: l.value, c: c.value, h: h.value)
+}
+
+public func oklch(l: CSSValue, c: Double, h: CSSValue) -> CSSColor {
+  oklch(l: l.value, c: "\(c)", h: h.value)
+}
+
+public func oklch(l: Double, c: Double, h: CSSValue) -> CSSColor {
+  oklch(l: "\(l)", c: "\(c)", h: h.value)
+}
+
+public func oklch(l: String, c: String, h: CSSValue) -> CSSColor {
+  oklch(l: l, c: c, h: h.value)
+}
+
 public func oklch(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double) -> CSSColor {
   .colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h, alpha))))
 }
@@ -1100,6 +1120,10 @@ public func oklch(_ l: Double, _ c: Double, _ h: CSSAngle) -> CSSColor {
 
 public func oklch(_ l: Double, _ c: Double, _ h: CSSAngle, _ alpha: Double) -> CSSColor {
   .colorBase(.colorFunction(.oklch(CSSColor.OKLCH(l, c, h, alpha))))
+}
+
+public func oklch(from origin: CSSColor, l: CSSValue, c: CSSValue, h: CSSValue) -> CSSColor {
+  .colorBase(.colorFunction(.oklch(CSSColor.OKLCH(from: origin, l: l, c: c, h: h))))
 }
 
 // MARK: - ICTCP

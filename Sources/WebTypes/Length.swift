@@ -276,6 +276,15 @@ public func * (lhs: Double, rhs: Length) -> Length {
   #endif
 }
 
+public func * (lhs: Percentage, rhs: Int) -> Length {
+  #if SERVER
+    return Length("\(lhs.value) * \(rhs)")
+  #endif
+  #if CLIENT
+    return Length("\(lhs.value) * \(intToString(rhs))")
+  #endif
+}
+
 public func / (lhs: Length, rhs: Int) -> Length {
   #if SERVER
     return Length("\(lhs.value) / \(rhs)")

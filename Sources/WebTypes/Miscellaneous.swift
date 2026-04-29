@@ -240,3 +240,15 @@ public func * (lhs: Percentage, rhs: Length) -> Length {
 public func / (lhs: Percentage, rhs: Length) -> Length {
   Length("\(lhs.value) / \(rhs.value)")
 }
+
+public func + (lhs: CSSValue, rhs: Percentage) -> Length {
+  Length("\(lhs.value) + \(rhs.value)")
+}
+
+public func * (lhs: Double, rhs: CSSValue) -> Length {
+  Length("\(doubleToString(lhs)) * \(rhs.value)")
+}
+
+public func * (lhs: CSSValue, rhs: CSSValue) -> Length {
+  Length("\(lhs.value) * \(rhs.value)")
+}

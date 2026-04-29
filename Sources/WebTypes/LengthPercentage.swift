@@ -1,9 +1,12 @@
 import EmbeddedSwiftUtilities
 
-public struct LengthPercentage: Sendable, CSSVariableConvertible, ExpressibleByIntegerLiteral,
-  ExpressibleByFloatLiteral
+public struct LengthPercentage: Sendable, CSSVariableConvertible, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, CustomStringConvertible
 {
   public let value: String
+
+  public var description: String {
+    value
+  }
 
   public init(integerLiteral value: Int) {
     #if SERVER
