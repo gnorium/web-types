@@ -1,4 +1,5 @@
 public enum CSSTableLayout: String {
-  case auto = "auto"
   case fixed = "fixed"
+
+  public static var auto: CSSKeyword.Auto { .auto }
 }

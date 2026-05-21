@@ -42,6 +42,7 @@ public enum TagName {
   case strong
   case b
   case pre
+  case path
 
   public var value: StaticString {
     switch self {
@@ -88,6 +89,7 @@ public enum TagName {
     case .strong: return "strong"
     case .b: return "b"
     case .pre: return "pre"
+    case .path: return "path"
     }
   }
 }

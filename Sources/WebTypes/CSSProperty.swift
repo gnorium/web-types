@@ -14,28 +14,6 @@ extension CSSProperty where Value == CSSColor {
   public static var fill: CSSProperty<CSSColor> { .init(.fill) }
 }
 
-extension CSSProperty where Value == Length {
-  public static var width: CSSProperty<Length> { .init(.width) }
-  public static var height: CSSProperty<Length> { .init(.height) }
-  public static var top: CSSProperty<Length> { .init(.top) }
-  public static var left: CSSProperty<Length> { .init(.left) }
-  public static var right: CSSProperty<Length> { .init(.right) }
-  public static var bottom: CSSProperty<Length> { .init(.bottom) }
-  public static var margin: CSSProperty<Length> { .init(.margin) }
-  public static var padding: CSSProperty<Length> { .init(.padding) }
-}
-
-extension CSSProperty where Value == Percentage {
-  public static var width: CSSProperty<Percentage> { .init(.width) }
-  public static var height: CSSProperty<Percentage> { .init(.height) }
-  public static var top: CSSProperty<Percentage> { .init(.top) }
-  public static var left: CSSProperty<Percentage> { .init(.left) }
-  public static var right: CSSProperty<Percentage> { .init(.right) }
-  public static var bottom: CSSProperty<Percentage> { .init(.bottom) }
-  public static var margin: CSSProperty<Percentage> { .init(.margin) }
-  public static var padding: CSSProperty<Percentage> { .init(.padding) }
-}
-
 extension CSSProperty where Value == LengthPercentage {
   public static var width: CSSProperty<LengthPercentage> { .init(.width) }
   public static var height: CSSProperty<LengthPercentage> { .init(.height) }
@@ -45,6 +23,9 @@ extension CSSProperty where Value == LengthPercentage {
   public static var bottom: CSSProperty<LengthPercentage> { .init(.bottom) }
   public static var margin: CSSProperty<LengthPercentage> { .init(.margin) }
   public static var padding: CSSProperty<LengthPercentage> { .init(.padding) }
+  public static var minWidth: CSSProperty<LengthPercentage> { .init(.minWidth) }
+  public static var gap: CSSProperty<LengthPercentage> { .init(.gap) }
+  public static var marginLeft: CSSProperty<LengthPercentage> { .init(.marginLeft) }
 }
 
 extension CSSProperty where Value == Double {
@@ -82,4 +63,33 @@ extension CSSProperty where Value == String {
   public static var transform: CSSProperty<String> { .init(.transform) }
   public static var transition: CSSProperty<String> { .init(.transition) }
   public static var animation: CSSProperty<String> { .init(.animation) }
+  public static var maxWidth: CSSProperty<String> { .init(.maxWidth) }
+}
+
+extension CSSProperty where Value == CSSOverflow {
+  public static var overflow: CSSProperty<CSSOverflow> { .init(.overflow) }
+}
+
+extension CSSProperty where Value == CSSTextOverflow {
+  public static var textOverflow: CSSProperty<CSSTextOverflow> { .init(.textOverflow) }
+}
+
+extension CSSProperty where Value == CSSWhiteSpace {
+  public static var whiteSpace: CSSProperty<CSSWhiteSpace> { .init(.whiteSpace) }
+}
+
+extension CSSProperty where Value == CSSVerticalAlign {
+  public static var verticalAlign: CSSProperty<CSSVerticalAlign> { .init(.verticalAlign) }
+}
+
+extension CSSProperty where Value == CSSAlignItems {
+  public static var alignItems: CSSProperty<CSSAlignItems> { .init(.alignItems) }
+}
+
+extension CSSProperty where Value == CSSJustifyContent {
+  public static var justifyContent: CSSProperty<CSSJustifyContent> { .init(.justifyContent) }
+}
+
+extension CSSProperty where Value == CSSBorderCollapse {
+  public static var borderCollapse: CSSProperty<CSSBorderCollapse> { .init(.borderCollapse) }
 }

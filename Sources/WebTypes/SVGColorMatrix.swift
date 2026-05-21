@@ -3,18 +3,16 @@
 #endif
 
 public struct SVGColorMatrix: Sendable {
-  public typealias Row = (Double, Double, Double, Double, Double)
-
-  public let r: Row
-  public let g: Row
-  public let b: Row
-  public let a: Row
+  public let r: (Double, Double, Double, Double, Double)
+  public let g: (Double, Double, Double, Double, Double)
+  public let b: (Double, Double, Double, Double, Double)
+  public let a: (Double, Double, Double, Double, Double)
 
   public init(
-    _ r: Row,
-    _ g: Row,
-    _ b: Row,
-    _ a: Row
+    _ r: (Double, Double, Double, Double, Double),
+    _ g: (Double, Double, Double, Double, Double),
+    _ b: (Double, Double, Double, Double, Double),
+    _ a: (Double, Double, Double, Double, Double)
   ) {
     self.r = r
     self.g = g

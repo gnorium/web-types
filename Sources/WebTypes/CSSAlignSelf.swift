@@ -1,5 +1,4 @@
 public enum CSSAlignSelf: String, Sendable {
-  case auto = "auto"
   case normal = "normal"
   case stretch = "stretch"
   case center = "center"
@@ -12,4 +11,6 @@ public enum CSSAlignSelf: String, Sendable {
   case baseline = "baseline"
   case firstBaseline = "first baseline"
   case lastBaseline = "last baseline"
+
+  public static var auto: CSSKeyword.Auto { .auto }
 }

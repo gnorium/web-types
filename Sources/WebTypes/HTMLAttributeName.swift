@@ -29,6 +29,7 @@
     case open = "open"
     case tabindex = "tabindex"
     case name = "name"
+    case action = "action"
     case `for` = "for"
     case type = "type"
     case role = "role"
@@ -43,6 +44,7 @@
     case autocapitalize = "autocapitalize"
     case autocorrect = "autocorrect"
     case spellcheck = "spellcheck"
+    case draggable = "draggable"
 
     // Nested marker enums for type-safe value resolution
 
@@ -96,6 +98,7 @@
     case open
     case tabindex
     case name
+    case action
     case `for`
     case type
     case role
@@ -110,6 +113,7 @@
     case autocapitalize
     case autocorrect
     case spellcheck
+    case draggable
 
     public var rawValue: String {
       switch self {
@@ -142,6 +146,7 @@
       case .open: return "open"
       case .tabindex: return "tabindex"
       case .name: return "name"
+      case .action: return "action"
       case .for: return "for"
       case .type: return "type"
       case .role: return "role"
@@ -156,6 +161,7 @@
       case .autocapitalize: return "autocapitalize"
       case .autocorrect: return "autocorrect"
       case .spellcheck: return "spellcheck"
+      case .draggable: return "draggable"
       }
     }
 
@@ -218,6 +224,8 @@
         self = .tabindex
       } else if stringEquals(rawValue, "name") {
         self = .name
+      } else if stringEquals(rawValue, "action") {
+        self = .action
       } else if stringEquals(rawValue, "for") {
         self = .for
       } else if stringEquals(rawValue, "type") {
@@ -246,6 +254,8 @@
         self = .autocorrect
       } else if stringEquals(rawValue, "spellcheck") {
         self = .spellcheck
+      } else if stringEquals(rawValue, "draggable") {
+        self = .draggable
       } else {
         return nil
       }

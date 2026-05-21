@@ -16,4 +16,14 @@ public enum CSSTextTransform: Sendable {
     case .fullSizeKana: return "full-size-kana"
     }
   }
+
+  public var staticRawValue: StaticString {
+    switch self {
+    case .capitalize: return "capitalize"
+    case .uppercase: return "uppercase"
+    case .lowercase: return "lowercase"
+    case .fullWidth: return "full-width"
+    case .fullSizeKana: return "full-size-kana"
+    }
+  }
 }

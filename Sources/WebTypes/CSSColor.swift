@@ -568,7 +568,7 @@ extension CSSColor {
     public init(
       from color: CSSColor, _ l: CSSOKLABComponent, _ a: CSSOKLABComponent, _ b: CSSOKLABComponent
     ) {
-      self.components = "oklab(from \(color.value) \(l.rawValue) \(a.rawValue) \(b.rawValue))"
+      self.components = "oklab(from \(color.value) \(l.rawValue) \(a.rawValue) \(b.rawValue) / alpha)"
     }
 
     #if SERVER
@@ -643,7 +643,7 @@ extension CSSColor {
     }
 
     public init(from origin: CSSColor, l: CSSValue, c: CSSValue, h: CSSValue) {
-      self.components = "oklch(from \(origin.value) \(l.value) \(c.value) \(h.value))"
+      self.components = "oklch(from \(origin.value) \(l.value) \(c.value) \(h.value) / alpha)"
     }
 
     public var value: String {
@@ -1100,6 +1100,10 @@ public func oklch(l: Double, c: Double, h: CSSValue) -> CSSColor {
 
 public func oklch(l: String, c: String, h: CSSValue) -> CSSColor {
   oklch(l: l, c: c, h: h.value)
+}
+
+public func oklch(l: Double, c: CSSValue, h: CSSValue) -> CSSColor {
+  oklch(l: CSSValue(l), c: c, h: h)
 }
 
 public func oklch(_ l: Double, _ c: Double, _ h: Double, _ alpha: Double) -> CSSColor {

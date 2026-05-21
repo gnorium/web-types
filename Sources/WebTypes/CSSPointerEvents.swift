@@ -9,6 +9,7 @@ public enum CSSPointerEvents: Sendable {
 
   public static var none: CSSKeyword.None { .none }
   public static var auto: CSSKeyword.Auto { .auto }
+  public static var all: CSSKeyword.All { .all }
 
   public var rawValue: String {
     switch self {

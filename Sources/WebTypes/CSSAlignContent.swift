@@ -1,6 +1,8 @@
 public enum CSSAlignContent: String {
   case flexStart = "flex-start"
   case flexEnd = "flex-end"
+  case start = "start"
+  case end = "end"
   case center = "center"
   case spaceBetween = "space-between"
   case spaceAround = "space-around"

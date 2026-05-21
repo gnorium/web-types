@@ -1,7 +1,5 @@
 /// Values for the SVG dominant-baseline property.
 public enum CSSDominantBaseline: String, Sendable {
-  /// Use the parent's value.
-  case auto
   /// Use the middle of the alphabetic baseline.
   case middle
   /// Align to the center of the em box.
@@ -18,4 +16,6 @@ public enum CSSDominantBaseline: String, Sendable {
   case textAfterEdge = "text-after-edge"
   /// Align current text position relative to the parent's text-before-edge baseline.
   case textBeforeEdge = "text-before-edge"
+
+  public static var auto: CSSKeyword.Auto { .auto }
 }

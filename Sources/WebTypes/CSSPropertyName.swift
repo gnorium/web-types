@@ -25,6 +25,18 @@ public enum CSSPropertyName: Sendable {
   case stroke
   case fill
   case strokeWidth
+  case tableLayout
+  case minWidth
+  case maxWidth
+  case textOverflow
+  case whiteSpace
+  case flexShrink
+  case gap
+  case verticalAlign
+  case marginLeft
+  case alignItems
+  case justifyContent
+  case borderCollapse
 
   public var rawValue: StaticString {
     switch self {
@@ -54,6 +66,18 @@ public enum CSSPropertyName: Sendable {
     case .stroke: return "stroke"
     case .fill: return "fill"
     case .strokeWidth: return "stroke-width"
+    case .tableLayout: return "table-layout"
+    case .minWidth: return "min-width"
+    case .maxWidth: return "max-width"
+    case .textOverflow: return "text-overflow"
+    case .whiteSpace: return "white-space"
+    case .flexShrink: return "flex-shrink"
+    case .gap: return "gap"
+    case .verticalAlign: return "vertical-align"
+    case .marginLeft: return "margin-left"
+    case .alignItems: return "align-items"
+    case .justifyContent: return "justify-content"
+    case .borderCollapse: return "border-collapse"
     }
   }
 }

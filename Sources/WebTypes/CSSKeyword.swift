@@ -41,6 +41,15 @@
       case minContent = "min-content"
       case fitContent = "fit-content"
       case stretch = "stretch"
+
+      public var staticRawValue: StaticString {
+        switch self {
+        case .maxContent: return "max-content"
+        case .minContent: return "min-content"
+        case .fitContent: return "fit-content"
+        case .stretch: return "stretch"
+        }
+      }
     }
 
     public enum Global: String, CustomStringConvertible, Sendable {
@@ -177,6 +186,14 @@
           self = .stretch
         } else {
           return nil
+        }
+      }
+      public var staticRawValue: StaticString {
+        switch self {
+        case .maxContent: return "max-content"
+        case .minContent: return "min-content"
+        case .fitContent: return "fit-content"
+        case .stretch: return "stretch"
         }
       }
     }
