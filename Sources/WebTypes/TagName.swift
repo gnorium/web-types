@@ -39,6 +39,7 @@ public enum TagName {
   case select
   case option
   case textarea
+  case sup
   case strong
   case b
   case pre
@@ -86,6 +87,7 @@ public enum TagName {
     case .select: return "select"
     case .option: return "option"
     case .textarea: return "textarea"
+    case .sup: return "sup"
     case .strong: return "strong"
     case .b: return "b"
     case .pre: return "pre"
