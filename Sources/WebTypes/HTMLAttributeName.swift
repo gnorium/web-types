@@ -1,3 +1,5 @@
+import EmbeddedSwiftUtilities
+
 #if SERVER
   public enum HTMLAttributeName: String, Sendable {
     case ariaDisabled = "aria-disabled"
@@ -48,17 +50,17 @@
 
     // Nested marker enums for type-safe value resolution
 
-    /// Marker for `type` attribute - only accepts HTMLButton.Type values
+    /// Marker for `type` attribute - only accepts HTML.Button.Type values
     public enum `Type`: Sendable {
       case type
     }
 
-    /// Marker for `role` attribute - only accepts ARIARole values
+    /// Marker for `role` attribute - only accepts ARIA.Role values
     public enum Role: Sendable {
       case role
     }
 
-    /// Marker for `aria-live` attribute - only accepts ARIALive values
+    /// Marker for `aria-live` attribute - only accepts ARIA.Live values
     public enum AriaLive: Sendable {
       case ariaLive
     }
@@ -263,17 +265,17 @@
 
     // Nested marker enums for type-safe value resolution
 
-    /// Marker for `type` attribute - only accepts HTMLButton.Type values
+    /// Marker for `type` attribute - only accepts HTML.Button.Type values
     public enum `Type`: Sendable {
       case type
     }
 
-    /// Marker for `role` attribute - only accepts ARIARole values
+    /// Marker for `role` attribute - only accepts ARIA.Role values
     public enum Role: Sendable {
       case role
     }
 
-    /// Marker for `aria-live` attribute - only accepts ARIALive values
+    /// Marker for `aria-live` attribute - only accepts ARIA.Live values
     public enum AriaLive: Sendable {
       case ariaLive
     }

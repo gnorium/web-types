@@ -79,6 +79,7 @@ public enum CSSPropertyName: Sendable {
   case paddingTop
   case textDecoration
   case userSelect
+  case textAlign
 
   public var rawValue: StaticString {
     switch self {
@@ -162,6 +163,7 @@ public enum CSSPropertyName: Sendable {
     case .paddingTop: return "padding-top"
     case .textDecoration: return "text-decoration"
     case .userSelect: return "user-select"
+    case .textAlign: return "text-align"
     }
   }
 }

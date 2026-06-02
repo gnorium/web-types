@@ -4,23 +4,23 @@ public func url(_ string: String) -> String {
   "url(\(string))"
 }
 
-public func calc(_ string: String) -> LengthPercentage {
-  LengthPercentage("calc(\(string))")
+public func calc(_ string: String) -> CSS.LengthPercentage {
+  CSS.LengthPercentage("calc(\(string))")
 }
 
-public func calc(_ length: Length) -> LengthPercentage {
-  LengthPercentage("calc(\(length.value))")
+public func calc(_ length: CSS.Length) -> CSS.LengthPercentage {
+  CSS.LengthPercentage("calc(\(length.value))")
 }
 
-public func calc(_ percentage: Percentage) -> LengthPercentage {
-  LengthPercentage("calc(\(percentage.value))")
+public func calc(_ percentage: CSS.Percentage) -> CSS.LengthPercentage {
+  CSS.LengthPercentage("calc(\(percentage.value))")
 }
 
-public func calc(_ value: LengthPercentage) -> LengthPercentage {
-  LengthPercentage("calc(\(value.value))")
+public func calc(_ value: CSS.LengthPercentage) -> CSS.LengthPercentage {
+  CSS.LengthPercentage("calc(\(value.value))")
 }
 
-public func max(_ values: Length...) -> LengthPercentage {
+public func max(_ values: CSS.Length...) -> CSS.LengthPercentage {
   var buffer: [UInt8] = []
   buffer.append(contentsOf: "max(".utf8)
   for (index, value) in values.enumerated() {
@@ -30,10 +30,10 @@ public func max(_ values: Length...) -> LengthPercentage {
     buffer.append(contentsOf: value.value.utf8)
   }
   buffer.append(41)  // ')'
-  return LengthPercentage(String(decoding: buffer, as: UTF8.self))
+  return CSS.LengthPercentage(String(decoding: buffer, as: UTF8.self))
 }
 
-public func max(_ values: LengthPercentage...) -> LengthPercentage {
+public func max(_ values: CSS.LengthPercentage...) -> CSS.LengthPercentage {
   var buffer: [UInt8] = []
   buffer.append(contentsOf: "max(".utf8)
   for (index, value) in values.enumerated() {
@@ -43,10 +43,10 @@ public func max(_ values: LengthPercentage...) -> LengthPercentage {
     buffer.append(contentsOf: value.value.utf8)
   }
   buffer.append(41)  // ')'
-  return LengthPercentage(String(decoding: buffer, as: UTF8.self))
+  return CSS.LengthPercentage(String(decoding: buffer, as: UTF8.self))
 }
 
-public func max(_ values: String...) -> LengthPercentage {
+public func max(_ values: String...) -> CSS.LengthPercentage {
   var buffer: [UInt8] = []
   buffer.append(contentsOf: "max(".utf8)
   for (index, value) in values.enumerated() {
@@ -56,26 +56,26 @@ public func max(_ values: String...) -> LengthPercentage {
     buffer.append(contentsOf: value.utf8)
   }
   buffer.append(41)  // ')'
-  return LengthPercentage(String(decoding: buffer, as: UTF8.self))
+  return CSS.LengthPercentage(String(decoding: buffer, as: UTF8.self))
 }
 
-public func max(_ value1: String, _ value2: Length) -> LengthPercentage {
-  return LengthPercentage("max(\(value1), \(value2.value))")
+public func max(_ value1: String, _ value2: CSS.Length) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("max(\(value1), \(value2.value))")
 }
 
-public func max(_ value1: LengthPercentage, _ value2: Length) -> LengthPercentage {
-  return LengthPercentage("max(\(value1.value), \(value2.value))")
+public func max(_ value1: CSS.LengthPercentage, _ value2: CSS.Length) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("max(\(value1.value), \(value2.value))")
 }
 
-public func max(_ value1: Length, _ value2: String) -> LengthPercentage {
-  return LengthPercentage("max(\(value1.value), \(value2))")
+public func max(_ value1: CSS.Length, _ value2: String) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("max(\(value1.value), \(value2))")
 }
 
-public func max(_ value1: Length, _ value2: LengthPercentage) -> LengthPercentage {
-  return LengthPercentage("max(\(value1.value), \(value2.value))")
+public func max(_ value1: CSS.Length, _ value2: CSS.LengthPercentage) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("max(\(value1.value), \(value2.value))")
 }
 
-public func min(_ values: Length...) -> LengthPercentage {
+public func min(_ values: CSS.Length...) -> CSS.LengthPercentage {
   var buffer: [UInt8] = []
   buffer.append(contentsOf: "min(".utf8)
   for (index, value) in values.enumerated() {
@@ -85,10 +85,10 @@ public func min(_ values: Length...) -> LengthPercentage {
     buffer.append(contentsOf: value.value.utf8)
   }
   buffer.append(41)  // ')'
-  return LengthPercentage(String(decoding: buffer, as: UTF8.self))
+  return CSS.LengthPercentage(String(decoding: buffer, as: UTF8.self))
 }
 
-public func min(_ values: LengthPercentage...) -> LengthPercentage {
+public func min(_ values: CSS.LengthPercentage...) -> CSS.LengthPercentage {
   var buffer: [UInt8] = []
   buffer.append(contentsOf: "min(".utf8)
   for (index, value) in values.enumerated() {
@@ -98,10 +98,10 @@ public func min(_ values: LengthPercentage...) -> LengthPercentage {
     buffer.append(contentsOf: value.value.utf8)
   }
   buffer.append(41)  // ')'
-  return LengthPercentage(String(decoding: buffer, as: UTF8.self))
+  return CSS.LengthPercentage(String(decoding: buffer, as: UTF8.self))
 }
 
-public func min(_ values: String...) -> LengthPercentage {
+public func min(_ values: String...) -> CSS.LengthPercentage {
   var buffer: [UInt8] = []
   buffer.append(contentsOf: "min(".utf8)
   for (index, value) in values.enumerated() {
@@ -111,63 +111,63 @@ public func min(_ values: String...) -> LengthPercentage {
     buffer.append(contentsOf: value.utf8)
   }
   buffer.append(41)  // ')'
-  return LengthPercentage(String(decoding: buffer, as: UTF8.self))
+  return CSS.LengthPercentage(String(decoding: buffer, as: UTF8.self))
 }
 
-public func min(_ value1: String, _ value2: Length) -> LengthPercentage {
-  return LengthPercentage("min(\(value1), \(value2.value))")
+public func min(_ value1: String, _ value2: CSS.Length) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("min(\(value1), \(value2.value))")
 }
 
-public func min(_ value1: LengthPercentage, _ value2: Length) -> LengthPercentage {
-  return LengthPercentage("min(\(value1.value), \(value2.value))")
+public func min(_ value1: CSS.LengthPercentage, _ value2: CSS.Length) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("min(\(value1.value), \(value2.value))")
 }
 
-public func min(_ value1: Length, _ value2: String) -> LengthPercentage {
-  return LengthPercentage("min(\(value1.value), \(value2))")
+public func min(_ value1: CSS.Length, _ value2: String) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("min(\(value1.value), \(value2))")
 }
 
-public func min(_ value1: Length, _ value2: LengthPercentage) -> LengthPercentage {
-  return LengthPercentage("min(\(value1.value), \(value2.value))")
+public func min(_ value1: CSS.Length, _ value2: CSS.LengthPercentage) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("min(\(value1.value), \(value2.value))")
 }
 
-public func clamp(_ min: Length, _ preferred: Length, _ max: Length) -> LengthPercentage {
-  return LengthPercentage("clamp(\(min.value), \(preferred.value), \(max.value))")
+public func clamp(_ min: CSS.Length, _ preferred: CSS.Length, _ max: CSS.Length) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("clamp(\(min.value), \(preferred.value), \(max.value))")
 }
 
-public func clamp(_ min: LengthPercentage, _ preferred: LengthPercentage, _ max: LengthPercentage)
-  -> LengthPercentage
+public func clamp(_ min: CSS.LengthPercentage, _ preferred: CSS.LengthPercentage, _ max: CSS.LengthPercentage)
+  -> CSS.LengthPercentage
 {
-  return LengthPercentage("clamp(\(min.value), \(preferred.value), \(max.value))")
+  return CSS.LengthPercentage("clamp(\(min.value), \(preferred.value), \(max.value))")
 }
 
-public func clamp(_ min: String, _ preferred: String, _ max: String) -> LengthPercentage {
-  return LengthPercentage("clamp(\(min), \(preferred), \(max))")
+public func clamp(_ min: String, _ preferred: String, _ max: String) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("clamp(\(min), \(preferred), \(max))")
 }
 
-public func clamp(_ min: Length, _ preferred: String, _ max: Length) -> LengthPercentage {
-  return LengthPercentage("clamp(\(min.value), \(preferred), \(max.value))")
+public func clamp(_ min: CSS.Length, _ preferred: String, _ max: CSS.Length) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("clamp(\(min.value), \(preferred), \(max.value))")
 }
 
-public func clamp(_ min: String, _ preferred: Length, _ max: String) -> LengthPercentage {
-  return LengthPercentage("clamp(\(min), \(preferred.value), \(max))")
+public func clamp(_ min: String, _ preferred: CSS.Length, _ max: String) -> CSS.LengthPercentage {
+  return CSS.LengthPercentage("clamp(\(min), \(preferred.value), \(max))")
 }
 
 public func rect(_ top: Int, _ right: Int, _ bottom: Int, _ left: Int) -> String {
   "rect(\(top)px, \(right)px, \(bottom)px, \(left)px)"
 }
 
-public func rect(_ top: Length, _ right: Length, _ bottom: Length, _ left: Length) -> String {
+public func rect(_ top: CSS.Length, _ right: CSS.Length, _ bottom: CSS.Length, _ left: CSS.Length) -> String {
   "rect(\(top.value), \(right.value), \(bottom.value), \(left.value))"
 }
 
-public func orientation(_ value: CSSOrientation) -> String {
+public func orientation(_ value: CSS.Orientation) -> String {
   value.rawValue.withUTF8Buffer { buffer in
     let str = String(decoding: buffer, as: UTF8.self)
     return "(orientation: \(str))"
   }
 }
 
-public func prefersColorScheme(_ scheme: CSSPrefersColorScheme) -> StaticString {
+public func prefersColorScheme(_ scheme: CSS.PrefersColorScheme) -> StaticString {
   switch scheme {
   case .light:
     return "(prefers-color-scheme: light)"
@@ -176,7 +176,7 @@ public func prefersColorScheme(_ scheme: CSSPrefersColorScheme) -> StaticString 
   }
 }
 
-public func prefersContrast(_ scheme: CSSPrefersContrast) -> StaticString {
+public func prefersContrast(_ scheme: CSS.PrefersContrast) -> StaticString {
   switch scheme {
   case .more:
     return "(prefers-contrast: more)"
@@ -187,104 +187,104 @@ public func prefersContrast(_ scheme: CSSPrefersContrast) -> StaticString {
   }
 }
 
-// Operators for calc() expressions are now in Length.swift
+// Operators for calc() expressions are now in CSS.Length.swift
 
 public func data(_ name: String) -> String {
   "data-\(name)"
 }
 
-public func + (lhs: Percentage, rhs: Percentage) -> Length {
-  Length("\(lhs.value) + \(rhs.value)")
+public func + (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) + \(rhs.value)")
 }
 
-public func - (lhs: Percentage, rhs: Percentage) -> Length {
-  Length("\(lhs.value) - \(rhs.value)")
+public func - (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) - \(rhs.value)")
 }
 
-public func * (lhs: Percentage, rhs: Percentage) -> Length {
-  Length("\(lhs.value) * \(rhs.value)")
+public func * (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) * \(rhs.value)")
 }
 
-public func / (lhs: Percentage, rhs: Percentage) -> Length {
-  Length("\(lhs.value) / \(rhs.value)")
+public func / (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) / \(rhs.value)")
 }
 
-public func + (lhs: Length, rhs: Percentage) -> Length {
-  Length("\(lhs.value) + \(rhs.value)")
+public func + (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) + \(rhs.value)")
 }
 
-public func - (lhs: Length, rhs: Percentage) -> Length {
-  Length("\(lhs.value) - \(rhs.value)")
+public func - (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) - \(rhs.value)")
 }
 
-public func * (lhs: Length, rhs: Percentage) -> Length {
-  Length("\(lhs.value) * \(rhs.value)")
+public func * (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) * \(rhs.value)")
 }
 
-public func / (lhs: Length, rhs: Percentage) -> Length {
-  Length("\(lhs.value) / \(rhs.value)")
+public func / (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) / \(rhs.value)")
 }
 
-public func + (lhs: Percentage, rhs: Length) -> Length {
-  Length("\(lhs.value) + \(rhs.value)")
+public func + (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
+  CSS.Length("\(lhs.value) + \(rhs.value)")
 }
 
-public func - (lhs: Percentage, rhs: Length) -> Length {
-  Length("\(lhs.value) - \(rhs.value)")
+public func - (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
+  CSS.Length("\(lhs.value) - \(rhs.value)")
 }
 
-public func * (lhs: Percentage, rhs: Length) -> Length {
-  Length("\(lhs.value) * \(rhs.value)")
+public func * (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
+  CSS.Length("\(lhs.value) * \(rhs.value)")
 }
 
-public func / (lhs: Percentage, rhs: Length) -> Length {
-  Length("\(lhs.value) / \(rhs.value)")
+public func / (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
+  CSS.Length("\(lhs.value) / \(rhs.value)")
 }
 
-public func + (lhs: CSSValue, rhs: Percentage) -> Length {
-  Length("\(lhs.value) + \(rhs.value)")
+public func + (lhs: CSS.Value, rhs: CSS.Percentage) -> CSS.Length {
+  CSS.Length("\(lhs.value) + \(rhs.value)")
 }
 
-public func * (lhs: Double, rhs: CSSValue) -> Length {
-  Length("\(doubleToString(lhs)) * \(rhs.value)")
+public func * (lhs: Double, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(doubleToString(lhs)) * \(rhs.value)")
 }
 
-public func * (lhs: CSSValue, rhs: CSSValue) -> Length {
-  Length("\(lhs.value) * \(rhs.value)")
+public func * (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(lhs.value) * \(rhs.value)")
 }
 
-public func + (lhs: CSSValue, rhs: CSSValue) -> Length {
-  Length("\(lhs.value) + \(rhs.value)")
+public func + (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(lhs.value) + \(rhs.value)")
 }
 
-public func - (lhs: CSSValue, rhs: CSSValue) -> Length {
-  Length("\(lhs.value) - \(rhs.value)")
+public func - (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(lhs.value) - \(rhs.value)")
 }
 
-public func / (lhs: CSSValue, rhs: CSSValue) -> Length {
-  Length("\(lhs.value) / \(rhs.value)")
+public func / (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(lhs.value) / \(rhs.value)")
 }
 
-public func + (lhs: CSSValue, rhs: Double) -> Length {
-  Length("\(lhs.value) + \(doubleToString(rhs))")
+public func + (lhs: CSS.Value, rhs: Double) -> CSS.Length {
+  CSS.Length("\(lhs.value) + \(doubleToString(rhs))")
 }
 
-public func - (lhs: CSSValue, rhs: Double) -> Length {
-  Length("\(lhs.value) - \(doubleToString(rhs))")
+public func - (lhs: CSS.Value, rhs: Double) -> CSS.Length {
+  CSS.Length("\(lhs.value) - \(doubleToString(rhs))")
 }
 
-public func / (lhs: CSSValue, rhs: Double) -> Length {
-  Length("\(lhs.value) / \(doubleToString(rhs))")
+public func / (lhs: CSS.Value, rhs: Double) -> CSS.Length {
+  CSS.Length("\(lhs.value) / \(doubleToString(rhs))")
 }
 
-public func + (lhs: Double, rhs: CSSValue) -> Length {
-  Length("\(doubleToString(lhs)) + \(rhs.value)")
+public func + (lhs: Double, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(doubleToString(lhs)) + \(rhs.value)")
 }
 
-public func - (lhs: Double, rhs: CSSValue) -> Length {
-  Length("\(doubleToString(lhs)) - \(rhs.value)")
+public func - (lhs: Double, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(doubleToString(lhs)) - \(rhs.value)")
 }
 
-public func / (lhs: Double, rhs: CSSValue) -> Length {
-  Length("\(doubleToString(lhs)) / \(rhs.value)")
+public func / (lhs: Double, rhs: CSS.Value) -> CSS.Length {
+  CSS.Length("\(doubleToString(lhs)) / \(rhs.value)")
 }

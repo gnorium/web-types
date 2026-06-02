@@ -7,7 +7,7 @@ public protocol CSSVariableConvertible: Sendable {
 }
 
 /// A fluent helper for referencing CSS variables.
-/// Example: `public let glyphRed: CSSColor = var("--glyph-red")`
+/// Example: `public let glyphRed: CSS.Color = var("--glyph-red")`
 public func `var`<T: CSSVariableConvertible>(_ name: String) -> T {
   T.variable(name)
 }

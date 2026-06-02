@@ -1,3 +1,5 @@
+import EmbeddedSwiftUtilities
+
 #if SERVER
   public enum SVGAttributeName: String, Sendable {
     case d = "d"
