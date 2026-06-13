@@ -5,7 +5,9 @@ extension CSS {
     case transform
     case opacity
     case width
+    case minWidth
     case height
+    case border
     case color
     case backgroundColor
     case borderColor
@@ -54,7 +56,9 @@ extension CSS {
       case .transform: return "transform"
       case .opacity: return "opacity"
       case .width: return "width"
+      case .minWidth: return "min-width"
       case .height: return "height"
+      case .border: return "border"
       case .color: return "color"
       case .backgroundColor: return "background-color"
       case .borderColor: return "border-color"
@@ -102,7 +106,9 @@ extension CSS {
       case .transform: return "transform"
       case .opacity: return "opacity"
       case .width: return "width"
+      case .minWidth: return "min-width"
       case .height: return "height"
+      case .border: return "border"
       case .color: return "color"
       case .backgroundColor: return "background-color"
       case .borderColor: return "border-color"

@@ -32,6 +32,8 @@ extension CSS {
       Length("var(\(name))")
     }
 
+    public static var auto: CSS.Keyword.Auto { .auto }
+
     public var description: String {
       value
     }
