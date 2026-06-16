@@ -695,6 +695,23 @@ public func linearGradient(
   return .linear(CSS.Image.Gradient.LinearGradient(direction: .toSide(direction), colorStops: stops))
 }
 
+// Linear gradient — transparent as first stop
+public func linearGradient(
+  to direction: CSS.GradientDirection, _ first: CSS.Keyword.Transparent, _ rest: CSS.Color...
+) -> CSS.Image.Gradient {
+  var stops = [CSS.Image.Gradient.ColorStop(CSS.Color(first))]
+  stops.append(contentsOf: rest.map { CSS.Image.Gradient.ColorStop($0) })
+  return .linear(CSS.Image.Gradient.LinearGradient(direction: .toSide(direction), colorStops: stops))
+}
+
+// Linear gradient — transparent as last stop
+public func linearGradient(
+  to direction: CSS.GradientDirection, _ first: CSS.Color, _ last: CSS.Keyword.Transparent
+) -> CSS.Image.Gradient {
+  let stops = [CSS.Image.Gradient.ColorStop(first), CSS.Image.Gradient.ColorStop(CSS.Color(last))]
+  return .linear(CSS.Image.Gradient.LinearGradient(direction: .toSide(direction), colorStops: stops))
+}
+
 // Linear gradient with angle
 public func linearGradient(
   _ angle: CSS.Angle, _ first: (CSS.Color, CSS.Percentage), _ rest: (CSS.Color, CSS.Percentage)...

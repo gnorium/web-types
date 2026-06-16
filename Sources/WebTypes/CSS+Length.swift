@@ -149,6 +149,24 @@ public func vh(_ double: Double) -> CSS.Length {
   #endif
 }
 
+public func dvh(_ int: Int) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(int)dvh")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(intToString(int))dvh")
+  #endif
+}
+
+public func dvh(_ double: Double) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(doubleToString(double))dvh")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(doubleToString(double))dvh")
+  #endif
+}
+
 public func fr(_ int: Int) -> CSS.Length {
   #if SERVER
     return CSS.Length("\(int)fr")
