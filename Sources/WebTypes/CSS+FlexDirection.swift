@@ -1,5 +1,5 @@
 extension CSS {
-  public enum FlexDirection: String {
+  public enum FlexDirection: String, Sendable {
     case row = "row"
     case rowReverse = "row-reverse"
     case column = "column"
