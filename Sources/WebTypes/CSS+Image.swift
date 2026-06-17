@@ -338,11 +338,11 @@ extension CSS {
             if let size = size {
               shapeAndSize.append(size.value)
             }
+            if let position = position {
+              shapeAndSize.append("at \(position.value)")
+            }
             if !shapeAndSize.isEmpty {
               components.append(shapeAndSize.joined(separator: " "))
-            }
-            if let position = position {
-              components.append("at \(position.value)")
             }
             components.append(contentsOf: colorStops.map { $0.value })
             return "radial-gradient(\(components.joined(separator: ", ")))"
@@ -355,24 +355,18 @@ extension CSS {
             buffer.append(contentsOf: "radial-gradient(".utf8)
             var first = true
 
-            // Handle shape and size
+            // shape, size and position are space-separated in the first argument
             if let shape = shape {
               buffer.append(contentsOf: shape.rawValue.utf8)
               first = false
             }
             if let size = size {
-              if !first {
-                buffer.append(32)  // space
-              }
+              if !first { buffer.append(32) }  // space
               buffer.append(contentsOf: size.value.utf8)
               first = false
             }
-
-            // Handle position
             if let position = position {
-              if !first {
-                buffer.append(contentsOf: ", ".utf8)
-              }
+              if !first { buffer.append(32) }  // space
               buffer.append(contentsOf: "at ".utf8)
               buffer.append(contentsOf: position.value.utf8)
               first = false
@@ -419,11 +413,11 @@ extension CSS {
             if let size = size {
               shapeAndSize.append(size.value)
             }
+            if let position = position {
+              shapeAndSize.append("at \(position.value)")
+            }
             if !shapeAndSize.isEmpty {
               components.append(shapeAndSize.joined(separator: " "))
-            }
-            if let position = position {
-              components.append("at \(position.value)")
             }
             components.append(contentsOf: colorStops.map { $0.value })
             return "repeating-radial-gradient(\(components.joined(separator: ", ")))"
@@ -449,11 +443,8 @@ extension CSS {
               first = false
             }
 
-            // Handle position
             if let position = position {
-              if !first {
-                buffer.append(contentsOf: ", ".utf8)
-              }
+              if !first { buffer.append(32) }  // space
               buffer.append(contentsOf: "at ".utf8)
               buffer.append(contentsOf: position.value.utf8)
               first = false
@@ -663,6 +654,16 @@ extension CSS {
           self.position = position.map { CSS.Length($0.value) }
         }
 
+        public init(_ color: CSS.Keyword.Transparent, _ position: CSS.Length? = nil) {
+          self.color = CSS.Color(color)
+          self.position = position
+        }
+
+        public init(_ color: CSS.Keyword.Transparent, _ position: CSS.Percentage?) {
+          self.color = CSS.Color(color)
+          self.position = position.map { CSS.Length($0.value) }
+        }
+
         public var value: String {
           if let position = position {
             return "\(color.value) \(position.value)"
@@ -752,6 +753,46 @@ public func radialGradient(
   return .radial(
     CSS.Image.Gradient.RadialGradient(shape: shape, size: nil, position: position, colorStops: stops)
   )
+}
+
+public func radialGradient(
+  _ shape: CSS.Image.Gradient.RadialShape, at position: CSS.MaskLayer.Position? = nil,
+  _ first: (CSS.Color, CSS.Percentage), _ rest: (CSS.Keyword.Transparent, CSS.Percentage)...
+) -> CSS.Image.Gradient {
+  var stops = [CSS.Image.Gradient.ColorStop(first.0, first.1)]
+  stops.append(contentsOf: rest.map { CSS.Image.Gradient.ColorStop($0.0, $0.1) })
+  return .radial(
+    CSS.Image.Gradient.RadialGradient(shape: shape, size: nil, position: position, colorStops: stops)
+  )
+}
+
+public func radialGradient(
+  _ shape: CSS.Image.Gradient.RadialShape, at position: (CSS.Length, CSS.Length),
+  _ first: (CSS.Color, CSS.Percentage), _ rest: (CSS.Color, CSS.Percentage)...
+) -> CSS.Image.Gradient {
+  var stops = [CSS.Image.Gradient.ColorStop(first.0, first.1)]
+  stops.append(contentsOf: rest.map { CSS.Image.Gradient.ColorStop($0.0, $0.1) })
+  return .radial(CSS.Image.Gradient.RadialGradient(shape: shape, size: nil, position: .init(position.0, position.1), colorStops: stops))
+}
+
+public func radialGradient(
+  _ shape: CSS.Image.Gradient.RadialShape, size: CSS.Image.Gradient.RadialSize? = nil,
+  at position: (CSS.Length, CSS.Length),
+  _ first: CSS.Color, _ rest: CSS.Color...
+) -> CSS.Image.Gradient {
+  var stops = [CSS.Image.Gradient.ColorStop(first)]
+  stops.append(contentsOf: rest.map { CSS.Image.Gradient.ColorStop($0) })
+  return .radial(CSS.Image.Gradient.RadialGradient(shape: shape, size: size, position: .init(position.0, position.1), colorStops: stops))
+}
+
+public func radialGradient(
+  _ shape: CSS.Image.Gradient.RadialShape, size: CSS.Image.Gradient.RadialSize? = nil,
+  at position: (CSS.Length, CSS.Length),
+  _ first: (CSS.Color, CSS.Percentage), _ rest: (CSS.Keyword.Transparent, CSS.Percentage)...
+) -> CSS.Image.Gradient {
+  var stops = [CSS.Image.Gradient.ColorStop(first.0, first.1)]
+  stops.append(contentsOf: rest.map { CSS.Image.Gradient.ColorStop($0.0, $0.1) })
+  return .radial(CSS.Image.Gradient.RadialGradient(shape: shape, size: size, position: .init(position.0, position.1), colorStops: stops))
 }
 
 // Conic gradient - 2 stops

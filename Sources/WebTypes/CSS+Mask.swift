@@ -36,6 +36,10 @@ extension CSS {
       case two(PositionTwo)
       case custom(String)
 
+      public init(_ x: CSS.Length, _ y: CSS.Length) {
+        self = .two(PositionTwo(.lengthPercentage(x), .lengthPercentage(y)))
+      }
+
       public var value: String {
         switch self {
         case .one(let pos):

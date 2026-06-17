@@ -212,23 +212,6 @@ public func minmax(_ min: CSS.Length, _ max: CSS.Length) -> CSS.Length {
   #endif
 }
 
-public func `repeat`(_ count: CSS.GridRepeat, _ value: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("repeat(\(count.rawValue), \(value.value))")
-  #endif
-  #if CLIENT
-    return CSS.Length("repeat(\(count.rawValue), \(value.value))")
-  #endif
-}
-
-public func `repeat`(_ count: Int, _ value: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("repeat(\(count), \(value.value))")
-  #endif
-  #if CLIENT
-    return CSS.Length("repeat(\(intToString(count)), \(value.value))")
-  #endif
-}
 
 // Arithmetic operators for Length
 public func + (lhs: CSS.Length, rhs: CSS.Length) -> CSS.Length {

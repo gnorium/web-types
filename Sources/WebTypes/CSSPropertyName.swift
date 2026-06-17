@@ -68,6 +68,8 @@ public enum CSSPropertyName: Sendable {
   case marginRight
   case marginTop
   case mask
+  case maskImage
+  case webkitMaskImage
   case maxHeight
   case minHeight
   case outline
@@ -152,6 +154,8 @@ public enum CSSPropertyName: Sendable {
     case .marginRight: return "margin-right"
     case .marginTop: return "margin-top"
     case .mask: return "mask"
+    case .maskImage: return "mask-image"
+    case .webkitMaskImage: return "-webkit-mask-image"
     case .maxHeight: return "max-height"
     case .minHeight: return "min-height"
     case .outline: return "outline"
