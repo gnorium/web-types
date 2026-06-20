@@ -6,6 +6,7 @@ extension SVG {
       case rotate
       case skewX
       case skewY
+      case matrix
     }
   }
 }

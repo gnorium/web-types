@@ -20,6 +20,8 @@ extension SVGAttribute where Value == CSS.Percentage {
 
 extension SVGAttribute where Value == Double {
   public static var opacity: SVGAttribute<Double> { .init(.opacity) }
+  public static var cx: SVGAttribute<Double> { .init(.cx) }
+  public static var cy: SVGAttribute<Double> { .init(.cy) }
 }
 
 extension SVGAttribute where Value == CSS.Length {

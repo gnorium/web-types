@@ -37,6 +37,8 @@ import EmbeddedSwiftUtilities
     case calcMode = "calcMode"
     case additive = "additive"
     case accumulate = "accumulate"
+    case keySplines = "keySplines"
+    case type = "type"
   }
 #endif
 
@@ -79,6 +81,8 @@ import EmbeddedSwiftUtilities
     case calcMode
     case additive
     case accumulate
+    case keySplines
+    case type
 
     public var rawValue: String {
       switch self {
@@ -117,6 +121,8 @@ import EmbeddedSwiftUtilities
       case .calcMode: return "calcMode"
       case .additive: return "additive"
       case .accumulate: return "accumulate"
+      case .keySplines: return "keySplines"
+      case .type: return "type"
       }
     }
 
@@ -191,6 +197,10 @@ import EmbeddedSwiftUtilities
         self = .additive
       } else if stringEquals(rawValue, "accumulate") {
         self = .accumulate
+      } else if stringEquals(rawValue, "keySplines") {
+        self = .keySplines
+      } else if stringEquals(rawValue, "type") {
+        self = .type
       } else {
         return nil
       }

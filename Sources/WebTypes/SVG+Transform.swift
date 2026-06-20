@@ -1,6 +1,4 @@
-#if CLIENT
-  import EmbeddedSwiftUtilities
-#endif
+import EmbeddedSwiftUtilities
 
 extension SVG {
   public struct Transform: CustomStringConvertible, Sendable {
@@ -15,7 +13,7 @@ extension SVG {
 }
 
 public func translate(_ x: Double, _ y: Double) -> SVG.Transform {
-  SVG.Transform("translate(\(x),\(y))")
+  SVG.Transform("translate(\(doubleToString(x)),\(doubleToString(y)))")
 }
 
 public func translate(_ x: Int, _ y: Int) -> SVG.Transform {
@@ -27,7 +25,7 @@ public func translate(_ x: String, _ y: String) -> SVG.Transform {
 }
 
 public func scale(_ x: Double, _ y: Double) -> SVG.Transform {
-  SVG.Transform("scale(\(x),\(y))")
+  SVG.Transform("scale(\(doubleToString(x)),\(doubleToString(y)))")
 }
 
 public func scale(_ x: Int, _ y: Int) -> SVG.Transform {
@@ -35,7 +33,7 @@ public func scale(_ x: Int, _ y: Int) -> SVG.Transform {
 }
 
 public func scale(_ value: Double) -> SVG.Transform {
-  SVG.Transform("scale(\(value))")
+  SVG.Transform("scale(\(doubleToString(value)))")
 }
 
 public func scale(_ value: Int) -> SVG.Transform {
@@ -43,7 +41,7 @@ public func scale(_ value: Int) -> SVG.Transform {
 }
 
 public func rotate(_ angle: Double) -> SVG.Transform {
-  SVG.Transform("rotate(\(angle))")
+  SVG.Transform("rotate(\(doubleToString(angle)))")
 }
 
 public func rotate(_ angle: Int) -> SVG.Transform {
@@ -51,19 +49,19 @@ public func rotate(_ angle: Int) -> SVG.Transform {
 }
 
 public func rotate(_ angle: Double, _ cx: Double, _ cy: Double) -> SVG.Transform {
-  SVG.Transform("rotate(\(angle),\(cx),\(cy))")
+  SVG.Transform("rotate(\(doubleToString(angle)),\(doubleToString(cx)),\(doubleToString(cy)))")
 }
 
 public func skewX(_ angle: Double) -> SVG.Transform {
-  SVG.Transform("skewX(\(angle))")
+  SVG.Transform("skewX(\(doubleToString(angle)))")
 }
 
 public func skewY(_ angle: Double) -> SVG.Transform {
-  SVG.Transform("skewY(\(angle))")
+  SVG.Transform("skewY(\(doubleToString(angle)))")
 }
 
 public func matrix(_ a: Double, _ b: Double, _ c: Double, _ d: Double, _ e: Double, _ f: Double) -> SVG.Transform {
-  SVG.Transform("matrix(\(a),\(b),\(c),\(d),\(e),\(f))")
+  SVG.Transform("matrix(\(doubleToString(a)),\(doubleToString(b)),\(doubleToString(c)),\(doubleToString(d)),\(doubleToString(e)),\(doubleToString(f)))")
 }
 
 public func matrix(_ a: Int, _ b: Int, _ c: Int, _ d: Int, _ e: Int, _ f: Int) -> SVG.Transform {
