@@ -70,6 +70,8 @@ public enum CSSPropertyName: Sendable {
   case mask
   case maskImage
   case webkitMaskImage
+  case webkitTouchCallout
+  case webkitUserSelect
   case maxHeight
   case minHeight
   case outline
@@ -156,6 +158,8 @@ public enum CSSPropertyName: Sendable {
     case .mask: return "mask"
     case .maskImage: return "mask-image"
     case .webkitMaskImage: return "-webkit-mask-image"
+    case .webkitTouchCallout: return "-webkit-touch-callout"
+    case .webkitUserSelect: return "-webkit-user-select"
     case .maxHeight: return "max-height"
     case .minHeight: return "min-height"
     case .outline: return "outline"

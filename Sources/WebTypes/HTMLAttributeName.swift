@@ -47,6 +47,7 @@ import EmbeddedSwiftUtilities
     case autocorrect = "autocorrect"
     case spellcheck = "spellcheck"
     case draggable = "draggable"
+    case translate = "translate"
 
     // Nested marker enums for type-safe value resolution
 
@@ -116,6 +117,7 @@ import EmbeddedSwiftUtilities
     case autocorrect
     case spellcheck
     case draggable
+    case translate
 
     public var rawValue: String {
       switch self {
@@ -164,6 +166,7 @@ import EmbeddedSwiftUtilities
       case .autocorrect: return "autocorrect"
       case .spellcheck: return "spellcheck"
       case .draggable: return "draggable"
+      case .translate: return "translate"
       }
     }
 
@@ -258,6 +261,8 @@ import EmbeddedSwiftUtilities
         self = .spellcheck
       } else if stringEquals(rawValue, "draggable") {
         self = .draggable
+      } else if stringEquals(rawValue, "translate") {
+        self = .translate
       } else {
         return nil
       }
