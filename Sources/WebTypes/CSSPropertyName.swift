@@ -47,6 +47,7 @@ public enum CSSPropertyName: Sendable {
   case borderBottomWidth
   case borderColor
   case borderInlineEnd
+  case borderInlineStart
   case borderLeft
   case borderLeftWidth
   case borderRadius
@@ -136,6 +137,7 @@ public enum CSSPropertyName: Sendable {
     case .borderBottomWidth: return "border-bottom-width"
     case .borderColor: return "border-color"
     case .borderInlineEnd: return "border-inline-end"
+    case .borderInlineStart: return "border-inline-start"
     case .borderLeft: return "border-left"
     case .borderLeftWidth: return "border-left-width"
     case .borderRadius: return "border-radius"

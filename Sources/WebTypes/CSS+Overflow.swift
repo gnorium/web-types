@@ -4,6 +4,7 @@ extension CSS {
     case hidden
     case scroll
     case clip
+    case overlay
 
     public static var auto: CSS.Keyword.Auto { .auto }
 
@@ -13,6 +14,7 @@ extension CSS {
       case .hidden: return "hidden"
       case .scroll: return "scroll"
       case .clip: return "clip"
+      case .overlay: return "overlay"
       }
     }
 
@@ -22,6 +24,7 @@ extension CSS {
       case .hidden: return "hidden"
       case .scroll: return "scroll"
       case .clip: return "clip"
+      case .overlay: return "overlay"
       }
     }
   }
