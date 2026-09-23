@@ -213,107 +213,98 @@ public func minmax(_ min: CSS.Length, _ max: CSS.Length) -> CSS.Length {
 }
 
 
-// Arithmetic operators for Length
+// Arithmetic on lengths. CSS does arithmetic only inside `calc()`, so every
+// operator emits a whole `calc()` expression: a bare `4px * 2` is not a value
+// any property accepts, and a declaration holding one is dropped. An operand
+// that is itself one of these expressions goes in as a parenthesised term, so
+// `(a + b) * 2` keeps its precedence and still reads as one `calc()`.
+
+/// `calc(lhs op rhs)`, each side a term.
+internal func cssCalculation(_ lhs: String, _ op: String, _ rhs: String) -> String {
+  "calc(\(cssTerm(lhs)) \(op) \(cssTerm(rhs)))"
+}
+
+/// A value as one `calc()`: itself when it already is one.
+internal func cssCalculation(_ value: String) -> String {
+  let term = cssTerm(value)
+  return stringEquals(term, value) ? "calc(\(value))" : value
+}
+
+/// A value as a term of a larger calculation: a `calc()` expression opens into
+/// parentheses, and anything else stands as it is.
+internal func cssTerm(_ value: String) -> String {
+  let bytes = Array(value.utf8)
+  let opening = Array("calc(".utf8)
+  guard bytes.count > opening.count, Array(bytes[0..<opening.count]) == opening, bytes.last == 41 else {
+    return value
+  }
+  // Only when that `calc(` closes at the very end: `calc(a) + calc(b)` is two
+  // terms, not one.
+  var depth = 0
+  for index in (opening.count - 1)..<bytes.count {
+    if bytes[index] == 40 { depth += 1 }
+    if bytes[index] == 41 {
+      depth -= 1
+      if depth == 0 && index != bytes.count - 1 { return value }
+    }
+  }
+  return "(" + String(decoding: bytes[opening.count..<(bytes.count - 1)], as: UTF8.self) + ")"
+}
+
 public func + (lhs: CSS.Length, rhs: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) + \(rhs.value)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) + \(rhs.value)")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "+", rhs.value))
 }
 
 public func - (lhs: CSS.Length, rhs: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) - \(rhs.value)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) - \(rhs.value)")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "-", rhs.value))
 }
 
-// Unary negation operator
+/// A plain dimension takes its sign directly, `-1px`, and loses it again
+/// when negated twice; anything else — a variable, an expression — is
+/// multiplied by -1, since `-var(--x)` is not a value.
 public prefix func - (value: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("-\(value.value)")
-  #endif
-  #if CLIENT
-    return CSS.Length("-\(value.value)")
-  #endif
+  let bytes = Array(value.value.utf8)
+  guard let first = bytes.first else { return value }
+  if first == 45 {  // '-'
+    let rest = String(decoding: bytes.dropFirst(), as: UTF8.self)
+    if let second = bytes.dropFirst().first, (second >= 48 && second <= 57) || second == 46 {
+      return CSS.Length(rest)
+    }
+  }
+  if (first >= 48 && first <= 57) || first == 46 {  // a digit or '.'
+    return CSS.Length("-" + value.value)
+  }
+  return CSS.Length(cssCalculation("-1", "*", value.value))
 }
 
 @_disfavoredOverload
 public func * (lhs: CSS.Length, rhs: Int) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) * \(rhs)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) * \(intToString(rhs))")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "*", intToString(rhs)))
 }
 
 @_disfavoredOverload
 public func * (lhs: Int, rhs: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs) * \(rhs.value)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(intToString(lhs)) * \(rhs.value)")
-  #endif
+  CSS.Length(cssCalculation(intToString(lhs), "*", rhs.value))
 }
 
 @_disfavoredOverload
 public func * (lhs: CSS.Length, rhs: Double) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) * \(doubleToString(rhs))")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) * \(doubleToString(rhs))")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "*", doubleToString(rhs)))
 }
 
 @_disfavoredOverload
 public func * (lhs: Double, rhs: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(doubleToString(lhs)) * \(rhs.value)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(doubleToString(lhs)) * \(rhs.value)")
-  #endif
+  CSS.Length(cssCalculation(doubleToString(lhs), "*", rhs.value))
 }
 
 public func * (lhs: CSS.Percentage, rhs: Int) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) * \(rhs)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) * \(intToString(rhs))")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "*", intToString(rhs)))
 }
 
 public func / (lhs: CSS.Length, rhs: Int) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) / \(rhs)")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) / \(intToString(rhs))")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "/", intToString(rhs)))
 }
 
 public func / (lhs: CSS.Length, rhs: Double) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("\(lhs.value) / \(doubleToString(rhs))")
-  #endif
-  #if CLIENT
-    return CSS.Length("\(lhs.value) / \(doubleToString(rhs))")
-  #endif
-}
-
-public func / (lhs: CSS.Length, rhs: CSS.Length) -> CSS.Length {
-  #if SERVER
-    return CSS.Length("(\(lhs.value)) / (\(rhs.value))")
-  #endif
-  #if CLIENT
-    return CSS.Length("(\(lhs.value)) / (\(rhs.value))")
-  #endif
+  CSS.Length(cssCalculation(lhs.value, "/", doubleToString(rhs)))
 }

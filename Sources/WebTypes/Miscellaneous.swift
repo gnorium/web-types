@@ -8,16 +8,17 @@ public func calc(_ string: String) -> CSS.LengthPercentage {
   CSS.LengthPercentage("calc(\(string))")
 }
 
+/// Arithmetic already emits a whole `calc()`, so one is not wrapped again.
 public func calc(_ length: CSS.Length) -> CSS.LengthPercentage {
-  CSS.LengthPercentage("calc(\(length.value))")
+  CSS.LengthPercentage(cssCalculation(length.value))
 }
 
 public func calc(_ percentage: CSS.Percentage) -> CSS.LengthPercentage {
-  CSS.LengthPercentage("calc(\(percentage.value))")
+  CSS.LengthPercentage(cssCalculation(percentage.value))
 }
 
 public func calc(_ value: CSS.LengthPercentage) -> CSS.LengthPercentage {
-  CSS.LengthPercentage("calc(\(value.value))")
+  CSS.LengthPercentage(cssCalculation(value.value))
 }
 
 public func max(_ values: CSS.Length...) -> CSS.LengthPercentage {
@@ -187,104 +188,82 @@ public func prefersContrast(_ scheme: CSS.PrefersContrast) -> StaticString {
   }
 }
 
-// Operators for calc() expressions are now in CSS.Length.swift
+// The rest of the arithmetic, emitted as CSS.Length.swift says: as whole
+// `calc()` expressions. A product or quotient of two dimensions is not a
+// length, so there is none.
 
 public func data(_ name: String) -> String {
   "data-\(name)"
 }
 
 public func + (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) + \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "+", rhs.value))
 }
 
 public func - (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) - \(rhs.value)")
-}
-
-public func * (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) * \(rhs.value)")
-}
-
-public func / (lhs: CSS.Percentage, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) / \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "-", rhs.value))
 }
 
 public func + (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) + \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "+", rhs.value))
 }
 
 public func - (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) - \(rhs.value)")
-}
-
-public func * (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) * \(rhs.value)")
-}
-
-public func / (lhs: CSS.Length, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) / \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "-", rhs.value))
 }
 
 public func + (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
-  CSS.Length("\(lhs.value) + \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "+", rhs.value))
 }
 
 public func - (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
-  CSS.Length("\(lhs.value) - \(rhs.value)")
-}
-
-public func * (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
-  CSS.Length("\(lhs.value) * \(rhs.value)")
-}
-
-public func / (lhs: CSS.Percentage, rhs: CSS.Length) -> CSS.Length {
-  CSS.Length("\(lhs.value) / \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "-", rhs.value))
 }
 
 public func + (lhs: CSS.Value, rhs: CSS.Percentage) -> CSS.Length {
-  CSS.Length("\(lhs.value) + \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "+", rhs.value))
 }
 
 public func * (lhs: Double, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(doubleToString(lhs)) * \(rhs.value)")
+  CSS.Length(cssCalculation(doubleToString(lhs), "*", rhs.value))
 }
 
 public func * (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(lhs.value) * \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "*", rhs.value))
 }
 
 public func + (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(lhs.value) + \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "+", rhs.value))
 }
 
 public func - (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(lhs.value) - \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "-", rhs.value))
 }
 
 public func / (lhs: CSS.Value, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(lhs.value) / \(rhs.value)")
+  CSS.Length(cssCalculation(lhs.value, "/", rhs.value))
 }
 
 public func + (lhs: CSS.Value, rhs: Double) -> CSS.Length {
-  CSS.Length("\(lhs.value) + \(doubleToString(rhs))")
+  CSS.Length(cssCalculation(lhs.value, "+", doubleToString(rhs)))
 }
 
 public func - (lhs: CSS.Value, rhs: Double) -> CSS.Length {
-  CSS.Length("\(lhs.value) - \(doubleToString(rhs))")
+  CSS.Length(cssCalculation(lhs.value, "-", doubleToString(rhs)))
 }
 
 public func / (lhs: CSS.Value, rhs: Double) -> CSS.Length {
-  CSS.Length("\(lhs.value) / \(doubleToString(rhs))")
+  CSS.Length(cssCalculation(lhs.value, "/", doubleToString(rhs)))
 }
 
 public func + (lhs: Double, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(doubleToString(lhs)) + \(rhs.value)")
+  CSS.Length(cssCalculation(doubleToString(lhs), "+", rhs.value))
 }
 
 public func - (lhs: Double, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(doubleToString(lhs)) - \(rhs.value)")
+  CSS.Length(cssCalculation(doubleToString(lhs), "-", rhs.value))
 }
 
 public func / (lhs: Double, rhs: CSS.Value) -> CSS.Length {
-  CSS.Length("\(doubleToString(lhs)) / \(rhs.value)")
+  CSS.Length(cssCalculation(doubleToString(lhs), "/", rhs.value))
 }
