@@ -32,6 +32,11 @@ extension CSS {
       Length("var(\(name))")
     }
 
+    /// A user-agent environment variable: `env(safe-area-inset-bottom)`.
+    public static func environment(_ name: String) -> Length {
+      Length("env(\(name))")
+    }
+
     public static var auto: CSS.Keyword.Auto { .auto }
 
     public var description: String {
