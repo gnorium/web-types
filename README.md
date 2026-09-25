@@ -72,3 +72,4 @@ Contributions welcome! Please open an issue or submit a pull request.
 - [web-formats](https://github.com/gnorium/web-formats) - Structured data format builders
 - [web-security](https://github.com/gnorium/web-security) - Portable security utilities for web applications
 - [web-tests](https://github.com/gnorium/web-tests) - Swift browser testing across Chrome and Safari
+- [xml-utilities](https://github.com/gnorium/xml-utilities) - XML and TEI rendering utilities
