@@ -60,6 +60,7 @@ public enum CSSPropertyName: Sendable {
   case boxSizing
   case flex
   case flexDirection
+  case float
   case fontFamily
   case fontSize
   case fontStyle
@@ -150,6 +151,7 @@ public enum CSSPropertyName: Sendable {
     case .boxSizing: return "box-sizing"
     case .flex: return "flex"
     case .flexDirection: return "flex-direction"
+    case .float: return "float"
     case .fontFamily: return "font-family"
     case .fontSize: return "font-size"
     case .fontStyle: return "font-style"
