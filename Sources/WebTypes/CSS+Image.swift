@@ -696,7 +696,7 @@ public func linearGradient(
   return .linear(CSS.Image.Gradient.LinearGradient(direction: .toSide(direction), colorStops: stops))
 }
 
-// Linear gradient — transparent as first stop
+// Linear gradient—transparent as first stop
 public func linearGradient(
   to direction: CSS.GradientDirection, _ first: CSS.Keyword.Transparent, _ rest: CSS.Color...
 ) -> CSS.Image.Gradient {
@@ -705,7 +705,7 @@ public func linearGradient(
   return .linear(CSS.Image.Gradient.LinearGradient(direction: .toSide(direction), colorStops: stops))
 }
 
-// Linear gradient — transparent as last stop
+// Linear gradient—transparent as last stop
 public func linearGradient(
   to direction: CSS.GradientDirection, _ first: CSS.Color, _ last: CSS.Keyword.Transparent
 ) -> CSS.Image.Gradient {

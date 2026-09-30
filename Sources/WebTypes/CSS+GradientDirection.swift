@@ -1,7 +1,7 @@
 extension CSS {
   /// Gradient direction used exclusively with the `to:` parameter label
   /// (e.g. `linearGradient(to: .bottom, ...)`), so the "to" prefix is
-  /// omitted from case names — the label already provides that word.
+  /// omitted from case names—the label already provides that word.
   public enum GradientDirection: String, Sendable {
     case top = "to top"
     case right = "to right"

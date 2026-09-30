@@ -265,7 +265,7 @@ public func - (lhs: CSS.Length, rhs: CSS.Length) -> CSS.Length {
 }
 
 /// A plain dimension takes its sign directly, `-1px`, and loses it again
-/// when negated twice; anything else — a variable, an expression — is
+/// when negated twice; anything else—a variable, an expression—is
 /// multiplied by -1, since `-var(--x)` is not a value.
 public prefix func - (value: CSS.Length) -> CSS.Length {
   let bytes = Array(value.value.utf8)
