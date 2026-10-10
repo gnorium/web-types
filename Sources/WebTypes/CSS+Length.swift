@@ -145,6 +145,26 @@ public func vh(_ int: Int) -> CSS.Length {
   #endif
 }
 
+/// The `cap` unit: the cap height of the element's own font—`cap(0.5)` is
+/// half its capitals' height.
+public func cap(_ int: Int) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(int)cap")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(intToString(int))cap")
+  #endif
+}
+
+public func cap(_ double: Double) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(doubleToString(double))cap")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(doubleToString(double))cap")
+  #endif
+}
+
 public func vh(_ double: Double) -> CSS.Length {
   #if SERVER
     return CSS.Length("\(doubleToString(double))vh")
