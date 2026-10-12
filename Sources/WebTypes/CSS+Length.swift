@@ -91,6 +91,16 @@ public func rem(_ int: Int) -> CSS.Length {
   #endif
 }
 
+/// The `lh` unit: multiples of the element's own computed line height.
+public func lh(_ int: Int) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(int)lh")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(intToString(int))lh")
+  #endif
+}
+
 public func pt(_ int: Int) -> CSS.Length {
   #if SERVER
     return CSS.Length("\(int)pt")
