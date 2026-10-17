@@ -202,6 +202,26 @@ public func dvh(_ double: Double) -> CSS.Length {
   #endif
 }
 
+/// The small viewport height: the visible area with the browser's chrome
+/// shown, so stable while a mobile address bar moves.
+public func svh(_ int: Int) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(int)svh")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(intToString(int))svh")
+  #endif
+}
+
+public func svh(_ double: Double) -> CSS.Length {
+  #if SERVER
+    return CSS.Length("\(doubleToString(double))svh")
+  #endif
+  #if CLIENT
+    return CSS.Length("\(doubleToString(double))svh")
+  #endif
+}
+
 public func fr(_ int: Int) -> CSS.Length {
   #if SERVER
     return CSS.Length("\(int)fr")
